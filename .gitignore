@@ -20,3 +20,4 @@ config/database.yml
 db/sphinx/*
 config/*.sphinx.conf
 public/assets
+config/application_config.xml
