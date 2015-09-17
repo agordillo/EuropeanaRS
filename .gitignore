@@ -4,6 +4,8 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+.gitignore~
+
 # Ignore bundler config.
 /.bundle
 
@@ -20,4 +22,4 @@ config/database.yml
 db/sphinx/*
 config/*.sphinx.conf
 public/assets
-config/application_config.xml
+config/application_config.yml
