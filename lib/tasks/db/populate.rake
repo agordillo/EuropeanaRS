@@ -20,6 +20,7 @@ namespace :db do
     task :SEARCH_API => :environment do
       puts "Populating database using the Europeana Search API"
       europeana_SEARCH_API_KEY = EuropeanaRS::Application::config.APP_CONFIG["europeana_SEARCH_API_key"]
+      
     end
 
     task :OAI_PMH => :environment do
