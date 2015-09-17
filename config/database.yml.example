@@ -3,7 +3,7 @@ development:
   encoding: unicode
   database: europeanars_development
   pool: 5
-  username: aldo
+  username: username
   password: password
 
 # Warning: The database defined as "test" will be erased and
@@ -14,5 +14,5 @@ test:
   encoding: unicode
   database: europeanars_test
   pool: 5
-  username: aldo
+  username: username
   password: password
