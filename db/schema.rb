@@ -17,11 +17,17 @@ ActiveRecord::Schema.define(version: 20150917104357) do
   enable_extension "plpgsql"
 
   create_table "los", force: :cascade do |t|
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
     t.text     "europeana_metadata"
+    t.text     "id_europeana"
+    t.text     "url"
     t.text     "title"
     t.text     "description"
+    t.string   "language"
+    t.text     "thumbnail_url"
+    t.integer  "year"
+    t.integer  "metadata_quality"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
 end

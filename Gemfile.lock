@@ -122,6 +122,8 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     riddle (1.5.12)
     sass (3.4.18)
     sass-rails (5.0.4)
@@ -177,6 +179,7 @@ DEPENDENCIES
   pg (= 0.17.1)
   pry-rails
   rails (= 4.2.4)
+  rest-client (= 1.6.7)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
