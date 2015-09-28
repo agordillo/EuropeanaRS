@@ -4,17 +4,17 @@ namespace :db do
     
     # How to use:
     # bundle exec rake db:populate:start["SEARCH",1,"newspapers"]
-    task :start, [:mode, :start, :collection] => :environment do |t, args|
+    task :start, [:mode, :start, :collection, :language] => :environment do |t, args|
       puts "Populating database"
       t1 = Time.now
 
-      args.with_defaults(:mode => "SEARCH", :start => 1, :collection => nil)
+      args.with_defaults(:mode => "SEARCH", :start => 1, :collection => nil, :language => nil)
       start = [1,args[:start].to_i].max
 
       if args[:API] === "OAI-PMH"
-        Rake::Task["db:populate:OAI_PMH"].invoke(start,args[:collection])
+        Rake::Task["db:populate:OAI_PMH"].invoke(start,args[:collection],args[:language])
       else
-        Rake::Task["db:populate:SEARCH_API"].invoke(start,args[:collection])
+        Rake::Task["db:populate:SEARCH_API"].invoke(start,args[:collection],args[:language])
       end
 
       puts "Task finished"
@@ -22,10 +22,10 @@ namespace :db do
       puts "Elapsed time:" + t2.to_s
     end
 
-    task :SEARCH_API, [:start, :collection] => :environment do |t, args|
+    task :SEARCH_API, [:start, :collection, :language] => :environment do |t, args|
       puts "Populating database using the Europeana Search API"
 
-      args.with_defaults(:start => 1, :collection => nil)
+      args.with_defaults(:start => 1, :collection => nil, :language => nil)
 
       queryParams = {}
 
@@ -42,6 +42,10 @@ namespace :db do
           #   queryParams[:skos_concept] = ""
           else
           end
+      end
+
+      unless args[:language].nil?
+        queryParams[:language] = args[:language]
       end
 
       query = EuropeanaSearch.buildQuery(queryParams)
