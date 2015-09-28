@@ -76,8 +76,19 @@ namespace :db do
 
     end
 
-    def perform_search_query(query)
-      response = (JSON.parse(RestClient.get query)) rescue nil
+    def perform_search_query(query,nAttempt=0)
+      begin
+        response = (JSON.parse(RestClient.get query))
+      rescue => e
+        if nAttempt < 3
+          sleep 5
+          puts "Error on response. Retrying query..."
+          return perform_search_query(query,nAttempt+1) 
+        else
+          response = nil
+        end
+      end
+
       return false if response.nil?
 
       response["items"].each do |europeanaItem|
