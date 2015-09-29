@@ -40,7 +40,9 @@ namespace :db do
             queryParams[:type] = "TEXT"
           # when "new_collection"
           #   queryParams[:skos_concept] = ""
+          #   ...
           else
+            queryParams[:europeana_collectionName] = args[:collection]
           end
       end
 
@@ -109,11 +111,18 @@ namespace :db do
 
     # How to use:
     # bundle exec rake db:populate:parseMetadata
-    task :parseMetadata => :environment do
-      puts "Parsing Learning Object metadata"
-      Lo.all.each do |lo|
-        lo.save
+    task :parseMetadata, [:start] => :environment do |t, args|
+      args.with_defaults(:start => 0)
+
+      puts "Parsing Learning Object metadata from item " + args[:start].to_s
+
+      ActiveRecord::Base.uncached do
+        Lo.find_each(start: args[:start].to_i, batch_size: 1000).with_index do |lo, index|
+          lo.save
+          puts ("Index:" + index.to_s + " and LO:" + lo.id.to_s) if (index%5000===0)
+        end
       end
+
       puts "Task finished"
     end
   end
