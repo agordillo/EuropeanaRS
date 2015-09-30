@@ -46,6 +46,10 @@ class EuropeanaSearch
     if params[:language].is_a? String
       query += "&qf=LANGUAGE:" + params[:language]
     end
+
+    if params[:dclanguage].is_a? String
+      query += "&qf=proxy_dc_language:" + params[:dclanguage]
+    end
     
     if params[:country].is_a? String
       query += "&qf=COUNTRY:" + params[:country]

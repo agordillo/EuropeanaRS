@@ -46,6 +46,8 @@ class Lo < ActiveRecord::Base
       case self.language
         when "bg"
           country = "Bulgaria"
+        when "cy"
+          country = "Wales"
         when "de"
           country = "Germany"
         when "en"
@@ -60,6 +62,8 @@ class Lo < ActiveRecord::Base
           country = "Italy"
         when "lb"
           country = "Luxembourg"
+        when "lv"
+          country = "Latvia"
         when "nl"
           country = "Netherlands"
         when "pl"
@@ -68,6 +72,8 @@ class Lo < ActiveRecord::Base
           country = "Portugal"
         when "ro"
           country = "Romania"
+        when "ru"
+          country = "Russia"
         when "sr"
           country = "Serbia"
         else

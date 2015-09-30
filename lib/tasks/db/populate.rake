@@ -47,7 +47,11 @@ namespace :db do
       end
 
       unless args[:language].nil?
-        queryParams[:language] = args[:language]
+        queryParams[:dclanguage] = args[:language]
+        unless !queryParams[:europeana_collectionName].nil?
+          #If a collection is specified, do not filter by provider language
+          queryParams[:language] = args[:language]
+        end
       end
 
       query = EuropeanaSearch.buildQuery(queryParams)
