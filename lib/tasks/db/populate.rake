@@ -3,18 +3,18 @@ namespace :db do
   namespace :populate do
     
     # How to use:
-    # bundle exec rake db:populate:start["SEARCH",1,"newspapers"]
-    task :start, [:mode, :start, :collection, :language] => :environment do |t, args|
+    # bundle exec rake db:populate:start["SEARCH",1,"newspapers","en"]
+    task :start, [:mode, :start, :collection, :language, :type] => :environment do |t, args|
       puts "Populating database"
       t1 = Time.now
 
-      args.with_defaults(:mode => "SEARCH", :start => 1, :collection => nil, :language => nil)
+      args.with_defaults(:mode => "SEARCH", :start => 1, :collection => nil, :language => nil, :type => nil)
       start = [1,args[:start].to_i].max
 
       if args[:API] === "OAI-PMH"
-        Rake::Task["db:populate:OAI_PMH"].invoke(start,args[:collection],args[:language])
+        Rake::Task["db:populate:OAI_PMH"].invoke(start,args[:collection],args[:language],args[:type])
       else
-        Rake::Task["db:populate:SEARCH_API"].invoke(start,args[:collection],args[:language])
+        Rake::Task["db:populate:SEARCH_API"].invoke(start,args[:collection],args[:language],args[:type])
       end
 
       puts "Task finished"
@@ -22,10 +22,10 @@ namespace :db do
       puts "Elapsed time:" + t2.to_s
     end
 
-    task :SEARCH_API, [:start, :collection, :language] => :environment do |t, args|
+    task :SEARCH_API, [:start, :collection, :language, :type] => :environment do |t, args|
       puts "Populating database using the Europeana Search API"
 
-      args.with_defaults(:start => 1, :collection => nil, :language => nil)
+      args.with_defaults(:start => 1, :collection => nil, :language => nil, :type => nil)
 
       queryParams = {}
 
@@ -33,7 +33,7 @@ namespace :db do
       queryParams[:rows] = 100
       queryParams[:profile] = "rich"
 
-      unless args[:collection].nil?
+      unless args[:collection].blank?
         case args[:collection]
           when "newspapers"
             queryParams[:skos_concept] = "http://vocab.getty.edu/aat/300026656"
@@ -42,15 +42,25 @@ namespace :db do
           #   queryParams[:skos_concept] = ""
           #   ...
           else
-            queryParams[:europeana_collectionName] = args[:collection]
+            if !args[:collection].match(/^http:\/\/vocab.getty.edu\/aat\/[0-9]+/).nil?
+              queryParams[:skos_concept] = args[:collection]
+            else
+              queryParams[:europeana_collectionName] = args[:collection]
+            end
           end
       end
 
-      unless args[:language].nil?
+      unless args[:language].blank?
         queryParams[:dclanguage] = args[:language]
         unless !queryParams[:europeana_collectionName].nil?
           #If a collection is specified, do not filter by provider language
           queryParams[:language] = args[:language]
+        end
+      end
+
+      unless args[:type].blank?
+        if queryParams[:type].blank?
+          queryParams[:type] = args[:type]
         end
       end
 

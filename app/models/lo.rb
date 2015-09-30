@@ -1,4 +1,6 @@
 class Lo < ActiveRecord::Base
+  acts_as_taggable
+
   validates :id_europeana, :presence => true, :uniqueness => true
   validates :europeana_metadata, :presence => true
   validates :url, :presence => true, :uniqueness => true
@@ -9,22 +11,36 @@ class Lo < ActiveRecord::Base
   def parseMetadata
     europeanaItem = JSON.parse(self.europeana_metadata) rescue nil
     return if europeanaItem.nil?
+
     begin
       self.id_europeana = europeanaItem["id"]
       self.url = europeanaItem["guid"]
       self.full_url = europeanaItem["edmIsShownAt"].first unless europeanaItem["edmIsShownAt"].nil?
       self.title = europeanaItem["title"].first unless europeanaItem["title"].nil?
       self.description = europeanaItem["dcDescription"].first unless europeanaItem["dcDescription"].nil?
+      self.resource_type = europeanaItem["type"]
+
       if !europeanaItem["dcLanguage"].nil?
         self.language = europeanaItem["dcLanguage"].first
       elsif !europeanaItem["language"].nil?
         self.language = europeanaItem["language"].first
       end
+
       self.thumbnail_url = europeanaItem["edmPreview"].first unless europeanaItem["edmPreview"].nil?
       self.year = europeanaItem["year"].first.to_i unless europeanaItem["year"].nil?
       self.metadata_quality = europeanaItem["europeanaCompleteness"]
       self.europeana_collection_name = europeanaItem["europeanaCollectionName"].first unless europeanaItem["europeanaCollectionName"].nil?
       self.country = self.inferCountry #this should be done after assign the language and the europeana collection name
+
+      #Concept
+      self.europeana_skos_concept = europeanaItem["edmConcept"].first unless europeanaItem["edmConcept"].nil?
+
+      #Tags
+      unless europeanaItem["edmConceptPrefLabelLangAware"].nil? or europeanaItem["edmConceptPrefLabelLangAware"]["en"].nil?
+        if europeanaItem["edmConceptPrefLabelLangAware"]["en"].is_a? Array
+          self.tag_list = europeanaItem["edmConceptPrefLabelLangAware"]["en"]
+        end
+      end
     rescue => e
     end
   end
