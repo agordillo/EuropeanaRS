@@ -1,0 +1,28 @@
+<div id="logo">
+  <img alt="EuropeanaRS logo" src="/assets/Europeanars_logo.png"/>
+  <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+</div>
+
+<p id="logo_search_separator"></p>
+
+<div id="search_input">
+  <form accept-charset="UTF-8" action="/search" method="get">
+    <input autocomplete="off" class="query" name="query" placeholder="Search" type="text">
+    <button type="button" class="search_button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+  </form>
+</div>
+
+<p id="search_suggestions_separator"></p>
+
+<div id="suggestions_wrapper">
+  <p class="section_title">Suggested resources</p>
+  <div id="suggestions">
+    <ul>
+      <% @suggestions.each do |lo| %>
+        <li>
+          <%= render "los/lo_box", lo: lo %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+header {
+  background-color: #333;
+  width: 100%;
+  position: static;
+  min-height: 45px;
+}
+
+header ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: normal;
+  padding-top: 9px;
+}
+
+header ul li {
+  display: inline;
+  color: white;
+  margin-left: 4em;
+}
+
+header ul a {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+header ul a:hover {
+}
