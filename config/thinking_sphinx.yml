@@ -1,2 +1,3 @@
 development:
   utf8: true
+  max_matches: 10000

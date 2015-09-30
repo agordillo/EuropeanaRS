@@ -17,12 +17,21 @@
 <div id="suggestions_wrapper">
   <p class="section_title">Suggested resources</p>
   <div id="suggestions">
-    <ul>
-      <% @suggestions.each do |lo| %>
-        <li>
-          <%= render "los/lo_box", lo: lo %>
-        </li>
-      <% end %>
-    </ul>
+    <% @suggestions.each do |lo| %>
+      <div>
+        <%= render "los/lo_box", lo: lo %>
+      </div>
+    <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#suggestions').slick({
+      infinite: true,
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      dots: true
+    });
+  });
+</script>

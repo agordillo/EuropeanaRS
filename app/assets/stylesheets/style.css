@@ -6,6 +6,10 @@ html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+* {
+   outline: 0 !important;
+}
+
 div#container {
   padding: 3% 8%;
   width: 100%;
@@ -61,4 +65,32 @@ p.section_title {
   font-weight: bold;
   width: 100%;
   border-bottom: 2px solid #333;
+}
+
+#suggestions {
+  padding-top: 10px;
+}
+
+div.lo_box, div.lo_box div {
+  text-align: center;
+  outline: none !important;
+  border: none !important;
+  border-color: transparent;
+}
+
+div.lo_box p {
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
+  font-size: 1.3rem;
+  height: 42px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div.lo_box img {
+  margin: auto;
+  height: 240px;
+  width: auto;
+  max-width: 80%;
 }
