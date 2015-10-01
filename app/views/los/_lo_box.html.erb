@@ -1,0 +1,13 @@
+<div class="lo_box"%>
+  <p>
+    <%= link_to(lo) do %>
+      <%= lo.title %>
+    <% end %>
+  </p>
+  <% unless lo.thumbnail_url.nil? %>
+    <%= link_to(lo) do %>
+      <img src="<%=lo.thumbnail_url%>"/>
+    <% end %>
+  <% end %>
+</div>
+
