@@ -1,8 +1,8 @@
 class LosController < ApplicationController
 
-  def index
-    @los = Lo.search ""
-    @los = @los.first(100)
+  def show
+  	@lo = Lo.find(params[:id])
+  	 @suggestions = (Lo.search "", :page => rand(8)+1, :per_page => 1000).sample(20)
   end
 
 end
