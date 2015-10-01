@@ -103,7 +103,7 @@ div.lo_box p {
   width: 100%;
   padding: 0% 10%;
   font-size: 1.3rem;
-  height: 43px;
+  height: 42px;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 5px;
@@ -205,4 +205,191 @@ div#lo_suggestions {
   display: inline-block;
   margin-top: 45px;
   width: 100%;
+}
+
+/* Search page style */
+
+div#search_wrapper {
+  width: 100%;
+}
+
+div#search_wrapper div.column1 {
+  float: left;
+  width: 25%;
+  height: 100%;
+  text-align: left;
+  background: white;
+  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid #c9c9c9;
+  box-shadow: 3px 3px 4px #c3c3c3;
+}
+
+div#search_wrapper div.matches_title {
+}
+
+div#search_wrapper div.matches_title p.match_query_title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+div#search_wrapper div.matches_title p.match_query {
+  color: #2a85e8;
+  font-size: 1.6rem;
+  margin-top: 0px;
+}
+
+div#search_wrapper div.column1 p.search_filters_title {
+  margin-bottom: 20px;
+}
+
+div#search_wrapper div.column1 div.search_filters {
+  margin-top: 20px;
+  font-size: 1.4rem;
+}
+
+div#search_wrapper div.column1 div.search_filters span.search_filter_title {
+  font-size: 1.5rem;
+}
+
+button.btn-filter {
+  border-radius: 5px;
+  padding: 0px 5px;
+  border: 1px solid #ccc;
+  background: #eee;
+  width: 20px;
+  outline: none;
+  margin-right: 5px;
+  font-size: 0.9em;
+}
+
+hr.separator {
+  border: 0;
+  border-top: 1px solid #5E5E5E;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+div.search_filter {
+  margin-top: 20px;
+}
+
+div.search_filter ul {
+  padding-left: 30px;
+  height: 150px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#year_slider {
+  width: 89%;
+  margin-left: 10%;
+}
+
+#year_range_wrapper {
+  margin-left: 10%;
+}
+
+#year_range {
+  border: 0px
+}
+
+div.search_filter ul.options_for_filter li {
+  list-style: none;
+  border-bottom: 1px dashed #ddd;
+  padding: 3px 0;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+div.search_filter ul.options_for_filter li.selected {
+  font-weight: bold;
+}
+
+div#search_wrapper div.column2 {
+  float: left;
+  width: 75%;
+  height: 100%;
+  text-align: center;
+}
+
+div#search_wrapper div.column2 p.section_title{
+  text-align: left;
+  margin-left: 3%;
+  width: 94%;
+}
+
+p#search_results_separator {
+  margin: 0px;
+  height: 60px;
+}
+
+div#search_results {
+  display: inline-block;
+  padding-bottom: 30px;
+}
+
+div#search_results div.lo_box {
+  width: 225px;
+  display: inline-block;
+  margin: 5px;
+}
+
+div#search_wrapper div.column2 .search_tools {
+  width: 100%;
+  padding-left: 3%;
+  display: inline-block;
+  text-align: left;
+}
+
+div#search_wrapper div.column2 .search_tools div {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-right: 30px;
+}
+
+div#search_wrapper div.column2 .search_tools div.rppage {
+  float: left;
+  width: 33%;
+}
+
+div#search_wrapper div.column2 .search_tools div.rppage div.dropdown {
+  display: inline-block;
+}
+
+div.dropdown span.caret {
+  margin-left: 4px;
+}
+
+div#search_wrapper div.column2 .search_tools div.rnumber {
+  float: left;
+}
+
+div#search_wrapper div.column2 .search_tools div.rpnumber {
+  float: right;
+}
+
+div#search_wrapper div.column2 .search_tools div.rpnumber input {
+  width: 60px;
+  text-align: center;
+}
+
+#searchPrevPage, #searchNextPage, #searchFirstPage, #searchLastPage {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+#searchPrevPage:hover, #searchNextPage:hover, #searchFirstPage:hover, #searchLastPage:hover {
+  opacity: 1;
+}
+
+#search_results p.emptySearch {
+  margin-top: 125px;
+  font-size: 2rem;
+}
+
+#search_results span.queryOnEmptySearch {
+  color: #2a85e8;
+  font-weight: bold;
 }

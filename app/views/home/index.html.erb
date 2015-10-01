@@ -27,11 +27,18 @@
 
 <script>
   $(document).ready(function(){
+
+    $("#search_input .search_button").click(function(event){
+      event.preventDefault();
+      $("#search_input form").submit();
+    });
+
     $('#suggestions').slick({
       infinite: true,
       slidesToShow: 5,
       slidesToScroll: 1,
       dots: true
     });
+    
   });
 </script>

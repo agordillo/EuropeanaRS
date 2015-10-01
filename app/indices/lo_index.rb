@@ -5,4 +5,6 @@ ThinkingSphinx::Index.define :lo, :with => :active_record do
 
   # attributes
   has created_at, updated_at
+  has year
+  has language
 end

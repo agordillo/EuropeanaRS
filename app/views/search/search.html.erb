@@ -1,0 +1,218 @@
+<div id="logo">
+  <img alt="EuropeanaRS logo" src="/assets/Europeanars_logo.png"/>
+</div>
+
+<p id="logo_search_separator"></p>
+
+<div id="search_input">
+  <form accept-charset="UTF-8" action="/search" method="get">
+    <input autocomplete="off" class="query" name="query" placeholder="Search" type="text" value="<%=params[:query]%>">
+    <button type="button" class="search_button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+  </form>
+</div>
+
+<p id="search_results_separator"></p>
+
+<div id="search_wrapper">
+  <div class="column1">
+    <div class="matches_title">
+      <% unless params[:query].blank? %>
+        <p class="match_query_title">Matches for:</p>
+        <p class="match_query"><%=params[:query]%></p>
+      <% else %>
+        <p class="match_query_title">Explore</p>
+      <% end %>
+    </div>
+    <div class="search_filters">
+      <p class="search_filters_title">Refine your results:</p>
+      <div class="search_filter" type="nonexclusive">
+        <button href="#" status="minimize" class="btn-filter">-</button>
+        <span class="search_filter_title">Filter by <b>language</b>:</span>
+        <hr class="separator">
+        <div class="search_filter_content">
+          <ul class="options_for_filter">
+            <% get_languages.each do |lanCode| %>
+              <li value="<%=lanCode%>"><%=Europeana.getReadableLanguage(lanCode)%></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <div class="search_filter">
+        <button href="#" status="minimize" class="btn-filter">-</button>
+        <span class="search_filter_title">Filter by <b>year</b>:</span>
+        <hr class="separator">
+        <div class="search_filter_content">
+          <p id="year_range_wrapper">
+            <span>Year range:</span>
+            <input type="text" id="year_range" readonly>
+          </p>
+          <div id="year_slider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column2">
+    <p class="section_title">Search Results</p>
+    <div class="search_tools">
+      <div class="rppage">
+        <span>Results per page:</span>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="rppagetext"><%=@results.per_page%></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#">12</a></li>
+            <li><a href="#">24</a></li>
+            <li><a href="#">50</a></li>
+            <li><a href="#">100</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="rnumber">
+        <p>Results <%=(@results.current_page-1)*@results.per_page+1%>-<%=(@results.current_page-1)*@results.per_page+@results.per_page%> of <%=@results.total_entries%></p>
+      </div>
+      <div class="rpnumber">
+        <p>
+          <% if @results.current_page > 1 %>
+            <span id="searchFirstPage" class="glyphicon glyphicon glyphicon-backward" aria-hidden="true"></span>
+            <span id="searchPrevPage" class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <% end %>
+          Page <input id="pagenumberinput" type="number" min="1" max="<%=@results.total_pages%>" value="<%=@results.current_page%>"/> of <%=@results.total_pages%>
+          <% if @results.current_page < @results.total_pages %>
+            <span id="searchNextPage" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span id="searchLastPage" class="glyphicon glyphicon glyphicon-forward" aria-hidden="true"></span>
+          <% end %>
+        </p>
+      </div>
+    </div>
+    <div id="search_results">
+      <% if @results.blank? %>
+        <p class="emptySearch">There are no search results for '<span class="queryOnEmptySearch"><%=params[:query]%></span>'. Try with other search terms.</p>
+      <% end %>
+      <% @results.each do |lo| %>
+        <%= render "los/lo_box", lo: lo %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+
+    $(".btn-filter").click(function(event){
+      var searchFilterContent = $(this).parent().find("div.search_filter_content");
+      if($(this).attr("status")==="minimize"){
+        $(this).attr("status","maximize");
+        $(searchFilterContent).hide();
+        $(this).html("+");
+      } else {
+        $(this).attr("status","minimize");
+        $(searchFilterContent).show();
+        $(this).html("-");
+      }
+    });
+
+    $("div.rppage ul.dropdown-menu a").click(function(e){
+      e.preventDefault();
+      var newResultsPerPage = $(this).html();
+      $(this).parents("div.rppage").find("span.rppagetext").html(newResultsPerPage);
+      performSearchQuery();
+    });
+
+    $("div.search_filter ul.options_for_filter li").click(function(event){
+      var searchFilterDOM = $(this).parents("div.search_filter");
+      
+      var exclusive = ($(searchFilterDOM).attr("type")==="exclusive");
+      if(exclusive){
+        $(this).parents("ul.options_for_filter").find("li").not(this).removeClass("selected");
+      }
+
+      if($(this).hasClass("selected")){
+        $(this).removeClass("selected");
+      } else {
+        $(this).addClass("selected");
+      }
+      
+      performSearchQuery();
+    });
+
+    $("#pagenumberinput").keydown(function(event){
+      if(event.keyCode===13){
+        checkPageNumber();
+      }
+    });
+
+    $("#pagenumberinput").blur(function(event){
+      checkPageNumber();
+    });
+
+    $("#searchNextPage").click(function(){
+      currentPageNumber += 1;
+      performSearchQuery();
+    });
+
+    $("#searchPrevPage").click(function(){
+      currentPageNumber -= 1;
+      performSearchQuery();
+    });
+
+    $("#searchFirstPage").click(function(){
+      currentPageNumber = 1;
+      performSearchQuery();
+    });
+
+    $("#searchLastPage").click(function(){
+      currentPageNumber = "<%=@results.total_pages%>";
+      performSearchQuery();
+    });
+
+    $("#year_slider").slider({
+      range: true,
+      min: 1600,
+      max: 2015,
+      step: 1,
+      values: [ 1600, 2015 ],
+      slide: function(event, ui){
+        $("#year_range").val(ui.values[0] + " - " + ui.values[1]);
+      },
+      change: function( event, ui ) {
+        // var yearMin = ui.values[0];
+        // var yearMax = ui.values[1];
+        performSearchQuery();
+      }
+    });
+    $("#year_range").val($("#year_slider").slider("values",0) + " - " + $("#year_slider").slider( "values",1));
+
+    var currentPageNumber = "<%=@results.current_page%>";
+    var checkPageNumber = function(){
+      var requestedPageNumber = $("#pagenumberinput").val();
+      if(isNaN(parseInt(requestedPageNumber))){
+        $("#pagenumberinput").val(currentPageNumber);
+        return;
+      }
+      var pageNumberChange = (requestedPageNumber!=currentPageNumber);
+      if(pageNumberChange){
+        currentPageNumber = requestedPageNumber;
+        performSearchQuery();
+      }
+    };
+
+    $("#search_input form").submit(function(event){
+      event.preventDefault();
+      performSearchQuery();
+    });
+
+    $("#search_input .search_button").click(function(event){
+      event.preventDefault();
+      $("#search_input form").submit();
+    });
+
+    var performSearchQuery = function(){
+      //TODO
+      var query = $("#search_input input[name='query']").val();
+      window.location = "/search?query=" + query;
+    };
+
+  });
+</script>

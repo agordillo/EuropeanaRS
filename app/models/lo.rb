@@ -99,4 +99,8 @@ class Lo < ActiveRecord::Base
     country
   end
 
+  def readable_language
+    Europeana.getReadableLanguage(self.language)
+  end
+
 end
