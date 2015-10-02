@@ -13,7 +13,7 @@ html, body {
 }
 
 div#container {
-  padding: 3% 8%;
+  padding: 3% 6%;
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -48,7 +48,7 @@ p#logo_search_separator {
 
 div#search_input input.query {
   width: 74%;
-  margin-left: 10%;
+  margin-left: 5%;
   padding-left: 5px;
 }
 
@@ -64,6 +64,10 @@ div#search_input input.query, div#search_input  button.search_button {
 p#search_suggestions_separator {
   margin: 0px;
   height: 60px;
+}
+
+div#suggestions_wrapper {
+  padding-bottom: 30px;
 }
 
 p.section_title {
@@ -283,8 +287,8 @@ div.search_filter ul {
 }
 
 #year_slider {
-  width: 89%;
-  margin-left: 10%;
+  width: 84%;
+  margin-left: 12%;
 }
 
 #year_range_wrapper {
@@ -337,8 +341,8 @@ div#search_results div.lo_box {
 }
 
 div#search_wrapper div.column2 .search_tools {
-  width: 100%;
-  padding-left: 3%;
+  width: 94%;
+  padding-left: 0%;
   display: inline-block;
   text-align: left;
 }
@@ -346,12 +350,13 @@ div#search_wrapper div.column2 .search_tools {
 div#search_wrapper div.column2 .search_tools div {
   display: inline-block;
   font-size: 1.5rem;
-  margin-right: 30px;
 }
 
 div#search_wrapper div.column2 .search_tools div.rppage {
   float: left;
-  width: 33%;
+  text-align: left;
+  width: 30%;
+  margin-right: 3%;
 }
 
 div#search_wrapper div.column2 .search_tools div.rppage div.dropdown {
@@ -364,10 +369,15 @@ div.dropdown span.caret {
 
 div#search_wrapper div.column2 .search_tools div.rnumber {
   float: left;
+  text-align: center;
+  width: 30%;
+  margin-right: 3%;
 }
 
 div#search_wrapper div.column2 .search_tools div.rpnumber {
   float: right;
+  width: 30%;
+  text-align: right;
 }
 
 div#search_wrapper div.column2 .search_tools div.rpnumber input {
@@ -378,6 +388,7 @@ div#search_wrapper div.column2 .search_tools div.rpnumber input {
 #searchPrevPage, #searchNextPage, #searchFirstPage, #searchLastPage {
   opacity: 0.8;
   cursor: pointer;
+  font-size: 1.2rem;
 }
 
 #searchPrevPage:hover, #searchNextPage:hover, #searchFirstPage:hover, #searchLastPage:hover {
@@ -387,6 +398,8 @@ div#search_wrapper div.column2 .search_tools div.rpnumber input {
 #search_results p.emptySearch {
   margin-top: 125px;
   font-size: 2rem;
+  width: 84%;
+  margin-left: 8%;
 }
 
 #search_results span.queryOnEmptySearch {

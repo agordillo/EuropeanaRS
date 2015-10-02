@@ -7,7 +7,7 @@
 class Search
 
   # Usage example: Search.search({:query=>"Madrid", :n=>10})
-  # Search.search({:query => params[:q], :n => n, :page => page, :order => order, :models => models, :ids_to_avoid => params[:ids_to_avoid], :language => params[:language], :yearMin => params[:yearMin], :yearMax => params[:yearMax] })
+  # Search.search({:query => params[:q], :n => n, :page => page, :order => order, :models => models, :ids_to_avoid => params[:ids_to_avoid], :languages => params[:languages], :yearMin => params[:yearMin], :yearMax => params[:yearMax] })
   def self.search(options={})
 
     #Specify searchTerms
@@ -29,15 +29,19 @@ class Search
     #Specify search options
     opts = {}
 
-    if options[:n].is_a? Integer
-      n = options[:n]
-    else
+    n = nil
+    unless options[:n].blank?
+      n = options[:n].to_i rescue nil
+    end
+    unless n.is_a? Integer
       if !options[:page].nil?
         n = 24   #default results when pagination is requested
       else
         n = 9999 #default (All results found)
       end
     end
+    n = [1,n].max
+
     opts[:per_page] = n
 
     opts[:match_mode] = :extended
@@ -69,8 +73,13 @@ class Search
     opts[:with_all] = {}
 
     #Filter by language
-    if options[:language]
-      opts[:with][:language] = [options[:language].to_s.to_crc32]
+    unless options[:languages].blank?
+      if options[:languages].is_a? String
+        options[:languages] = options[:languages].split(",");
+      end
+      if options[:languages].is_a? Array and !options[:languages].blank?
+        opts[:with][:language] = options[:languages].map{|language| language.to_s.to_crc32}
+      end
     end
 
     #Filter by year range
