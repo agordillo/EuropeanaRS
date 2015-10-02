@@ -47,13 +47,13 @@ p#logo_search_separator {
 }
 
 div#search_input input.query {
-  width: 80%;
-  margin-left: 100px;
+  width: 74%;
+  margin-left: 10%;
   padding-left: 5px;
 }
 
 div#search_input  button.search_button {
-  width: 100px;
+  width: 15%;
 }
 
 div#search_input input.query, div#search_input  button.search_button {
