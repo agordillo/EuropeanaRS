@@ -16,14 +16,17 @@ class Search
       searchTerms = ""
     else
       browse = false
+
       if options[:query].is_a? String    
-        searchTerms = options[:query].gsub(/[^0-9a-z&áéíóú]/i, ' ').split(" ")
-      else
-        searchTerms = options[:query].map{|s| s.gsub(/[^0-9a-z&áéíóú]/i, ' ')}
+        searchTerms = options[:query].split(" ")
       end
+
+      #Sanitize search terms
+      searchTerms = searchTerms.map{|st| Riddle::Query.escape(st) }
       #Remove keywords with less than 3 characters
-      searchTerms.reject!{|s| s.length < 3}
-      searchTerms = searchTerms.join(" ")
+      searchTerms = searchTerms.reject{|s| s.length < 3}
+      #Perform an OR search
+      searchTerms = searchTerms.join("|")
     end
 
     #Specify search options
