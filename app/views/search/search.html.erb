@@ -31,7 +31,9 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Relevance</a></li>
+            <% unless params[:query].blank? %>
+              <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Relevance</a></li>
+            <% end %>
             <li value="year_desc"><a href="#"><span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> Novelty</a></li>
             <li value="year_asc"><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Year (oldest first)</a></li>
             <li value="quality"><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Quality</a></li>
@@ -292,9 +294,10 @@
     ///////////
 
     var currentQuery = function(){
+      this.query = ("<%= params[:query].blank? ? "" : params[:query] %>");
       this.resultsPerPage = parseInt("<%=@results.per_page%>");
       this.currentPageNumber = parseInt("<%=@results.current_page%>");
-      this.sortBy =  ("<%= params[:sort_by].blank? ? 'year_asc' : params[:sort_by]%>");
+      this.sortBy =  ("<%= params[:sort_by].blank? ? (params[:query].blank? ? 'year_asc' : 'relevance') : params[:sort_by]%>");
       this.languages = ("<%= params[:languages].blank? ? "" : params[:languages]%>");
       this.yearMin = parseInt("<%= params[:yearMin].blank? ? 1600 : params[:yearMin]%>");
       this.yearMax = parseInt("<%= params[:yearMax].blank? ? 2015 : params[:yearMax]%>");
@@ -315,7 +318,20 @@
       var sortByQuery = "";
       var sortBy = $("div.search_sorting ul.dropdown-menu li.selected").attr("value");
       if(typeof sortBy != "string"){
-        sortBy = CURRENT_QUERY.sortBy;
+        //The user has not selected explicitly a sortBy option.
+        if(searchTerms != CURRENT_QUERY.query){
+          //Sort by relevance by default when the user has changed the search terms
+          sortBy = 'relevance';
+        } else {
+          //Keep sortBy option
+          sortBy = CURRENT_QUERY.sortBy;
+        }
+      }
+      //Do not allow sort by relevance on browses
+      if(searchTerms.trim()===""){
+        if(sortBy === "relevance"){
+          sortBy = "year_asc";
+        }
       }
       sortByQuery = "&sort_by=" + sortBy;
 
