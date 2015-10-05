@@ -13,43 +13,8 @@ class Europeana
   end
 
   #Translate ISO 639-1 codes to readable language names
-  def self.getReadableLanguage(lanCode)
-    case lanCode
-      when "bg"
-        "Bulgarian"
-      when "cy"
-        "Welsh"
-      when "de"
-        "German"
-      when "en"
-        "English"
-      when "es"
-        "Spanish"
-      when "et"
-        "Estonian"
-      when "fr"
-        "French"
-      when "it"
-        "Italian"
-      when "lb"
-        "Luxembourgish"
-      when "lv"
-        "Latvian"
-      when "nl"
-        "Dutch"
-      when "pl"
-        "Polish"
-      when "pt"
-        "Portuguese"
-      when "ro"
-        "Romanian"
-      when "ru"
-        "Russian"
-      when "sr"
-        "Serbian"
-      else
-        nil
-      end
+  def self.getReadableLanguage(lanCode="")
+    I18n.t("languages." + lanCode, :default => lanCode);
   end
 
 end

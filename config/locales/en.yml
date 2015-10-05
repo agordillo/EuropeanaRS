@@ -1,23 +1,71 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# encoding: utf-8
 
 en:
-  hello: "Hello world"
+  dictionary:
+    search: "Search"
+    untitled: "Untitled"
+  footer:
+    europeana_website: "Europeana Website"
+    europeana_tou: "Europeana Terms of Use"
+    europeanars_code: "EuropeanaRS Source code"
+    europeanars_wiki: "Wiki"
+  header:
+    home: "Home"
+    explore: "Explore"
+    settings: "My Settings"
+    about: "About"
+  home:
+    europeana_rs_description: "A Hybrid Learning Object Recommender System based on Europeana"
+  languages:
+    bg: "Bulgarian"
+    cy: "Welsh"
+    de: "German"
+    en: "English"
+    es: "Spanish"
+    et: "Estonian"
+    fr: "French"
+    it: "Italian"
+    lb: "Luxembourgish"
+    lv: "Latvian"
+    nl: "Dutch"
+    pl: "Polish"
+    pt: "Portuguese"
+    ro: "Romanian"
+    ru: "Russian"
+    sr: "Serbian"
+  los:
+    country: "Country"
+    description: "Description"
+    europeana_collection_name: "Europeana Collection"
+    europeana_skos_concept: "SKOS concept"
+    language: "Language"
+    powered_by_europeana: "Powered by Europeana"
+    resource_type: "Resource type"
+    tags: "Tags"
+    view_at_europeana: "View resource at Europeana"
+    year: "Year"
+  recommendations:
+    suggested_resources: "Suggested resources"
+  search:
+    filters:
+      language:
+        title: "Filter by <b>language</b>"
+      year:
+        range: "Year range"
+        title: "Filter by <b>year</b>"
+    matches_for: "Matches for"
+    no_results_messageA: "There are no search results for '<span class=\"queryOnEmptySearch\">%{query}</span>'. Try with other search terms."
+    no_results_messageB: "There are no search results for these filters. Try with other search settings."
+    refine_results: "Refine your results"
+    sort_results_by:
+      novelty: "Novelty"
+      quality: "Quality"
+      relevance: "Relevance"
+      title: "Sort results by"
+      year: "Year (oldest first)"
+    tools:
+      page: "Page"
+      results: "Results"
+      rpp: "Results per page"
+      title: "Search Results"
+

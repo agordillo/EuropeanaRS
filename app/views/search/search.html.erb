@@ -6,8 +6,8 @@
 
 <div id="search_input">
   <form accept-charset="UTF-8" action="/search" method="get">
-    <input autocomplete="off" class="query" name="query" placeholder="Search" type="text" value="<%=params[:query]%>">
-    <button type="button" class="search_button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+    <input autocomplete="off" class="query" name="query" placeholder="<%=t("dictionary.search")%>" type="text" value="<%=params[:query]%>">
+    <button type="button" class="search_button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> <%=t("dictionary.search")%></button>
   </form>
 </div>
 
@@ -17,14 +17,14 @@
   <div class="column1">
     <div class="matches_title">
       <% unless params[:query].blank? %>
-        <p class="match_query_title">Matches for:</p>
+        <p class="match_query_title"><%=t("search.matches_for")%>:</p>
         <p class="match_query"><%=params[:query]%></p>
       <% else %>
-        <p class="match_query_title">Explore</p>
+        <p class="match_query_title"><%=t("header.explore")%></p>
       <% end %>
     </div>
     <div class="search_sorting">
-      <span class="title">Sort results by:</span>
+      <span class="title"><%=t("search.sort_results_by.title")%>:</span>
         <div class="dropdown">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
             <span class="sortbytext"></span>
@@ -32,19 +32,19 @@
           </button>
           <ul class="dropdown-menu">
             <% unless params[:query].blank? %>
-              <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Relevance</a></li>
+              <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> <%=t("search.sort_results_by.relevance")%></a></li>
             <% end %>
-            <li value="year_desc"><a href="#"><span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> Novelty</a></li>
-            <li value="year_asc"><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Year (oldest first)</a></li>
-            <li value="quality"><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Quality</a></li>
+            <li value="year_desc"><a href="#"><span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> <%=t("search.sort_results_by.novelty")%></a></li>
+            <li value="year_asc"><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> <%=t("search.sort_results_by.year")%></a></li>
+            <li value="quality"><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> <%=t("search.sort_results_by.quality")%></a></li>
           </ul>
         </div>
     </div>
     <div class="search_filters">
-      <p class="title">Refine your results:</p>
+      <p class="title"><%=t("search.refine_results")%>:</p>
       <div class="search_filter" name="language" type="nonexclusive">
         <button href="#" status="minimize" class="btn-filter">-</button>
-        <span class="search_filter_title">Filter by <b>language</b>:</span>
+        <span class="search_filter_title"><%=t("search.filters.language.title").html_safe%>:</span>
         <hr class="separator">
         <div class="search_filter_content">
           <ul class="options_for_filter">
@@ -56,11 +56,11 @@
       </div>
       <div class="search_filter">
         <button href="#" status="minimize" class="btn-filter">-</button>
-        <span class="search_filter_title">Filter by <b>year</b>:</span>
+        <span class="search_filter_title"><%=t("search.filters.year.title").html_safe%>:</span>
         <hr class="separator">
         <div class="search_filter_content">
           <p id="year_range_wrapper">
-            <span>Year range:</span>
+            <span><%=t("search.filters.year.range")%>:</span>
             <input type="text" id="year_range" readonly>
           </p>
           <div id="year_slider"></div>
@@ -69,10 +69,10 @@
     </div>
   </div>
   <div class="column2">
-    <p class="section_title">Search Results</p>
+    <p class="section_title"><%=t("search.tools.title")%></p>
     <div class="search_tools">
       <div class="rppage">
-        <span>Results per page:</span>
+        <span><%=t("search.tools.rpp")%>:</span>
         <div class="dropdown">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
             <span class="rppagetext"><%=@results.per_page%></span>
@@ -91,7 +91,7 @@
         <% firstResultShown = (@results.current_page-1)*@results.per_page+1 %>
         <% lastResultShown = ((@results.current_page-1)*@results.per_page+@results.per_page) %>
         <% lastResultShown = [lastResultShown, totalEntries].min %>
-        <p>Results <%=firstResultShown%>-<%=lastResultShown%> of <%=totalEntries%></p>
+        <p><%=t("search.tools.results")%> <%=firstResultShown%>-<%=lastResultShown%> of <%=totalEntries%></p>
       </div>
       <div class="rpnumber">
         <p>
@@ -99,7 +99,7 @@
             <span id="searchFirstPage" class="glyphicon glyphicon glyphicon-backward" aria-hidden="true"></span>
             <span id="searchPrevPage" class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
           <% end %>
-          Page <input id="pagenumberinput" type="number" min="1" max="<%=@results.total_pages%>" value="<%=@results.current_page%>"/> of <%=@results.total_pages%>
+          <%=t("search.tools.page")%> <input id="pagenumberinput" type="number" min="1" max="<%=@results.total_pages%>" value="<%=@results.current_page%>"/> of <%=@results.total_pages%>
           <% if @results.current_page < @results.total_pages %>
             <span id="searchNextPage" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span id="searchLastPage" class="glyphicon glyphicon glyphicon-forward" aria-hidden="true"></span>
@@ -110,9 +110,9 @@
     <div id="search_results">
       <% if @results.blank? %>
         <% unless params[:query].blank? %> 
-          <p class="emptySearch">There are no search results for '<span class="queryOnEmptySearch"><%=params[:query]%></span>'. Try with other search terms.</p>
+          <p class="emptySearch"><%=t('search.no_results_messageA', query: params[:query]).html_safe %></p>
         <% else %>
-          <p class="emptySearch">There are no search results for these filters. Try with other search settings.</p>
+          <p class="emptySearch"><%=t('search.no_results_messageB') %></p>
         <% end %>
       <% end %>
       <% @results.each do |lo| %>

@@ -1,0 +1,70 @@
+# encoding: utf-8
+
+es:
+  dictionary:
+    search: "Buscar"
+    untitled: "Sin título"
+  footer:
+    europeana_website: "Portal web de Europeana"
+    europeana_tou: "Términos de uso de Europeana"
+    europeanars_code: "Código fuente de EuropeanaRS"
+    europeanars_wiki: "Wiki"
+  header:
+    home: "Inicio"
+    explore: "Explorar"
+    settings: "Mis Ajustes"
+    about: "Acerca de EuropeanaRS"
+  home:
+    europeana_rs_description: "Un Sistema de Recomendación Híbrido de Objetos de Aprendizaje basado en Europeana"
+  languages:
+    bg: "Búlgaro"
+    cy: "Galés"
+    de: "Alemán"
+    en: "Inglés"
+    es: "Español"
+    et: "Estonio"
+    fr: "Francés"
+    it: "Italiano"
+    lb: "Luxemburgués"
+    lv: "Letón"
+    nl: "Holandés"
+    pl: "Polaco"
+    pt: "Portugués"
+    ro: "Rumano"
+    ru: "Ruso"
+    sr: "Serbio"
+  los:
+    country: "País"
+    description: "Descripción"
+    europeana_collection_name: "Colección de Europeana"
+    europeana_skos_concept: "Concepto SKOS"
+    language: "Idioma"
+    powered_by_europeana: "Powered by Europeana"
+    resource_type: "Tipo de recurso"
+    tags: "Etiquetas"
+    view_at_europeana: "Ver recurso en Europeana"
+    year: "Año"
+  recommendations:
+    suggested_resources: "Recursos sugeridos"
+  search:
+    filters:
+      language:
+        title: "Filtrar por <b>idioma</b>"
+      year:
+        range: "Periodo"
+        title: "Filtrar por <b>año</b>"
+    matches_for: "Resultados para"
+    no_results_messageA: "No hay resultados para '<span class=\"queryOnEmptySearch\">%{query}</span>'. Prueba con otros términos de búsqueda."
+    no_results_messageB: "No hay resultados de búsqueda para estos filtros. Prueba a buscar con otros ajustes."
+    refine_results: "Refina tus resultados"
+    sort_results_by:
+      novelty: "Novedad"
+      quality: "Calidad"
+      relevance: "Relevancia"
+      title: "Ordenar resultados por"
+      year: "Año"
+    tools:
+      page: "Página"
+      results: "Resultados"
+      rpp: "Resultados por página"
+      title: "Resultados de búsqueda"
