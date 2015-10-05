@@ -120,9 +120,24 @@ class Search
     # (Try to) Avoid nil results (See http://pat.github.io/thinking-sphinx/searching.html#nils)
     opts[:retry_stale] = true
     
-    if browse==true
-      #Browse can't order by relevance. Order by year by default.
-      opts[:order] = 'year ASC'
+    # Results sorting
+    if opts[:order].blank?
+      if browse==true
+        #Browse can't order by relevance. Order by year by default.
+        opts[:order] = 'year ASC'
+      else
+        opts[:order] = nil
+      end
+    end
+
+    #Filtering results without an attribute when sorting by this attribute.
+    if opts[:order].is_a? String
+      if opts[:order].include? "language" and opts[:with][:language].nil?
+        opts[:without][:language] = 0
+      end
+      if opts[:order].include? "year" and opts[:with][:year].nil?
+        opts[:without][:year] = 0
+      end
     end
 
     return ThinkingSphinx.search searchTerms, opts

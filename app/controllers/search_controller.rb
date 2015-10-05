@@ -8,9 +8,9 @@ class SearchController < ApplicationController
     page =  params[:page] || 1
     
     case params[:sort_by]
-    when "year"
+    when "year_asc"
       order = 'year ASC'
-    when "novelty"
+    when "year_desc"
       order = 'year DESC'
     when 'quality'
       order = 'metadata_quality DESC'

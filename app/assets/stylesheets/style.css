@@ -244,11 +244,20 @@ div#search_wrapper div.matches_title p.match_query {
   margin-top: 0px;
 }
 
-div#search_wrapper div.column1 p.search_filters_title {
+div#search_wrapper div.column1 p.title, div#search_wrapper div.column1 span.title {
   margin-bottom: 20px;
 }
 
-div#search_wrapper div.column1 div.search_filters {
+div#search_wrapper div.column1 div.search_sorting div.dropdown {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+div#search_wrapper div.column1 div.search_sorting div.dropdown button.dropdown-toggle {
+  padding: 6px;
+} 
+
+div#search_wrapper div.column1 div.search_filters, div#search_wrapper div.column1 div.search_sorting {
   margin-top: 20px;
   font-size: 1.4rem;
 }

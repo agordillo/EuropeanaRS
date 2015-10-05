@@ -23,8 +23,23 @@
         <p class="match_query_title">Explore</p>
       <% end %>
     </div>
+    <div class="search_sorting">
+      <span class="title">Sort results by:</span>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="sortbytext"></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> Relevance</a></li>
+            <li value="year_desc"><a href="#"><span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> Novelty</a></li>
+            <li value="year_asc"><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Year (oldest first)</a></li>
+            <li value="quality"><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Quality</a></li>
+          </ul>
+        </div>
+    </div>
     <div class="search_filters">
-      <p class="search_filters_title">Refine your results:</p>
+      <p class="title">Refine your results:</p>
       <div class="search_filter" name="language" type="nonexclusive">
         <button href="#" status="minimize" class="btn-filter">-</button>
         <span class="search_filter_title">Filter by <b>language</b>:</span>
@@ -139,6 +154,16 @@
         }
       });
 
+      $("div.search_sorting ul.dropdown-menu a").click(function(e){
+        e.preventDefault();
+
+        $(this).parents("ul.dropdown-menu").find("li").removeClass("selected");
+        $(this).parents("li").addClass("selected");
+        var newSortingText = $(this).html();
+        $(this).parents("div.search_sorting").find("span.sortbytext").html(newSortingText);
+        performSearchQuery();
+      });
+
       $("div.rppage ul.dropdown-menu a").click(function(e){
         e.preventDefault();
         var newResultsPerPage = $(this).html();
@@ -238,6 +263,14 @@
       //Query (search terms) are already drawed
       //Seach Tools are already updated
 
+      //Sort by dropdown
+      var sortByTextElement = $("div.search_sorting ul.dropdown-menu li[value='"+ CURRENT_QUERY.sortBy +"']").find("a");
+      if(typeof sortByTextElement != "undefined"){
+        var sortByText = $(sortByTextElement).html();
+        $("div.search_sorting span.sortbytext").html(sortByText);
+      }
+      
+
       //Filters
 
       // 1. Language
@@ -261,6 +294,7 @@
     var currentQuery = function(){
       this.resultsPerPage = parseInt("<%=@results.per_page%>");
       this.currentPageNumber = parseInt("<%=@results.current_page%>");
+      this.sortBy =  ("<%= params[:sort_by].blank? ? 'year_asc' : params[:sort_by]%>");
       this.languages = ("<%= params[:languages].blank? ? "" : params[:languages]%>");
       this.yearMin = parseInt("<%= params[:yearMin].blank? ? 1600 : params[:yearMin]%>");
       this.yearMax = parseInt("<%= params[:yearMax].blank? ? 2015 : params[:yearMax]%>");
@@ -275,6 +309,21 @@
         //Clean page.
         page = 1;
       }
+
+
+      //Sort by
+      var sortByQuery = "";
+      var sortBy = $("div.search_sorting ul.dropdown-menu li.selected").attr("value");
+      if(typeof sortBy != "string"){
+        sortBy = CURRENT_QUERY.sortBy;
+      }
+      sortByQuery = "&sort_by=" + sortBy;
+
+      if(sortBy != CURRENT_QUERY.sortBy){
+        //Clean page.
+        page = 1;
+      }
+      
       
       //Filters
       var filtersQuery = "";
@@ -307,7 +356,7 @@
       }
 
 
-      var searchQuery = "/search?query=" + searchTerms + "&n=" + resultsPerPage + "&page=" + page + filtersQuery;
+      var searchQuery = "/search?query=" + searchTerms + "&n=" + resultsPerPage + "&page=" + page + sortByQuery + filtersQuery;
 
       window.location = searchQuery;
     };
