@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @suggestions = (Lo.search "", :page => rand(8)+1, :per_page => 1000).sample(20)
+    @suggestions = RecommenderSystem.suggestions({:n => 20, :user_profile => current_user_profile})
   end
 
 end

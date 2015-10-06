@@ -6,7 +6,8 @@
 
 class RecommenderSystem
 
-  def self.resource_suggestions(options={})
+  # Usage example: RecommenderSystem.suggestions({:n=>10})
+  def self.suggestions(options={})
 
     # Step 0: Initialize all variables
     options = prepareOptions(options)
@@ -15,14 +16,21 @@ class RecommenderSystem
     preSelectionLOs = getPreselection(options)
 
     #Step 2: Scoring
-    rankedLOs = orderByScore(preSelectionLOs,options)
+    rankedLOs = calculateScore(preSelectionLOs,options)
 
-    #Step 3
-    return rankedLOs.first(options[:n])
+    #Step 3: Filtering
+    filteredLOs = filter(rankedLOs,options)
+
+    #Step 4: Sorting
+    sortedLOs = filteredLOs.sort! { |a,b|  b.score <=> a.score }
+
+    #Step 5: Delivering
+    return sortedLOs.first(options[:n])
   end
 
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
+    options = {:n => 10, :user_profile => {}, :lo_profile => {}}.merge(options)
     options
   end
 
@@ -31,28 +39,75 @@ class RecommenderSystem
     preSelection = []
 
     # Search resources using the search engine
-    # TODO.
+    searchOptions = {};
+
+    searchOptions[:n] = 100
+    searchOptions[:models] = [Lo]
+
+    # Define some filters for the preselection
+    # A. Query
+    searchOptions[:query] = options[:query] unless options[:query].blank?
+    # B. Language
+    preselectionLanguage = nil
+    if options[:lo_profile][:language]
+      preselectionLanguage = options[:lo_profile][:language]
+    elsif options[:user_profile][:language]
+      preselectionLanguage = options[:user_profile][:language]
+    end
+    searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
+    
+    # First attempt for the preselection
+    preSelection = Search.search(searchOptions)
+
+    if preSelection.blank?
+      #Try with other search options
+      searchFlag = false
+
+      # Disable language filter
+      unless searchOptions[:languages].blank?
+        searchOptions.delete(:languages)
+        preSelection = Search.search(searchOptions)
+        searchFlag = true
+      end
+
+      # Disable query filter
+      if !searchFlag or preSelection.blank?
+        unless searchOptions[:query].blank?
+          searchOptions.delete(:query)
+          preSelection = Search.search(searchOptions)
+          searchFlag = true
+        end
+      end
+    end
 
     return preSelection
   end
 
   #Step 2: Scoring
-  def self.orderByScore(preSelectionLOs,options)
-
-    if preSelectionLOs.blank?
-      return preSelectionLOs
-    end
+  def self.calculateScore(preSelectionLOs,options)
+    return preSelectionLOs if preSelectionLOs.blank?
 
     preSelectionLOs.map{ |lo|
       # TODO: Calculate score
       lo.score = 1
     }
 
-    preSelectionLOs.sort! { |a,b|  b.score <=> a.score }
+    preSelectionLOs
   end
 
-  #Content Similarity Score (between 0 and 1)
-  def self.contentSimilarityScore(loA,loB)
+  #Step 3: Filtering
+  def self.filter(rankedLOs,options)
+    filteredLOs = rankedLOs
+    filteredLOs
+  end
+
+
+  #######################
+  ## Utils for Scoring the Learning Objects
+  #######################
+
+  #Learning Object Similarity Score, [0,1] scale
+  def self.loProfileSimilarityScore(loA,loB)
     weights = {}
     weights[:title] = 0.2
     weights[:description] = 0.15
@@ -67,7 +122,7 @@ class RecommenderSystem
     return weights[:title] * titleS + weights[:description] * descriptionS + weights[:language] * languageD + weights[:years] * yearsD
   end
 
-  #User profile Similarity Score (between 0 and 1)
+  #User profile Similarity Score, [0,1] scale
   def self.userProfileSimilarityScore(user,lo)
     weights = {}
     weights[:language] = 1
@@ -77,13 +132,13 @@ class RecommenderSystem
     return weights[:language] * languageD
   end
 
-  #Popularity Score (between 0 and 1)
+  #Popularity Score, [0,1] scale
   def self.popularityScore(lo,maxPopularity)
     return 0
   end
 
-  #Quality Score (between 0 and 1)
-  # Metadata quality is the europeanaCompleteness field, which is a  number in a 1-10 scale.
+  #Quality Score, [0,1] scale
+  #Metadata quality is the europeanaCompleteness field, which is a  number in a 1-10 scale.
   def self.qualityScore(lo,maxQualityScore)
     return [[(lo.metadata_quality-1)/9.to_f,0].max,1].min rescue 0
   end

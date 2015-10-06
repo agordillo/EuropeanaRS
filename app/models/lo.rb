@@ -1,4 +1,6 @@
 class Lo < ActiveRecord::Base
+  attr_accessor :score
+
   acts_as_taggable
 
   validates :id_europeana, :presence => true, :uniqueness => true
@@ -8,6 +10,16 @@ class Lo < ActiveRecord::Base
 
   before_validation :parseMetadata
   before_validation :crc32_fields
+
+  def profile
+    lo_profile = {}
+    lo_profile[:title] = self.title
+    lo_profile[:description] = self.description
+    lo_profile[:language] = self.language
+    lo_profile[:year] = self.year
+
+    lo_profile
+  end
 
   def parseMetadata
     europeanaItem = JSON.parse(self.europeana_metadata) rescue nil
