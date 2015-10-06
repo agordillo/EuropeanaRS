@@ -2,6 +2,13 @@
 
 en:
   dictionary:
+    errors:
+      blank: "no puede estar en blanco"
+      name_blank: "El nombre no puede estar en blanco"
+      page_not_found: "Esta página no existe"
+      reserved_word: "es una palabra reservada"
+      too_short: "es demasiado corto"
+      unspecified: "tiene que ser especificado"
     search: "Search"
     untitled: "Untitled"
   footer:

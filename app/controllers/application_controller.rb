@@ -9,6 +9,19 @@ class ApplicationController < ActionController::Base
     I18n.locale = params[:locale] || extract_locale_from_user_profile || extract_locale_from_session || extract_locale_from_webclient || I18n.default_locale
   end
 
+  #Wildcard route rescue
+  def page_not_found
+    respond_to do |format|
+      format.html {
+        flash[:alert] = I18n.t("dictionary.errors.page_not_found")
+        redirect_to view_context.home_path, alert: flash[:alert]
+      }
+      format.json {
+        render json: I18n.t("dictionary.errors.page_not_found")
+      }
+    end
+  end
+
 
   private
 

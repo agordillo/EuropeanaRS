@@ -2,6 +2,13 @@
 
 es:
   dictionary:
+    errors:
+      blank: "can't be blank"
+      name_blank: "Name can't be blank"
+      page_not_found: "This page does not exists"
+      reserved_word: "is a reserved word"
+      too_short: "is too short"
+      unspecified: "has to be specified"
     search: "Buscar"
     untitled: "Sin título"
   footer:
