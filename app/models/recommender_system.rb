@@ -95,41 +95,90 @@ class RecommenderSystem
   ## Utils (private methods)
   #######################
 
-  #Semantic distance (between 0 and 1)
-  def self.getSemanticDistance(stringA,stringB)
-    if stringA.blank? or stringB.blank?
-      return 0
+  #Semantic distance in a [0,1] scale.
+  #It calculates the semantic distance using the Cosine similarity measure, and the TF-IDF function to calculate the vectors.
+  def self.getSemanticDistance(textA,textB)
+    return 0 if (textA.blank? or textB.blank?)
+
+    numerator = 0
+    denominator = 0
+    denominatorA = 0
+    denominatorB = 0
+
+    wordsTextA =  RecommenderSystem.processFreeText(textA)
+    wordsTextB =  RecommenderSystem.processFreeText(textB)
+
+    # Get the text with more/less words.
+    # words = [wordsTextA.keys, wordsTextB.keys].sort_by{|words| -words.length}.first
+
+    #All words
+    words = (wordsTextA.keys + wordsTextB.keys).uniq
+
+    words.each do |word|
+      #We could use here TFIDF as well. But we are going to use just the number of occurrences.
+      occurrencesTextA = wordsTextA[word] || 0
+      occurrencesTextB = wordsTextB[word] || 0
+      tfidf1 = RecommenderSystem.TFIDF(word,textA,{:occurrences => occurrencesTextA})
+      tfidf2 = RecommenderSystem.TFIDF(word,textB,{:occurrences => occurrencesTextB})
+      numerator += (tfidf1 * tfidf2)
+      denominatorA += tfidf1**2
+      denominatorB += tfidf2**2
     end
 
-    stringA =  I18n.transliterate(stringA.downcase.strip)
-    stringB =  I18n.transliterate(stringB.downcase.strip)
+    denominator = Math.sqrt(denominatorA) * Math.sqrt(denominatorB)
+    return 0 if denominator==0
 
-    if stringA == stringB
-      return 1
-    else
-      return 0
+    numerator/denominator
+  end
+
+  def self.processFreeText(text)
+    return {} unless text.is_a? String
+    text = text.gsub(/([\n])/," ")
+    text =  I18n.transliterate(text.downcase.strip)
+    words = Hash.new
+    text.split(" ").each do |word|
+      words[word] = 0 if words[word].nil?
+      words[word] += 1
     end
+    words
+  end
+
+  # Term Frequency (TF)
+  def self.TF(word,text,options)
+    return options[:occurrences] if options[:occurrences].is_a? Numeric
+    RecommenderSystem.processFreeText(text)[word] || 0
+  end
+
+  # Inverse Document Frequency (IDF)
+  # Not implemented yet
+  def self.IDF(word,text,options)
+    allResourcesInRepository = EuropeanaRS::Application::config.repository_total_entries
+    occurrencesOfWordInRepository = 1 # TODO
+
+    allResourcesInRepository = [allResourcesInRepository,1].max
+    occurrencesOfWordInRepository = [occurrencesOfWordInRepository,1].max
+
+    # Math::log10 for use base 10
+    Math.log(allResourcesInRepository/occurrencesOfWordInRepository.to_f) rescue 1
+  end
+
+  # TF-IDF
+  def self.TFIDF(word,text,options)
+    tf = RecommenderSystem.TF(word,text,options)
+    return 0 if tf==0
+
+    idf = RecommenderSystem.IDF(word,text,options)
+    return 0 if idf==0
+
+    return (tf * idf)
   end
 
   #Semantic distance between keyword arrays (in a 0-1 scale)
-  def self.getKeywordsDistance(keywordsA,keywordsB)
-    if keywordsA.blank? or keywordsB.blank?
-      return 0
-    end 
+  def self.getTextArraySemanticDistance(textArrayA,textArrayB)
+    return 0 if textArrayA.blank? or textArrayB.blank?
+    return 0 unless textArrayA.is_a? Array and textArrayB.is_a? Array
 
-    similarKeywords = 0
-    kParam = [keywordsA.length,keywordsB.length].min
-
-    keywordsA.each do |kA|
-      keywordsB.each do |kB|
-        if getSemanticDistance(kA,kB) == 1
-          similarKeywords += 1
-          break
-        end
-      end
-    end
-
-    return similarKeywords/kParam.to_f
+    return getSemanticDistance(textArrayA.join(" "),textArrayB.join(" "))
   end
 
 end

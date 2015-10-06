@@ -1,0 +1,1 @@
+EuropeanaRS::Application::config.repository_total_entries = Lo.count
