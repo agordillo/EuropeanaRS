@@ -91,6 +91,7 @@ div.lo_box {
   border-radius: 5px;
   padding: 0px;
   margin: 10px;
+  min-height: 293px;
 }
 
 div.lo_box div {

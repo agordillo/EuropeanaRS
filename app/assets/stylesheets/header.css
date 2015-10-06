@@ -5,7 +5,7 @@ header {
   min-height: 45px;
 }
 
-header ul {
+header > ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -15,7 +15,7 @@ header ul {
   padding-top: 9px;
 }
 
-header ul li {
+header > ul > li {
   display: inline;
   color: white;
   margin-left: 4em;
@@ -27,4 +27,35 @@ header ul a {
 }
 
 header ul a:hover {
+}
+
+header li.language {
+  float: right;
+  margin-right: 2%;
+  margin-top: -4px;
+}
+
+header li.language div.dropdown ul {
+  width: 140px;
+  left: -75px;
+}
+
+header li.language div.dropdown ul li {
+  color: black;
+  padding: 5px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+header li.language button {
+  padding: 5px 10px;
+}
+
+header li.language span.languagetext {
+  font-size: 1.4rem;
+}
+
+header li.language span.languagetext img, header li.language ul.dropdown-menu li img {
+  max-height: 20px;
+  margin-right: 5px;
 }

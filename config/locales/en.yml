@@ -12,6 +12,7 @@ en:
   header:
     home: "Home"
     explore: "Explore"
+    language: "Language"
     settings: "My Settings"
     about: "About"
   home:

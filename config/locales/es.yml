@@ -12,6 +12,7 @@ es:
   header:
     home: "Inicio"
     explore: "Explorar"
+    language: "Idioma"
     settings: "Mis Ajustes"
     about: "Acerca de EuropeanaRS"
   home:
