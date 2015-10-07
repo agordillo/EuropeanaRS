@@ -1,7 +1,19 @@
 # encoding: utf-8
 
-es:
+es:  
+  activerecord:
+    errors:
+      messages:
+        confirmation: "no coincide con %{attribute}"
+      models:
+        user:
+          attributes:
+            email:
+              blank: "no puede estar en blanco."
+            password:
+              blank: "no puede estar en blanco."
   dictionary:
+    email: "Correo electrónico"
     errors:
       blank: "can't be blank"
       name_blank: "Name can't be blank"
@@ -9,6 +21,7 @@ es:
       reserved_word: "is a reserved word"
       too_short: "is too short"
       unspecified: "has to be specified"
+    password: "Contraseña"
     search: "Buscar"
     untitled: "Sin título"
   footer:

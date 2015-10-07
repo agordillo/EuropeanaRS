@@ -1,7 +1,7 @@
 <ul>
   <li><a href="/"><%=t("header.home")%></a></li>
   <li><a href="/search"><%=t("header.explore")%></a></li>
-  <li><a href="/profile"><%=t("header.account")%></a></li>
+  <li><a href="<%=user_signed_in? ? "/profile" : "/users/sign_in"%>"><%=t("header.account")%></a></li>
   <li><a target="_blank" href="https://github.com/agordillo/EuropeanaRS"><%=t("header.about")%></a></li>
   <li class="language">
     <div class="dropdown">
