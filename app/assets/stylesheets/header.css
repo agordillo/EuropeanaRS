@@ -10,9 +10,9 @@ header > ul {
   padding: 0;
   list-style-type: none;
   text-align: left;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: normal;
-  padding-top: 9px;
+  padding-top: 10px;
 }
 
 header > ul > li {
@@ -32,7 +32,36 @@ header ul a:hover {
 header li.language {
   float: right;
   margin-right: 2%;
+  margin-left: 2%;
   margin-top: -4px;
+}
+
+header li.login {
+  float: right;
+  margin-right: 2%;
+  margin-left: 2%;
+  font-weight: normal;
+  font-size: 1.4rem;
+  margin-top: 1px;
+}
+
+header li.login span.logged_as {
+  opacity: 0.8;
+}
+
+header li.login span.username {
+  font-weight: bold;
+  opacity: 1;
+}
+
+header span#logout {
+  margin-left: 5px;
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+header li.login a.registration_new {
+  margin-right: 15px;
 }
 
 header li.language div.dropdown ul {

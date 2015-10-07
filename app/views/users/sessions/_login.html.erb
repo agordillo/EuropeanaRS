@@ -1,0 +1,27 @@
+<div id="sign_in">
+  <h2><%=t("devise.sessions.new")%></h2>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="field">
+      <p><%=t("dictionary.email")%></p>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <p><%=t("dictionary.password")%></p>
+      <%= f.password_field :password, autocomplete: "off" %>
+      <p class="forgot_password"><%= link_to t("devise.links.forgot_password"), new_password_path(resource_name) %></p>
+    </div>
+
+    <div class="actions">
+      <%= f.submit t("devise.sessions.new") %>
+    </div>
+
+    <% if devise_mapping.rememberable? -%>
+      <div class="field">
+        <p class="remember_me"><%= f.check_box :remember_me %><%=t("devise.sessions.remember_me")%></p>
+      </div>
+    <% end %>
+  <% end %>
+  
+</div>

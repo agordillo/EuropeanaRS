@@ -1,0 +1,74 @@
+div#new_session {
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #c9c9c9;
+  box-shadow: 3px 3px 4px #c3c3c3;
+}
+
+div#new_session h2 {
+  margin: 0px;
+  font-size: 2.2rem;
+}
+
+div#new_session form {
+  margin: 20px 0px 25px 0px;
+}
+
+div#new_session div.field {
+  margin: 10px 0px 10px 0px;
+}
+
+div#new_session form p {
+  margin: 0px 0px 1px 0px;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+div#new_session input[type='text'], div#new_session [type='email'], div#new_session [type='password'] {
+  padding: 5px;
+  min-width: 400px;
+  font-size: 1.2rem;
+}
+
+div#new_session p.remember_me {
+  text-align: left;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+
+div#new_session p.remember_me input[type='checkbox'] {
+  margin-right: 5px;
+  height: 13px;
+}
+    
+div#new_session input[type='submit'] {
+  min-width: 400px;
+  border: 1px solid #c9c9c9;
+  color: white;
+  background-color: #333;
+  padding: 5px;
+  font-size: 1.4rem;
+}
+
+div#new_session p.forgot_password {
+  width: 400px;
+  text-align: right;
+  font-weight: normal;
+  font-size: 1rem;
+  margin-top: 1px;
+}
+
+div.devise_error_messages {
+  margin: 25px 0px 25px 0px;
+  font-size: 1.2rem;
+}
+
+div.devise_error_messages h2 {
+  font-size: 1.7rem !important;
+}
+
+div.devise_error_messages li {
+  font-size: 1.2rem;
+  margin: 5px 0px 5px 0px;
+}

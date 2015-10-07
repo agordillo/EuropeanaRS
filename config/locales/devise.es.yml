@@ -51,7 +51,9 @@ es:
       updated: 'Actualizaste tu cuenta correctamente.'
       update_needs_confirmation: "Actualizaste tu cuenta correctamente, pero tenemos que revalidar tu email. Revisa tu correo para confirmar la dirección."
     sessions:
-      new: "Iniciar sesión"
+      close: "Cerrar sesión"
+      logged: "Logueado como"
+      new: "Inicia sesión"
       remember_me: "Recuérdame"
       signed_in: 'Iniciaste sesión correctamente.'
       signed_out: 'Cerraste sesión correctamente.'

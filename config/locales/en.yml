@@ -10,6 +10,8 @@ en:
           attributes:
             email:
               blank: "can't be blank"
+            name:
+              blank: "no puede estar en blanco."
             password:
               blank: "can't be blank"
   dictionary:
@@ -24,6 +26,7 @@ en:
     password: "Password"
     search: "Search"
     untitled: "Untitled"
+    username: "Nombre de usuario"
   footer:
     europeana_website: "Europeana Website"
     europeana_tou: "Europeana Terms of Use"

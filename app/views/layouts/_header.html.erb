@@ -1,7 +1,7 @@
 <ul>
   <li><a href="/"><%=t("header.home")%></a></li>
   <li><a href="/search"><%=t("header.explore")%></a></li>
-  <li><a href="<%=user_signed_in? ? "/profile" : "/users/sign_in"%>"><%=t("header.account")%></a></li>
+  <li><a href="/profile"%><%=t("header.account")%></a></li>
   <li><a target="_blank" href="https://github.com/agordillo/EuropeanaRS"><%=t("header.about")%></a></li>
   <li class="language">
     <div class="dropdown">
@@ -19,6 +19,14 @@
       </ul>
     </div>
   </li>
+  <%if user_signed_in? %>
+    <li class="login">
+      <span class='logged_as'><%=t("devise.sessions.logged").html_safe%> </span><span class='username'><%=link_to(current_user.name, "/profile")%></span> <%= link_to(raw('<span id="logout" title="'+t("devise.sessions.close")+'" class="glyphicon glyphicon-log-out"></span>'), destroy_user_session_path, :method => :delete)%>
+    </li>
+  <% else %>
+    <li class="login"><a href="/users/sign_in"><%=t("devise.sessions.new")%></a></li>
+    <li class="login"><a class="registration_new" href="/users/sign_up"><%=t("devise.registrations.new")%></a></li>
+  <% end %>
 </ul>
 
 <script>
