@@ -21,6 +21,10 @@ module EuropeanaRS
     #Stop words
     config.stopwords = File.read("config/stopwords.yml").split(",").map{|s| s.gsub("\n","").gsub("\"","") } rescue []
 
+    #RS settings
+    config.maxTextLength = config.APP_CONFIG["max_text_length"]
+    config.maxTextLength = 60 unless config.maxTextLength.is_a? Numeric
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

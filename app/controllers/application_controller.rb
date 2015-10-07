@@ -17,6 +17,17 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_profile
 
+  def current_user_settings
+    user_settings = {}
+    default_user_settings = {
+      :rs_weights => RecommenderSystem.defaultRSWeights
+    }
+    user_settings = default_user_settings.merge(user_settings)
+    
+    user_settings
+  end
+  helper_method :current_user_settings
+
   #Wildcard route rescue
   def page_not_found
     respond_to do |format|
