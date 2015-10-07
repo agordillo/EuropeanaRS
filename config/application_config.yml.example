@@ -5,6 +5,19 @@ development:
   europeana_SEARCH_API_key: "" #Request an API key here: http://labs.europeana.eu/api/introduction
   europeana_OAI_PMH_Service_key: "" #Request an access key here: http://labs.europeana.eu/api/oai-pmh-access-key
   max_text_length: 60 #Maximun length in characters of the texts that will be taking into account when measuing semantic distances. High values could lead to performance issues.
-
+  weights:
+    default_rs_weights:
+      los_score: 0.4
+      us_score: 0.4
+      quality_score: 0.1
+      popularity_score: 0.1
+    default_los_weights:
+      title: 0.2
+      description: 0.15
+      language: 0.15
+      years: 0.15
+    default_us_weights:
+      language: 0.5
+      los: 0.5
 test:
   secret_token: ""

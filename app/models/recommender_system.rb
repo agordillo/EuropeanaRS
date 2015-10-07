@@ -132,12 +132,8 @@ class RecommenderSystem
 
   #Learning Object Similarity Score, [0,1] scale
   def self.loProfileSimilarityScore(loProfileA,loProfileB)
-    weights = {}
-    weights[:title] = 0.2
-    weights[:description] = 0.15
-    weights[:language] = 0.5
-    weights[:years] = 0.15
-    
+    weights = RecommenderSystem.getLoSWeights
+
     titleS = RecommenderSystem.getSemanticDistance(loProfileA[:title],loProfileB[:title])
     descriptionS = RecommenderSystem.getSemanticDistance(loProfileA[:description],loProfileB[:description])
     languageS = RecommenderSystem.getSemanticDistanceForCategoricalFields(loProfileA[:language],loProfileB[:language])
@@ -148,8 +144,7 @@ class RecommenderSystem
 
   #User profile Similarity Score, [0,1] scale
   def self.userProfileSimilarityScore(userProfile,loProfile)
-    weights = {}
-    weights[:language] = 1
+    weights = RecommenderSystem.getUSWeights
 
     languageD = 0
 
@@ -301,19 +296,53 @@ class RecommenderSystem
   ############
   # Get user (or session) settings
   ############
+
   def self.getRSWeights(options={})
     explicitRSWeights = options[:rs_weights] || {}
     userRSWeights = options[:user_settings][:rs_weights] if options[:user_settings]
-    userRSWeights = RecommenderSystem.defaultRSWeights if userRSWeights.blank?
+    userRSWeights = EuropeanaRS::Application::config.weights[:default_rs_weights] if userRSWeights.blank?
     userRSWeights.merge(explicitRSWeights)
   end
 
+  def self.getLoSWeights(options={})
+    explicitLoSWeights = options[:los_weights] || {}
+    userLoSWeights = options[:user_settings][:los_weights] if options[:user_settings]
+    userLoSWeights = EuropeanaRS::Application::config.weights[:default_los_weights] if userLoSWeights.blank?
+    userLoSWeights.merge(explicitLoSWeights)
+  end
+
+  def self.getUSWeights(options={})
+    explicitUSWeights = options[:us_weights] || {}
+    userUSWeights = options[:user_settings][:us_weights] if options[:user_settings]
+    userUSWeights = EuropeanaRS::Application::config.weights[:default_us_weights] if userUSWeights.blank?
+    userUSWeights.merge(explicitUSWeights)
+  end
+
+  # Default weights for the Recommender System provided by EuropeanaRS
+  # These weights can be overriden in the application_config.yml file.
+  # The current default weights can be accesed in the EuropeanaRS::Application::config.weights variable.
   def self.defaultRSWeights
     {
       :los_score => 0.4,
       :us_score => 0.4,
       :quality_score => 0.10,
       :popularity_score => 0.10
+    }
+  end
+
+  def self.defaultLoSWeights
+    {
+      :title => 0.2,
+      :description => 0.15,
+      :language => 0.15,
+      :years => 0.15
+    }
+  end
+
+  def self.defaultUSWeights
+    {
+      :language => 0.5,
+      :los => 0.5
     }
   end
 
