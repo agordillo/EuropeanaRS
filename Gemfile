@@ -27,6 +27,9 @@ gem 'rest-client', '1.6.7'
 
 gem 'acts-as-taggable-on', '3.4'
 
+gem 'devise', '3.4.1'
+gem 'warden', '1.2.3'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   root "home#index"
 
+  devise_for :users, controllers: { sessions: "users/sessions" }
+  resources :users
+  match '/profile', to: 'users#profile', via: [:get]
+  
   resources :los
 
   match '/search', to: 'search#search', via: [:get, :post]

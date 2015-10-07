@@ -17,10 +17,10 @@ es:
     europeanars_code: "Código fuente de EuropeanaRS"
     europeanars_wiki: "Wiki"
   header:
+    account: "Mi Perfil"
     home: "Inicio"
     explore: "Explorar"
     language: "Idioma"
-    settings: "Mis Ajustes"
     about: "Acerca de EuropeanaRS"
   home:
     europeana_rs_description: "Un Sistema de Recomendación Híbrido de Objetos de Aprendizaje basado en Europeana"

@@ -17,10 +17,10 @@ en:
     europeanars_code: "EuropeanaRS Source code"
     europeanars_wiki: "Wiki"
   header:
+    account: "My Profile"
     home: "Home"
     explore: "Explore"
     language: "Language"
-    settings: "My Settings"
     about: "About"
   home:
     europeana_rs_description: "A Hybrid Learning Object Recommender System based on Europeana"
