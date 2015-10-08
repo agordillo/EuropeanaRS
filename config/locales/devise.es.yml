@@ -36,6 +36,7 @@ es:
     passwords:
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
       send_instructions: 'Recibirás un email con instrucciones para reiniciar tu contraseña en unos minutos.'
+      send_instructions_button: "Envíame instrucciones para resetear el password"
       send_paranoid_instructions: "Si tu email existe en el sistema, recibirás instrucciones para recuperar tu contraseña en él"
       updated: 'Tu contraseña fue cambiada correctamente. Has iniciado sesión.'
       updated_not_active: 'Tu contraseña fue cambiada correctamente.'
