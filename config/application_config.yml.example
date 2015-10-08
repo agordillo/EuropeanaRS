@@ -4,6 +4,13 @@ development:
   secret_token: "" # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
   europeana_SEARCH_API_key: "" #Request an API key here: http://labs.europeana.eu/api/introduction
   europeana_OAI_PMH_Service_key: "" #Request an access key here: http://labs.europeana.eu/api/oai-pmh-access-key
+  mail:
+    no_reply_mail: "no-reply@europeanars.com"
+    main_mail: "no-reply@europeanars.com"
+    type: "SMTP" #Type can be "SENDMAIL" or "SMTP" (default)
+    # gmail_credentials:
+    #   username: ""
+    #   password: ""
   max_text_length: 60 #Maximun length in characters of the texts that will be taking into account when measuing semantic distances. High values could lead to performance issues.
   weights:
     default_rs_weights:
@@ -19,5 +26,6 @@ development:
     default_us_weights:
       language: 0.5
       los: 0.5
+
 test:
   secret_token: ""
