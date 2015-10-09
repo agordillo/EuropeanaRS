@@ -72,3 +72,16 @@ div.devise_error_messages li {
   font-size: 1.2rem;
   margin: 5px 0px 5px 0px;
 }
+
+div#cancel_account_wrapper {
+  margin-top: 45px;
+}
+
+div#cancel_account_wrapper p.cancel_account_description {
+  font-size: 1.2rem;
+  margin-bottom: 0px;
+}
+
+div#cancel_account_wrapper form {
+  margin-top: 6px;
+}

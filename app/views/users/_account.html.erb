@@ -1,9 +1,27 @@
 <div class="profile_section_wrapper">
-  <p class="profile_section_title">User Information</p>
+  <p class="profile_section_title"><%=t("profile.account.title")%></p>
+  <div class="profile_section_actions withoutdescription">
+    <ul>
+      <li><%= link_to(t("dictionary.edit"), edit_user_registration_path)%></li>
+    </ul
+>  </div>
   <div class="profile_info_field">
-    <span class="profile_info_field_title">Name:</span> <span class="profile_info_field_value"><%=current_user.name%></span>
+    <span class="profile_info_field_title"><%=t("dictionary.username")%>:</span> <span class="profile_info_field_value"><%=current_user.name%></span>
   </div>
   <div class="profile_info_field">
-    <span class="profile_info_field_title">Email:</span> <span class="profile_info_field_value"><%=current_user.email%></span>
+    <span class="profile_info_field_title"><%=t("dictionary.email")%>:</span> <span class="profile_info_field_value"><%=current_user.email%></span>
   </div>
+  <div class="profile_info_field">
+    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(I18n.locale.to_s)%></span>
+  </div>
+
+  <p class="profile_sections_separator"></p>
+  <p class="profile_section_title"><%=t("profile.account.user_profile_title")%></p>
+  <div class="profile_section_description withoutactions">
+    <p><%=t("profile.account.user_profile_description").html_safe%></p>
+  </div>
+  <div class="profile_info_field">
+    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(I18n.locale.to_s)%></span>
+  </div>
+
 </div>

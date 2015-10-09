@@ -44,7 +44,7 @@ es:
       updated: 'Tu contraseña fue cambiada correctamente. Has iniciado sesión.'
       updated_not_active: 'Tu contraseña fue cambiada correctamente.'
     registrations:
-      destroyed: 'Adiós, tu cuenta ha sido eliminada. Esperamos verte de vuelta pronto!'
+      destroyed: 'Adiós, tu cuenta ha sido eliminada. ¡Esperamos verte de vuelta pronto!'
       new: "Regístrate"
       new_long: "¿Eres nuevo en EuropeanaRS? Regístrate"
       password_confirmation: "Confirmación de la contraseña"

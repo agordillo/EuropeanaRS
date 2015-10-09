@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  devise_for :users, controllers: { sessions: "users/sessions", registrations: "registrations" }
+  devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
   resources :users
   match '/profile', to: 'users#profile', via: [:get]
   match '/account', to: 'users#profile', via: [:get]

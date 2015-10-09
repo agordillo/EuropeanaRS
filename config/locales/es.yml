@@ -15,18 +15,22 @@ es:
             password:
               blank: "no puede estar en blanco."
   dictionary:
+    are_you_sure: "¿Estás seguro?"
+    back: "Volver"
+    edit: "Editar"
     email: "Correo electrónico"
     errors:
-      blank: "can't be blank"
-      name_blank: "Name can't be blank"
-      page_not_found: "This page does not exists"
-      reserved_word: "is a reserved word"
-      too_short: "is too short"
-      unspecified: "has to be specified"
+      blank: "no puede estar en blanco"
+      name_blank: "El nombre no puede estar en blanco"
+      page_not_found: "Esta página no existe"
+      reserved_word: "es una palabra reservada"
+      too_short: "es demasiado corto"
+      unspecified: "tiene que ser especificado"
+    language: "Idioma"
     password: "Contraseña"
     search: "Buscar"
     untitled: "Sin título"
-    username: "Username"
+    username: "Nombre de usuario"
   footer:
     europeana_website: "Portal web de Europeana"
     europeana_tou: "Términos de uso de Europeana"
@@ -67,8 +71,20 @@ es:
     resource_type: "Tipo de recurso"
     tags: "Etiquetas"
     view_at_europeana: "Ver recurso en Europeana"
-    year: "Año"
+    year: "Año" 
   profile:
+    account:
+      user_profile_description: "Esta sección muestra toda la información que EuropeanaRS tiene de su usuario.<br/> Cuanta mayor información tenga el sistema, mejores serán las recomendaciones que este genere."
+      user_profile_title: "Información de usuario"
+      title: "Mi Cuenta"
+    account_edit:
+      button: "Actualizar mi Cuenta"
+      cancel_button: "Cancelar mi cuenta"
+      cancel_description: "Aquí puedes cancelar tu cuenta. Si haces esto, todos los datos de tu usuario serán borrados de EuropeanaRS.<br/> Tenga en cuenta que esta acción es irreversible." 
+      cancel_title: "Cancelar mi cuenta"
+      password: "Contraseña (deja este campo en blanco si no quieres cambiarla)"
+      password_current: "Contraseña actual (necesitamos tu contraseña actual para confirmar tus cambios)"
+      title: "Editar mi cuenta de usuario"
     title: "Mi EuropeanaRS"
     menu:
       account: "Mi Cuenta"

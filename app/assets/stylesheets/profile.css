@@ -52,7 +52,7 @@ div#profile_wrapper div#profile_menu ul {
 
 div#profile_wrapper div#profile_menu ul li {
   margin-top: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   color: black;
   cursor: pointer;
 }
@@ -60,4 +60,66 @@ div#profile_wrapper div#profile_menu ul li {
 div#profile_wrapper div#profile_menu ul li.selected, div#profile_wrapper div#profile_menu ul li:hover {
   color: #2a85e8;
 }
+
+div.profile_section_wrapper {
+}
+
+div.profile_section_wrapper p.profile_sections_separator {
+  margin-top: 40px;
+}
+
+div.profile_section_wrapper p.profile_section_title {
+  font-size: 2rem;
+  font-weight: bold;
+  border-bottom: 2px solid #333;
+  margin-bottom: 5px;
+}
+
+div.profile_section_wrapper div.profile_section_actions {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+div.profile_section_wrapper div.profile_section_actions.withoutdescription {
+  margin-bottom: 5px;
+}
+
+div.profile_section_description {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #333;
+}
+
+div.profile_section_description.withoutactions {
+  margin-top: 15px;
+}
+
+div.profile_section_wrapper div.profile_section_actions ul {
+  padding: 0px;
+  margin-bottom: 0px;
+}
+
+div.profile_section_wrapper div.profile_section_actions ul li {
+  display: inline-block;
+  list-style-type: none;
+  margin-left: 15px;
+  font-size: 1.2rem;
+  color: #337ab7;
+  cursor: pointer;
+}
+
+div.profile_section_wrapper div.profile_info_field {
+  font-size: 1.4rem;
+}
+
+div.profile_section_wrapper span.profile_info_field_title {
+  font-weight: bold;
+}
+
+div.profile_section_wrapper span.profile_info_field_value {
+
+}
+
 

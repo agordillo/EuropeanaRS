@@ -1,0 +1,52 @@
+<div id="edit_account">
+  <h2><%=t("profile.account_edit.title")%></h2>
+
+  <div class="devise_error_messages">
+    <%= devise_error_messages! %>
+  </div>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    
+    <div class="field">
+      <p><%=t("dictionary.email")%></p>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="field">
+      <p><%=t("dictionary.username")%></p>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+      <p><%=t("profile.account_edit.password")%></p>
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <p><%=t("devise.registrations.password_confirmation")%></p>
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <p><%=t("profile.account_edit.password_current")%></p>
+      <%= f.password_field :current_password, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit t("profile.account_edit.button") %>
+    </div>
+  <% end %>
+
+  <div id="cancel_account_wrapper">
+    <h3><%=t("profile.account_edit.cancel_title")%></h3>
+    <p class="cancel_account_description"><%=t("profile.account_edit.cancel_description").html_safe%></p> 
+    <%= button_to t("profile.account_edit.cancel_button"), registration_path(resource_name), data: { confirm: t("dictionary.are_you_sure") }, method: :delete %>
+  </div>
+
+  <%= link_to t("dictionary.back"), :back %>
+  
+</div>

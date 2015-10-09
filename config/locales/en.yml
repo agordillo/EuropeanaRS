@@ -15,18 +15,22 @@ en:
             password:
               blank: "can't be blank"
   dictionary:
+    are_you_sure: "Are you sure?"
+    back: "Back"
+    edit: "Edit"
     email: "Email"
     errors:
-      blank: "no puede estar en blanco"
-      name_blank: "El nombre no puede estar en blanco"
-      page_not_found: "Esta página no existe"
-      reserved_word: "es una palabra reservada"
-      too_short: "es demasiado corto"
-      unspecified: "tiene que ser especificado"
+      blank: "can't be blank"
+      name_blank: "Name can't be blank"
+      page_not_found: "This page does not exists"
+      reserved_word: "is a reserved word"
+      too_short: "is too short"
+      unspecified: "has to be specified"
+    language: "Language"
     password: "Password"
     search: "Search"
     untitled: "Untitled"
-    username: "Nombre de usuario"
+    username: "Username"
   footer:
     europeana_website: "Europeana Website"
     europeana_tou: "Europeana Terms of Use"
@@ -69,6 +73,18 @@ en:
     view_at_europeana: "View resource at Europeana"
     year: "Year"
   profile:
+    account:
+      user_profile_description: "This section shows all the information that EuropeanaRS has of your user.<br/> The more information the system has, the better will be the generated recommendations."
+      user_profile_title: "User Information"
+      title: "My Account"
+    account_edit:
+      button: "Update my Account"
+      cancel_button: "Cancel my account"
+      cancel_description: "You can cancel your account here. If you do that, all your user data will be deleted from EuropeanaRS.<br/> Take into account that this action is irreversible." 
+      cancel_title: "Cancel my account"
+      password: "Password (leave blank if you don't want to change it)"
+      password_current: "Current password (we need your current password to confirm your changes)"
+      title: "Edit my user account"
     title: "My EuropeanaRS"
     menu:
       account: "My Account"

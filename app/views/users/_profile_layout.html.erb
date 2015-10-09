@@ -1,4 +1,5 @@
-<% view = "account" if view.blank? or !lookup_context.template_exists?(view, "users", true) %>
+<% view_path ||= "" %>
+<% view = "account" if view.blank? or !lookup_context.template_exists?(view, "users" + view_path, true) %>
 
 <div id="logo">
   <img alt="EuropeanaRS logo" src="/assets/Europeanars_logo.png"/>
