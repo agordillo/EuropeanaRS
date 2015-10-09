@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
  
   def set_locale
-    I18n.locale = params[:locale] || extract_locale_from_user_profile || extract_locale_from_session || extract_locale_from_webclient || I18n.default_locale
+    I18n.locale = extract_locale_from_params || extract_locale_from_user_profile || extract_locale_from_session || extract_locale_from_webclient || I18n.default_locale
   end
 
   def current_user_profile
@@ -44,8 +44,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def extract_locale_from_params
+    params[:locale] if (!params[:locale].blank? and I18n.available_locales.map(&:to_s).include? params[:locale])
+  end
+
   def extract_locale_from_user_profile
-    nil
+    current_user.language if (user_signed_in? and !current_user.language.blank?)
   end
 
   def extract_locale_from_session

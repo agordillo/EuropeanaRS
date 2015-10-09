@@ -7,6 +7,10 @@ class LocalesController < ActionController::Base
     end
 
     session[:locale] = locale
+    if user_signed_in?
+      current_user.language = locale
+      current_user.save!
+    end
     
     redirect_to :back
   end

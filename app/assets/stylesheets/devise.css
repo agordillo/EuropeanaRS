@@ -25,7 +25,7 @@ div#session_form form p {
   font-weight: bold;
 }
 
-div#session_form input[type='text'], div#session_form [type='email'], div#session_form [type='password'] {
+div#session_form input[type='text'], div#session_form [type='email'], div#session_form [type='password'], div#session_form select.account_language {
   padding: 5px;
   min-width: 400px;
   font-size: 1.2rem;

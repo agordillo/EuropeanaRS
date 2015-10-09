@@ -22,6 +22,11 @@
     </div>
 
     <div class="field">
+      <p><%=t("dictionary.language")%></p>
+      <%= f.select :language, options_for_select(options_for_select_languages_users, current_user.language), {}, { :class => 'account_language' } %>
+    </div>
+
+    <div class="field">
       <p><%=t("profile.account_edit.password")%></p>
       <%= f.password_field :password, autocomplete: "off" %>
     </div>

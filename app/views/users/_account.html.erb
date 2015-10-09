@@ -12,7 +12,7 @@
     <span class="profile_info_field_title"><%=t("dictionary.email")%>:</span> <span class="profile_info_field_value"><%=current_user.email%></span>
   </div>
   <div class="profile_info_field">
-    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(I18n.locale.to_s)%></span>
+    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
   </div>
 
   <p class="profile_sections_separator"></p>
@@ -21,7 +21,7 @@
     <p><%=t("profile.account.user_profile_description").html_safe%></p>
   </div>
   <div class="profile_info_field">
-    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(I18n.locale.to_s)%></span>
+    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
   </div>
 
 </div>
