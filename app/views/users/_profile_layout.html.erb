@@ -1,0 +1,31 @@
+<% view = "account" if view.blank? or !lookup_context.template_exists?(view, "users", true) %>
+
+<div id="logo">
+  <img alt="EuropeanaRS logo" src="/assets/Europeanars_logo.png"/>
+</div>
+
+<p id="logo_profile_separator"></p>
+
+<div id="profile_wrapper">
+  <div class="column1">
+    <div id="profile_title"><%=t("profile.title")%></div>
+    <div id="profile_menu">
+      <ul>
+        <li view="account"><%= link_to(t("profile.menu.account"), "/account")%></li>
+        <li view="settings"><%= link_to(t("profile.menu.settings"), "/settings")%></li>
+        <li view="favorites"><%= link_to(t("profile.menu.favorites"), "/favorites")%></li>
+        <li view="akeys"><%= link_to(t("profile.menu.api_keys"), "/api_keys")%></li>
+        <li><%= link_to(t("devise.sessions.close"), destroy_user_session_path, :method => :delete) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="column2">
+    <%= render view %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#profile_menu ul li[view='<%=view%>']").addClass("selected");
+  });
+</script>

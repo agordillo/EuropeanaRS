@@ -68,6 +68,13 @@ en:
     tags: "Tags"
     view_at_europeana: "View resource at Europeana"
     year: "Year"
+  profile:
+    title: "My EuropeanaRS"
+    menu:
+      account: "My Account"
+      settings: "My Settings"
+      favorites: "Saved Resources"
+      api_keys: "API Keys"
   recommendations:
     suggested_resources: "Suggested resources"
   search:

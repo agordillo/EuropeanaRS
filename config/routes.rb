@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "registrations" }
   resources :users
   match '/profile', to: 'users#profile', via: [:get]
-  
+  match '/account', to: 'users#profile', via: [:get]
+  match '/settings', to: 'users#settings', via: [:get]
+  match '/favorites', to: 'users#favorites', via: [:get]
+  match '/api_keys', to: 'users#akeys', via: [:get]
+
   resources :los
 
   match '/search', to: 'search#search', via: [:get, :post]

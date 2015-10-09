@@ -1,0 +1,63 @@
+p#logo_profile_separator {
+  margin: 0px;
+  height: 60px;
+}
+
+div#profile_wrapper {
+  height: 100%;
+  overflow: hidden;
+}
+
+div#profile_wrapper a {
+  text-decoration: none;
+  color: inherit;
+}
+
+div#profile_wrapper div.column1 {
+  float: left;
+  width: 25%;
+  height: 100%;
+  text-align: left;
+  background: white;
+  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid #c9c9c9;
+  box-shadow: 3px 3px 4px #c3c3c3;
+}
+
+div#profile_wrapper div.column2 {
+  float: left;
+  width: 75%;
+  height: 90%;
+  padding: 0% 5%;
+  padding-top: 5px;
+  text-align: left;
+}
+
+div#profile_wrapper div#profile_title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  cursor: default;
+}
+
+div#profile_wrapper div#profile_menu {
+}
+
+div#profile_wrapper div#profile_menu ul {
+  list-style: none;
+  font-size: 1.4rem;
+  padding: 0px;
+}
+
+div#profile_wrapper div#profile_menu ul li {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: black;
+  cursor: pointer;
+}
+
+div#profile_wrapper div#profile_menu ul li.selected, div#profile_wrapper div#profile_menu ul li:hover {
+  color: #2a85e8;
+}
+

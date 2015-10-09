@@ -6,5 +6,17 @@ class UsersController < ApplicationController
     render "show"
   end
 
+  def account
+  end
+
+  def settings
+  end
+
+  def favorites
+  end
+
+  def akeys
+  end
+
 end
   

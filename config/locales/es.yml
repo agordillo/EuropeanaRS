@@ -68,6 +68,13 @@ es:
     tags: "Etiquetas"
     view_at_europeana: "Ver recurso en Europeana"
     year: "Año"
+  profile:
+    title: "Mi EuropeanaRS"
+    menu:
+      account: "Mi Cuenta"
+      settings: "Mis Ajustes"
+      favorites: "Recursos salvados"
+      api_keys: "API Keys"
   recommendations:
     suggested_resources: "Recursos sugeridos"
   search:
