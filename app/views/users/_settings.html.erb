@@ -7,7 +7,7 @@
 
 <div class="profile_section_wrapper weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_general_weights")%></p>
-  <div class="weights_sum_circle">100%</div>
+  <div class="weights_sum_circle"><%=@user_settings[:rs_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["los","us","quality","popularity"].each do |criterion| %>
     <div class="profile_info_field">
       <div class="settings_slider_wrapper">
@@ -28,7 +28,7 @@
 
 <div class="profile_section_wrapper weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_los_weights")%></p>
-  <div class="weights_sum_circle">100%</div>
+  <div class="weights_sum_circle"><%=@user_settings[:los_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["title","description","language","years"].each do |criterion| %>
     <div class="profile_info_field">
       <div class="settings_slider_wrapper">
@@ -49,7 +49,7 @@
 
 <div class="profile_section_wrapper weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_us_weights")%></p>
-  <div class="weights_sum_circle">100%</div>
+  <div class="weights_sum_circle"><%=@user_settings[:us_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["language", "los"].each do |criterion| %>
     <div class="profile_info_field">
       <div class="settings_slider_wrapper">
@@ -131,6 +131,59 @@
           $(formDOM).find("input[name='user_settings']").val(userSettings);
         });
       });
+
+      $("div.profile_section_wrapper.weights_section div.weights_sum_circle").click(function(event){
+        //Fix weights
+        var weightsSum = parseInt($(this).html());
+        if(weightsSum === 100){
+          return false;
+        }
+
+        var newWeightsSum = 0;
+
+        //Find sliders
+        var slidersDOM = $(this).parents("div.profile_section_wrapper.weights_section").find("div.slider");
+        var slidersDOMLength = $(slidersDOM).length;
+        $(slidersDOM).each(function(index,sliderDOM){
+          var sliderValue = $(sliderDOM).slider("value");
+          var newSliderValue = parseInt(sliderValue/weightsSum * 100);
+          if(weightsSum === 0){
+            //Fix special case: when all weights are 0.
+            newSliderValue = parseInt(100/slidersDOMLength);
+          }
+          newWeightsSum += newSliderValue;
+          $(sliderDOM).slider("value",newSliderValue);
+        });
+
+        if(newWeightsSum!=100){
+          //Since numbers are rounded, this is a possibility. We need to fix this.
+          var weightsDiff = Math.abs(100-newWeightsSum);
+          $(slidersDOM).each(function(index,sliderDOM){
+            var sliderValue = $(sliderDOM).slider("value");
+            var newSliderValue = -1;
+
+            if(newWeightsSum < 100){
+              //We must sum the difference
+              if((sliderValue + weightsDiff) < 100){
+                newSliderValue = (sliderValue + weightsDiff);
+              }
+            } else {
+              //We must deduct the difference
+              if((sliderValue - weightsDiff) > 0){
+                newSliderValue = (sliderValue - weightsDiff);
+              }
+            }
+
+            if(newSliderValue != -1){
+              $(sliderDOM).slider("value",newSliderValue);
+              return false;
+            }
+          });
+        }
+
+        updateSumForSlider(slidersDOM[0]);
+      });
+
     };
 
     var updateInterface = function(){
@@ -166,7 +219,7 @@
       if((typeof weight != "number")||(isNaN(weight))){
         return false;
       }
-      if((weight < 0)||(weight>100)){
+      if(weight!=100){
         return false;
       }
       return true;

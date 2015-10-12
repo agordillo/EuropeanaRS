@@ -150,10 +150,12 @@ div.profile_section_wrapper.weights_section div.weights_sum_circle {
   right: 0;
   padding: 15px 10px;
   width: 75px;
+  cursor: default;
 }
 
 div.profile_section_wrapper.weights_section div.weights_sum_circle.errors {
   color: red;
+  cursor: pointer;
 }
 
 div.profile_section_wrapper.weights_section form input.europeanars_button {

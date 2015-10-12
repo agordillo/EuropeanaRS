@@ -16,12 +16,16 @@ class UsersController < ApplicationController
 
   #POST /settings
   def update_settings
-    current_user.settings = params["user_settings"] unless params["user_settings"].blank? 
-
-    if !params["user_settings"].blank? and current_user.save
-      flash[:notice] = I18n.t("profile.settings.notifications.success.generic");
-    else
+    if params["user_settings"].blank?
       flash[:alert] = I18n.t("profile.settings.notifications.errors.generic");
+    else
+      current_user.settings = params["user_settings"]
+      current_user.valid?
+      if current_user.errors.blank? and current_user.save
+        flash[:notice] = I18n.t("profile.settings.notifications.success.generic");
+      else
+        flash[:alert] =  current_user.errors.full_messages.to_sentence
+      end
     end
 
     redirect_to "/settings"
