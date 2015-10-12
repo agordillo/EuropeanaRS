@@ -30,6 +30,7 @@ en:
     password: "Password"
     search: "Search"
     untitled: "Untitled"
+    update: "Update"
     username: "Username"
   footer:
     europeana_website: "Europeana Website"
@@ -95,19 +96,22 @@ en:
           generic: "Settings updated succesfully"
       title: "Settings"
       title_general_weights: "General Weights"
+      title_los_weights: "Learning Object Similarity Weights"
+      title_us_weights: "User Profile Similarity Weights"
       weights:
         general:
           los: "Learning Object Similarity"
           popularity: "Learning Object Popularity"
           quality: "Learning Object Quality"
           us: "User Similarity"
-        lo:
+        los:
           description: "Description"
           language: "Language"
           title: "Title"
-          year: "Year"
+          years: "Year"
         us:
           language: "Language"
+          los: "Learning Objects liked by the user"
     title: "My EuropeanaRS"
     menu:
       account: "My Account"

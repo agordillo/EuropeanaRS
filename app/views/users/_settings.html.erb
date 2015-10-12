@@ -22,7 +22,49 @@
   <%= form_tag("/settings", method: "post") do %>
     <%= hidden_field_tag(:user_settings) %>
     <input type="hidden" name="user_settings"/>
-    <%= submit_tag("Update", { class: "europeanars_button" }) %>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+<div class="profile_section_wrapper weights_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_los_weights")%></p>
+  <div class="weights_sum_circle">100%</div>
+  <% ["title","description","language","years"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.los." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="los_weight_<%=criterion%>" class="slider" value="<%=@user_settings[:los_weights][(criterion).to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <%= hidden_field_tag(:user_settings) %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+<div class="profile_section_wrapper weights_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_us_weights")%></p>
+  <div class="weights_sum_circle">100%</div>
+  <% ["language", "los"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.us." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="us_weight_<%=criterion%>" class="slider" value="<%=@user_settings[:us_weights][(criterion).to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <%= hidden_field_tag(:user_settings) %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
   <% end %>
 </div>
 
@@ -141,9 +183,15 @@
 
       //Learning Object Similarity Weights
       user_settings["los_weights"] = {}
+      <% ["title","description","language","years"].each do |criterion| %>
+        user_settings["los_weights"]["<%=criterion%>"] = $("#los_weight_<%=criterion%>").slider("value");
+      <% end %>
 
       //User Similarity Weights
       user_settings["us_weights"] = {}
+      <% ["language","los"].each do |criterion| %>
+        user_settings["us_weights"]["<%=criterion%>"] = $("#us_weight_<%=criterion%>").slider("value");
+      <% end %>
 
       return user_settings;
     };

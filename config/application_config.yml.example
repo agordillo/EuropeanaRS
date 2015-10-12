@@ -21,7 +21,7 @@ development:
     default_los_weights:
       title: 0.2
       description: 0.15
-      language: 0.15
+      language: 0.5
       years: 0.15
     default_us_weights:
       language: 0.5

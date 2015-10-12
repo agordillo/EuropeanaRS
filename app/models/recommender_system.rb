@@ -334,7 +334,7 @@ class RecommenderSystem
     {
       :title => 0.2,
       :description => 0.15,
-      :language => 0.15,
+      :language => 0.5,
       :years => 0.15
     }
   end

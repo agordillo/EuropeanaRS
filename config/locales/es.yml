@@ -30,6 +30,7 @@ es:
     password: "Contraseña"
     search: "Buscar"
     untitled: "Sin título"
+    update: "Actualizar"
     username: "Nombre de usuario"
   footer:
     europeana_website: "Portal web de Europeana"
@@ -85,6 +86,32 @@ es:
       password: "Contraseña (deja este campo en blanco si no quieres cambiarla)"
       password_current: "Contraseña actual (necesitamos tu contraseña actual para confirmar tus cambios)"
       title: "Editar mi cuenta de usuario"
+    settings:
+      description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador, y los pesos aplicados para calcular las similaridades entre elementos."
+      notifications:
+        errors:
+          bad_weights: "Los pesos que has seleccionado no son correctos."
+          generic: "Ocurrió un error y los ajustes no pudieron ser actualizados."
+        success:
+          generic: "Ajustes actualizados satisfactoriamente"
+      title: "Ajustes"
+      title_general_weights: "Pesos Generales"
+      title_los_weights: "Pesos de Similaridad de Objetos de Aprendizaje"
+      title_us_weights: "Pesos de Similaridad del Perfil de Usuario"
+      weights:
+        general:
+          los: "Similaridad con Objetos de Aprendizaje"
+          popularity: "Popularidad de los Objetos de Aprendizaje"
+          quality: "Calidad de los Objetos de Aprendizaje"
+          us: "Similaridad con el Usuario"
+        los:
+          description: "Descripción"
+          language: "Idioma"
+          title: "Título"
+          years: "Año"
+        us:
+          language: "Idioma"
+          los: "Objetos de Aprendizaje apreciados por el usuario"
     title: "Mi EuropeanaRS"
     menu:
       account: "Mi Cuenta"

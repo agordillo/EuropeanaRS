@@ -16,6 +16,7 @@ class UsersController < ApplicationController
 
   #POST /settings
   def update_settings
+    #TODO
     flash[:notice] = I18n.t("profile.settings.notifications.success.generic");
     # flash[:alert] = I18n.t("profile.settings.notifications.errors.generic");
     redirect_to "/settings"
