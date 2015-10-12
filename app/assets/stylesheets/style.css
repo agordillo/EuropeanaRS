@@ -307,7 +307,6 @@ div.search_filter ul {
 }
 
 #year_range {
-  border: 0px
 }
 
 div.search_filter ul.options_for_filter li {
@@ -416,4 +415,33 @@ div#search_wrapper div.column2 .search_tools div.rpnumber input {
 #search_results span.queryOnEmptySearch {
   color: #2a85e8;
   font-weight: bold;
+}
+
+
+/* Generic components */
+
+
+/* Buttons */
+button.europeanars_button, a.europeanars_button, input[type='submit'].europeanars_button {
+  width: auto;
+  border: 1px solid #c9c9c9;
+  color: white;
+  background-color: #333;
+  padding: 5px;
+  font-size: 1.4rem;
+}
+
+/* Sliders */
+div.slider {
+}
+
+input.slider_value {
+  border: 0px;
+  cursor: default;
+  background: transparent;
+}
+
+/* Waiting for buttons */
+.waiting {
+  cursor: wait !important;
 }

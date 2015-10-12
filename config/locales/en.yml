@@ -85,6 +85,29 @@ en:
       password: "Password (leave blank if you don't want to change it)"
       password_current: "Current password (we need your current password to confirm your changes)"
       title: "Edit my user account"
+    settings:
+      description: "In this section you can change the settings of the Recommender System for your user.<br/> Concretely, you can change the general weights of the recommender, and the weights applied to measure similarities between items."
+      notifications:
+        errors:
+          bad_weights: "The weights you have selected are not correct."
+          generic: "An error happened and the settings couldn't be updated"
+        success:
+          generic: "Settings updated succesfully"
+      title: "Settings"
+      title_general_weights: "General Weights"
+      weights:
+        general:
+          los: "Learning Object Similarity"
+          popularity: "Learning Object Popularity"
+          quality: "Learning Object Quality"
+          us: "User Similarity"
+        lo:
+          description: "Description"
+          language: "Language"
+          title: "Title"
+          year: "Year"
+        us:
+          language: "Language"
     title: "My EuropeanaRS"
     menu:
       account: "My Account"

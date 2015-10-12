@@ -6,6 +6,7 @@ p#logo_profile_separator {
 div#profile_wrapper {
   height: 100%;
   overflow: hidden;
+  padding-bottom: 25px;
 }
 
 div#profile_wrapper a {
@@ -62,6 +63,7 @@ div#profile_wrapper div#profile_menu ul li.selected, div#profile_wrapper div#pro
 }
 
 div.profile_section_wrapper {
+  position: relative;
 }
 
 div.profile_section_wrapper p.profile_sections_separator {
@@ -119,7 +121,43 @@ div.profile_section_wrapper span.profile_info_field_title {
 }
 
 div.profile_section_wrapper span.profile_info_field_value {
-
 }
 
+div.profile_section_wrapper.weights_section p.slider_title {
+  font-size: 1.4rem;
+  margin-top: 15px;
+  margin-bottom: 6px;
+}
 
+div.profile_section_wrapper.weights_section p.slider_title input {
+  font-weight: bold;
+}
+
+div.profile_section_wrapper.weights_section div.slider {
+  width: 40%;
+  margin-bottom: 20px;
+}
+
+div.profile_section_wrapper.weights_section div.weights_sum_circle {
+  background: white;
+  color: black;
+  border-radius:50%;
+  border: 2px solid black;
+  font-size: 1.7rem;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  right: 0;
+  padding: 15px 10px;
+  width: 75px;
+}
+
+div.profile_section_wrapper.weights_section div.weights_sum_circle.errors {
+  color: red;
+}
+
+div.profile_section_wrapper.weights_section form input.europeanars_button {
+  width: 99%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}

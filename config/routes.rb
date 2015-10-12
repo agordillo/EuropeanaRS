@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   match '/profile', to: 'users#profile', via: [:get]
   match '/account', to: 'users#profile', via: [:get]
   match '/settings', to: 'users#settings', via: [:get]
+  match '/settings', to: 'users#update_settings', via: [:post]
   match '/favorites', to: 'users#favorites', via: [:get]
   match '/api_keys', to: 'users#akeys', via: [:get]
 

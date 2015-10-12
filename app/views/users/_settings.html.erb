@@ -1,3 +1,153 @@
 <div class="profile_section_wrapper">
-  <p class="profile_section_title"><%=t("profile.menu.settings")%></p>
+  <p class="profile_section_title"><%=t("profile.settings.title")%></p>
+  <div class="profile_section_description withoutactions">
+    <p><%=t("profile.settings.description").html_safe%></p>
+  </div>
 </div>
+
+<div class="profile_section_wrapper weights_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_general_weights")%></p>
+  <div class="weights_sum_circle">100%</div>
+  <% ["los","us","quality","popularity"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.general." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="general_weight_<%=criterion%>" class="slider" value="<%=@user_settings[:rs_weights][(criterion + "_score").to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <%= hidden_field_tag(:user_settings) %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag("Update", { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+
+<script>
+  $(document).ready(function(){
+
+    //////////////
+    // Initialization
+    /////////////
+    var init = function(){
+      loadEvents();
+      updateInterface();
+    };
+
+    ///////////
+    // Events
+    ///////////
+
+    var loadEvents = function(){
+      $("div.profile_section_wrapper div.settings_slider_wrapper div.slider").each(function(index,sliderDOM){
+          $(sliderDOM).slider({
+            range: "max",
+            orientation: "horizontal",
+            animate: true,
+            min: 0,
+            max: 100,
+            step: 1,
+            value: parseInt($(sliderDOM).attr("value")),
+            slide: function(event, ui){
+              $(textForSlider(sliderDOM)).val(ui.value + "%");
+            },
+            change: function( event, ui ) {
+              $(textForSlider(sliderDOM)).val(ui.value + "%");
+              updateSumForSlider(sliderDOM);
+            }
+          });
+          $(textForSlider(sliderDOM)).val($(sliderDOM).slider("value") + "%");
+      });
+
+      $("div.profile_section_wrapper.weights_section form").each(function(index,formDOM){
+        $(formDOM).submit(function(e){
+
+          var weightsSum = parseInt($(formDOM).parents("div.profile_section_wrapper.weights_section").find("div.weights_sum_circle").html());
+          if(!validWeight(weightsSum)){
+            event.preventDefault();
+            alert("<%=I18n.t('profile.settings.notifications.errors.bad_weights')%>");
+            return;
+          }
+
+          var userSettings;
+          try {
+            userSettings = JSON.stringify(buildUserSettings());
+          } catch (e) {
+            event.preventDefault();
+            alert("<%=I18n.t('profile.settings.notifications.errors.bad_weights')%>");
+            return;
+          }
+
+          //Submit...
+          $(this).find("input.europeanars_button").addClass("waiting").attr("disabled","disabled");
+
+          //Fill values (after client validation)
+          $(formDOM).find("input[name='user_settings']").val(userSettings);
+        });
+      });
+    };
+
+    var updateInterface = function(){
+    };
+
+    ///////////
+    // Utils
+    ///////////
+
+    var textForSlider = function(sliderDOM){
+      return $(sliderDOM).parents("div.settings_slider_wrapper").find("input.slider_value");
+    };
+
+    var textSumForSlider = function(sliderDOM){
+      return $(sliderDOM).parents("div.profile_section_wrapper").find("div.weights_sum_circle");
+    };
+
+    var updateSumForSlider = function(sliderDOM){
+      var value = 0;
+      $(sliderDOM).parents("div.profile_section_wrapper").find("div.slider").each(function(index,sliderDOM){
+        value += $(sliderDOM).slider("value");
+      });
+      var textSumDOM = textSumForSlider(sliderDOM);
+      if(validWeight(value)){
+        $(textSumDOM).removeClass("errors");
+      } else {
+        $(textSumDOM).addClass("errors");
+      }
+      $(textSumDOM).html(value + "%");
+    };
+
+    var validWeight = function(weight){
+      if((typeof weight != "number")||(isNaN(weight))){
+        return false;
+      }
+      if((weight < 0)||(weight>100)){
+        return false;
+      }
+      return true;
+    };
+
+    var buildUserSettings = function(){
+      var user_settings = {}
+
+      //General RS Weights
+      user_settings["rs_weights"] = {}
+      <% ["los","us","quality","popularity"].each do |criterion| %>
+        user_settings["rs_weights"]["<%=criterion%>_score"] = $("#general_weight_<%=criterion%>").slider("value");
+      <% end %>
+
+      //Learning Object Similarity Weights
+      user_settings["los_weights"] = {}
+
+      //User Similarity Weights
+      user_settings["us_weights"] = {}
+
+      return user_settings;
+    };
+
+    init();
+  });
+</script>

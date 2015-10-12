@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_profile
     user_profile = {}
-    user_profile[:language] = I18n.locale.to_s
+    user_profile[:language] = (extract_locale_from_user_profile || I18n.locale.to_s)
     
     user_profile
   end
@@ -20,7 +20,9 @@ class ApplicationController < ActionController::Base
   def current_user_settings
     user_settings = {}
     default_user_settings = {
-      :rs_weights => RecommenderSystem.defaultRSWeights
+      :rs_weights => EuropeanaRS::Application::config.weights[:default_rs_weights],
+      :los_weights => EuropeanaRS::Application::config.weights[:default_los_weights],
+      :us_weights => EuropeanaRS::Application::config.weights[:default_us_weights]
     }
     user_settings = default_user_settings.merge(user_settings)
     
