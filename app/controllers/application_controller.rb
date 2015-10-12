@@ -10,23 +10,26 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_profile
-    user_profile = {}
-    user_profile[:language] = (extract_locale_from_user_profile || I18n.locale.to_s)
+    if user_signed_in?
+      user_profile = current_user.profile
+    else
+      user_profile = {}
+      user_profile[:language] = I18n.locale.to_s
+      user_profile[:los] = []
+    end
     
     user_profile
   end
   helper_method :current_user_profile
 
   def current_user_settings
-    user_settings = {}
-    default_user_settings = {
-      :rs_weights => EuropeanaRS::Application::config.weights[:default_rs_weights],
-      :los_weights => EuropeanaRS::Application::config.weights[:default_los_weights],
-      :us_weights => EuropeanaRS::Application::config.weights[:default_us_weights]
-    }
-    user_settings = default_user_settings.merge(user_settings)
-    
-    user_settings
+    if user_signed_in?
+      user_settings = current_user.parsedSettings
+    else
+      user_settings = session[:user_settings] || {}
+    end
+ 
+    User.defaultSettings.merge(user_settings)
   end
   helper_method :current_user_settings
 

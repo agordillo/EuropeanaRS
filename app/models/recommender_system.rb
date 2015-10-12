@@ -122,6 +122,7 @@ class RecommenderSystem
   #Step 3: Filtering
   def self.filter(rankedLOs,options)
     filteredLOs = rankedLOs
+    #TODO
     filteredLOs
   end
 
@@ -146,9 +147,19 @@ class RecommenderSystem
   def self.userProfileSimilarityScore(userProfile,loProfile)
     weights = RecommenderSystem.getUSWeights
 
-    languageD = 0
+    languageS = RecommenderSystem.getSemanticDistanceForCategoricalFields(userProfile[:language],loProfile[:language])
 
-    return weights[:language] * languageD
+    losS = 0
+    unless userProfile[:los].blank?
+      losSCount = 0
+      userProfile[:los].first(2).each do |pastLoProfile|
+        losS += RecommenderSystem.loProfileSimilarityScore(pastLoProfile,loProfile)
+        losSCount += 1
+      end
+      losS = losS/losSCount unless losSCount===0
+    end
+
+    return weights[:language] * languageS + weights[:los] * losS
   end
 
   #Quality Score, [0,1] scale

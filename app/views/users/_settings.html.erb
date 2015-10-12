@@ -178,19 +178,19 @@
       //General RS Weights
       user_settings["rs_weights"] = {}
       <% ["los","us","quality","popularity"].each do |criterion| %>
-        user_settings["rs_weights"]["<%=criterion%>_score"] = $("#general_weight_<%=criterion%>").slider("value");
+        user_settings["rs_weights"]["<%=criterion%>_score"] = $("#general_weight_<%=criterion%>").slider("value")/100;
       <% end %>
 
       //Learning Object Similarity Weights
       user_settings["los_weights"] = {}
       <% ["title","description","language","years"].each do |criterion| %>
-        user_settings["los_weights"]["<%=criterion%>"] = $("#los_weight_<%=criterion%>").slider("value");
+        user_settings["los_weights"]["<%=criterion%>"] = $("#los_weight_<%=criterion%>").slider("value")/100;
       <% end %>
 
       //User Similarity Weights
       user_settings["us_weights"] = {}
       <% ["language","los"].each do |criterion| %>
-        user_settings["us_weights"]["<%=criterion%>"] = $("#us_weight_<%=criterion%>").slider("value");
+        user_settings["us_weights"]["<%=criterion%>"] = $("#us_weight_<%=criterion%>").slider("value")/100;
       <% end %>
 
       return user_settings;

@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20151009101534) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.text     "settings"
     t.string   "language"
   end
 
