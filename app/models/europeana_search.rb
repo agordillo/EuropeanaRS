@@ -9,7 +9,7 @@ class EuropeanaSearch
   def self.buildQuery(params={})
     #Query example using the Europeana Search API
     #http://www.europeana.eu/api/v2/search.json?wskey=XXXX&query=skos_concept:%22http://vocab.getty.edu/aat/300026656%22&qf=TYPE:TEXT&profile=standard&rows=100&qf=YEAR:[1824+TO+1827]&qf=LANGUAGE:fr&qf=COUNTRY:france
-    query = "http://www.europeana.eu/api/v2/search.json?wskey="+EuropeanaRS::Application::config.APP_CONFIG["europeana_SEARCH_API_key"]+"&query="
+    query = "http://www.europeana.eu/api/v2/search.json?wskey="+EuropeanaRS::Application::config.APP_CONFIG["europeana"]["api_key"]+"&query="
     
     if params[:query].is_a? String
       query += params[:query]

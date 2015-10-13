@@ -3,6 +3,22 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
+  # Europeana action method
+  def europeana
+    #Build user with Europeana data
+    @user = User.from_omniauth(request.env["omniauth.auth"])
+    
+    if @user.persisted?
+      set_flash_message(:notice, :success, :kind => "Europeana") if is_navigational_format?
+      sign_in_and_redirect @user, :event => :authentication
+    else
+      @user.valid?
+      flash[:alert] = @user.errors.full_messages.to_sentence if is_navigational_format?
+      session["devise.europeana_data"] = request.env["omniauth.auth"] #Store Europeana data in session
+      redirect_to new_user_registration_url
+    end
+  end
+
   # Facebook action method
   def facebook
     #Build user with facebook data
@@ -14,7 +30,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       @user.valid?
       flash[:alert] = @user.errors.full_messages.to_sentence if is_navigational_format?
-      session["devise.facebook_data"] = request.env["omniauth.auth"] #Store facebook data in session
+      session["devise.facebook_data"] = request.env["omniauth.auth"] #Store Facebook data in session
       redirect_to new_user_registration_url
     end
   end

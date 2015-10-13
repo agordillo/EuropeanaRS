@@ -1,12 +1,16 @@
 #Copy this file to application_config.yml
 
 development:
-  secret_token: "" # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
-  europeana_SEARCH_API_key: "" #Request an API key here: http://labs.europeana.eu/api/introduction
-  europeana_OAI_PMH_Service_key: "" #Request an access key here: http://labs.europeana.eu/api/oai-pmh-access-key
-  facebook: #Get Facebook credentials for you app from https://developers.facebook.com/
-    app_id: "facebookAppId"
-    app_secret: "facebookAppSecret"
+  secret_token: ""     # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
+  europeana:
+    api_key: ""        #Request an API key here: http://labs.europeana.eu/api/introduction
+    private_key: ""
+    oauth2_client_id: ""
+    oauth2_client_key: ""
+    oai_pmh_key: ""    #Request an access key for the OAI-PMH service here: http://labs.europeana.eu/api/oai-pmh-access-key
+  facebook: #Get Facebook credentials for your app from https://developers.facebook.com/
+    app_id: ""
+    app_secret: ""
   mail:
     no_reply_mail: "no-reply@europeanars.com"
     main_mail: "no-reply@europeanars.com"

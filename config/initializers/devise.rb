@@ -236,7 +236,13 @@ Devise.setup do |config|
 
   EuropeanaRS::Application::config.omniauth_providers = []
 
-  unless EuropeanaRS::Application::config.APP_CONFIG["facebook"].nil?
+  unless EuropeanaRS::Application::config.APP_CONFIG["europeana"].blank? or EuropeanaRS::Application::config.APP_CONFIG["europeana"]["oauth2_client_id"].blank?
+    require 'omniauth/strategies/europeana'
+    EuropeanaRS::Application::config.omniauth_providers << :europeana
+    config.omniauth :europeana, EuropeanaRS::Application::config.APP_CONFIG["europeana"]["oauth2_client_id"], EuropeanaRS::Application::config.APP_CONFIG["europeana"]["oauth2_client_key"], :strategy_class => OmniAuth::Strategies::Europeana
+  end
+
+  unless EuropeanaRS::Application::config.APP_CONFIG["facebook"].blank?
     EuropeanaRS::Application::config.omniauth_providers << :facebook
     config.omniauth :facebook, EuropeanaRS::Application::config.APP_CONFIG["facebook"]["app_id"], EuropeanaRS::Application::config.APP_CONFIG["facebook"]["app_secret"],
                     :scope => 'public_profile,email,user_about_me,user_birthday,user_actions.books,user_location'
