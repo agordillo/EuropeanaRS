@@ -21,7 +21,7 @@ en:
     links:
       confirmation_instructions: "Didn't receive confirmation instructions?"
       forgot_password: "Forgot your password?"
-      sign_in_with_provider: "Sign in with %{count}"
+      sign_in_with_provider: "Sign in with %{provider}"
       unlock_instructions: "Didn't receive unlock instructions?"
     mailer:
       confirmation_instructions:

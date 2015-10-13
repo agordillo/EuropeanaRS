@@ -9,11 +9,13 @@ es:
         user:
           attributes:
             email:
-              blank: "no puede estar en blanco."
+              blank: "no puede estar en blanco"
+            language:
+              blank: "no puede estar en blanco"
             name:
-              blank: "no puede estar en blanco."
+              blank: "no puede estar en blanco"
             password:
-              blank: "no puede estar en blanco."
+              blank: "no puede estar en blanco"
   dictionary:
     are_you_sure: "¿Estás seguro?"
     back: "Volver"

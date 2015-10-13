@@ -43,7 +43,30 @@ header li.login {
   font-weight: normal;
   font-size: 1.4rem;
   margin-top: 1px;
+  width: auto;
+  max-width: 250px;
+  max-height: 25px;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  text-align: right;
 }
+
+header li.login p {
+  display: inline-block;
+  width: auto;
+  max-width: 220px;
+  max-height: 25px;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
+header li.login > a {
+  float: right;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
 
 header li.login span.logged_as {
   opacity: 0.8;

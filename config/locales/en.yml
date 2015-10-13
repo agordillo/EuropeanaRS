@@ -10,8 +10,10 @@ en:
           attributes:
             email:
               blank: "can't be blank"
+            language:
+              blank: "can't be blank"
             name:
-              blank: "no puede estar en blanco."
+              blank: "can't be blank"
             password:
               blank: "can't be blank"
   dictionary:

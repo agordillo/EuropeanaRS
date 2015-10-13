@@ -21,7 +21,7 @@ es:
     links:
       confirmation_instructions: "¿No has recibido las instrucciones de confirmación?"
       forgot_password: "¿Olvidaste tu contraseña?"
-      sign_in_with_provider: "Inicia sesión con %{count}"
+      sign_in_with_provider: "Inicia sesión con %{provider}"
       unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
     mailer:
       confirmation_instructions:

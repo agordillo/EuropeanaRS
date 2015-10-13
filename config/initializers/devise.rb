@@ -234,6 +234,14 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
+  EuropeanaRS::Application::config.omniauth_providers = []
+
+  unless EuropeanaRS::Application::config.APP_CONFIG["facebook"].nil?
+    EuropeanaRS::Application::config.omniauth_providers << :facebook
+    config.omniauth :facebook, EuropeanaRS::Application::config.APP_CONFIG["facebook"]["app_id"], EuropeanaRS::Application::config.APP_CONFIG["facebook"]["app_secret"],
+                    :scope => 'public_profile,email,user_about_me,user_birthday,user_actions.books,user_location'
+  end
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

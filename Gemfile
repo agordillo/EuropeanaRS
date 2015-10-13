@@ -30,6 +30,13 @@ gem 'acts-as-taggable-on', '3.4'
 gem 'devise', '3.4.1'
 gem 'warden', '1.2.3'
 
+#Devise OmniAuth Providers
+gem 'oauth2', '0.9.4'
+gem 'omniauth', '1.2.2'
+gem 'omniauth-oauth2', '1.1.2'
+gem 'omniauth-facebook', '1.4.1'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
