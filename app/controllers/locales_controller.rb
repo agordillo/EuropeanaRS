@@ -8,7 +8,7 @@ class LocalesController < ActionController::Base
 
     session[:locale] = locale
     if user_signed_in?
-      current_user.language = locale
+      current_user.ui_language = locale
       current_user.save!
     end
     

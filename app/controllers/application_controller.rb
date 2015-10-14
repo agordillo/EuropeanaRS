@@ -37,8 +37,12 @@ class ApplicationController < ActionController::Base
   def page_not_found
     respond_to do |format|
       format.html {
-        flash[:alert] = I18n.t("dictionary.errors.page_not_found")
-        redirect_to view_context.home_path, alert: flash[:alert]
+        if request.path.include?("assets/") or request.xhr?
+          render :text => 'Not Found', :status => '404'
+        else
+          flash[:alert] = I18n.t("dictionary.errors.page_not_found")
+          redirect_to view_context.home_path, alert: flash[:alert]
+        end
       }
       format.json {
         render json: I18n.t("dictionary.errors.page_not_found")
@@ -50,19 +54,20 @@ class ApplicationController < ActionController::Base
   private
 
   def extract_locale_from_params
-    params[:locale] if (!params[:locale].blank? and I18n.available_locales.map(&:to_s).include? params[:locale])
+    params[:locale] if Utils.valid_locale?(params[:locale])
   end
 
   def extract_locale_from_user_profile
-    current_user.language if (user_signed_in? and !current_user.language.blank?)
+    current_user.ui_language if (user_signed_in? and Utils.valid_locale?(current_user.ui_language))
   end
 
   def extract_locale_from_session
-    session[:locale]
+    session[:locale] if Utils.valid_locale?(session[:locale])
   end
 
   def extract_locale_from_webclient
-    request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    client_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    client_locale if Utils.valid_locale?(client_locale)
   end
 
 end

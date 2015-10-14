@@ -4,8 +4,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    if resource.has_attribute?(:language)
-      resource.language = I18n.locale.to_s
+    if resource.has_attribute?(:ui_language)
+      resource.ui_language = I18n.locale.to_s
+      resource.language = resource.ui_language
     end
 
     resource_saved = resource.save
@@ -30,6 +31,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # PUT /resource
+  # We need to use a copy of the resource because we don't want to change
+  # the current user in place.
+  def update
+    super do |user|
+      #Use language as UI language when possible.
+      if Utils.valid_locale?(user.language)
+        user.ui_language = user.language
+        user.save!
+      end
+    end
+  end
+
 
   protected
 
@@ -41,11 +55,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def sign_up_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :language)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :ui_language, :language)
   end
 
   def account_update_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :language, :settings)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :ui_language, :language, :settings)
   end
   
 end

@@ -7,7 +7,9 @@ class User < ActiveRecord::Base
   before_validation :fillSettings
 
   validates :name, :presence => true
+  validates :ui_language, :presence => true
   validates :language, :presence => true
+  validate :checkLanguages
   validate :checkSettings
 
 
@@ -50,6 +52,7 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.name = auth.info.name
       user.language = I18n.locale.to_s
+      user.ui_language = Utils.valid_locale?(user.language) ? user.language : I18n.locale.to_s
     end
   end
 
@@ -59,6 +62,7 @@ class User < ActiveRecord::Base
     user.password = Devise.friendly_token[0,20]
     user.name = europeanaProfile["userName"]
     user.language = Europeana.getLanguageFromCountry(europeanaProfile["country"]) || I18n.locale.to_s
+    user.ui_language = Utils.valid_locale?(user.language) ? user.language : I18n.locale.to_s
     user.provider = "Europeana"
     user.uid = "Europeana:" + user.email
     user.save
@@ -67,6 +71,16 @@ class User < ActiveRecord::Base
 
 
   private
+
+  def fillLanguages
+    self.ui_language = I18n.locale.to_s unless Utils.valid_locale?(self.ui_language)
+    self.language = self.ui_language if self.language.blank?
+  end
+
+  def checkLanguages
+    return errors[:base] << "Invalid user UI locale" unless Utils.valid_locale?(self.ui_language)
+    true
+  end
 
   def fillSettings
     self.settings = User.defaultSettings.to_json if self.settings.blank?

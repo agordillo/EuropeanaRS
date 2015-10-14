@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20151014095541) do
     t.string   "name"
     t.text     "settings"
     t.string   "language"
+    t.string   "ui_language"
     t.string   "provider"
     t.string   "uid"
   end

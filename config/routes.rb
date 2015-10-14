@@ -20,5 +20,5 @@ Rails.application.routes.draw do
   match '/change_locale', to: 'locales#change_locale', via: [:get]
   
   #Wildcard route (This rule should be placed the last)
-  match '*path' => 'application#page_not_found', via: [:get]
+  match "*not_found", :to => 'application#page_not_found', via: [:get]
 end

@@ -15,7 +15,7 @@ class MyEuropeanaMimic
       :firstName => Faker::Name.first_name,
       :lastName => Faker::Name.last_name,
       :company => Faker::Company.name,
-      :country => Europeana.getAllLanguages.map{|lanCode| Europeana.getCountryFromLanguage(lanCode)}.sample(1) #Faker::Address.country
+      :country => Europeana.getAllLanguages.map{|lanCode| Europeana.getCountryFromLanguage(lanCode)}.sample(1).first #Faker::Address.country
     }
     fakeData[:username] = fakeData[:firstName]
     fakeData[:email] = Faker::Internet.free_email(fakeData[:firstName])
