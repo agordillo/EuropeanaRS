@@ -48,6 +48,15 @@ class Europeana
         unless sessionCookie.nil?
           sessionId = sessionCookie.split(";")[0].split("JSESSIONID=")[1]
           # puts ("Succesfully logged with session id: " + sessionId) if defined?(Rails::Console)
+
+          #Store credentials in the database
+          eUserAuth = EuropeanaUserAuth.where(public_key: username, private_key: password).first_or_create! do |userAuth|
+            userAuth.public_key = username
+            userAuth.private_key = password
+          end
+          eUserAuth.session_id = sessionId
+          eUserAuth.save!
+
           return sessionId
         end
       end
@@ -55,6 +64,11 @@ class Europeana
       #Unauthorized
       return { :errors => "Login Unauthorized", :code => 401 }
     end
+  end
+
+  def self.getLastSessionId(username,password)
+    eUserAuth = EuropeanaUserAuth.where(public_key: username, private_key: password).first
+    return eUserAuth.session_id unless eUserAuth.nil?
   end
 
   def self.userAuthenticationAPICall(sessionCookie,authMethod="userCredentials",myEuropeanaMethod="profile")
@@ -76,10 +90,18 @@ class Europeana
 
     case myEuropeanaMethod
     when "profile"
-      requestURL = userAuthenticationEndPoint + "/profile.json"
+      methodURL = "/profile.json"
+    when "items"
+      methodURL = "/saveditem.json"
+    when "tags"
+      methodURL = "/tag.json"
+    when "searches"
+      methodURL = "/savedsearch.json"
     else
       return { :errors => "Europeana Method not supported or unknown", :code => 500 }
     end
+
+    requestURL = userAuthenticationEndPoint + methodURL
     
     uri = URI(requestURL)
     http = Net::HTTP.new(uri.host, 80)
@@ -111,8 +133,14 @@ class Europeana
       end
     end
 
-    sessionId = Europeana.login(username,password)
-    return sessionId if Europeana.isErrorResponse(sessionId)
+    sessionId = nil
+    #Get sessionId from the database
+    sessionId = getLastSessionId(username,password) if nAttempt == 1
+    #Request a new session id
+    if sessionId.blank?
+      sessionId = Europeana.login(username,password)
+      return sessionId if Europeana.isErrorResponse(sessionId)
+    end
 
     response = Europeana.userAuthenticationAPICall(sessionId,authMethod,methodname)
     return response unless Europeana.isErrorResponse(response)
@@ -122,14 +150,36 @@ class Europeana
     # Sometimes the Europeana API returns a 302 HTTP redirect (unauthorized response different than 401).
     # This issue happens in some occasions when several calls are performed consecutively.
     # First call with valid credentials is supposed to work every time.
+    # Change or keep the value of sessionId don't fix the issue.
     # Anyway, repeating the call usually fix this issue.
-    if response[:code] == "302" and nAttempt < 5
-      sleep 1
+    if response[:code] == "302" and nAttempt < 9
+      sleep 1.5
       return Europeana.callAPIMethod(methodname,username,password,authMethod,nAttempt+1)
     end
 
     return response
   end
+
+  #####################
+  # MyEuropeana API
+  #####################
+
+  def self.getProfile(username,password)
+    Europeana.callAPIMethod("profile",username,password)
+  end
+
+  def self.getItems(username,password)
+    Europeana.callAPIMethod("items",username,password)
+  end
+
+  def self.getTags(username,password)
+    Europeana.callAPIMethod("tags",username,password)
+  end
+
+  def self.getSearches(username,password)
+    Europeana.callAPIMethod("searches",username,password)
+  end
+
 
   #####################
   # Utils
