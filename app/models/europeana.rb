@@ -143,6 +143,7 @@ class Europeana
   end
 
   def self.callAPIMethod(methodname,username,password,authMethod=nil,nAttempt=1)
+    return MyEuropeanaMimic.callAPIMethod(methodname,username,password,authMethod,nAttempt) if EuropeanaRS::Application::config.APP_CONFIG["my_europeana"]=="mimic"
     return { :errors => "API Method Name is missing", :code => 500 } if methodname.blank?
     return { :errors => "Credentials can't be blank", :code => 500 } if username.blank? or password.blank?
 
@@ -188,23 +189,6 @@ class Europeana
   #####################
 
   def self.getProfile(username,password)
-    # Answer Example
-    # {
-    #  "apikey"=>"xxxxxx",
-    #  "action"=>"/v2/user/profile.json",
-    #  "success"=>true,
-    #  "email"=>"example@europeana.com",
-    #  "userName"=>"Aldo",
-    #  "registrationDate"=>1442361600000,
-    #  "firstName"=>"Aldo",
-    #  "lastName"=>"Gordillo",
-    #  "company"=>"UPM",
-    #  "country"=>"Spain",
-    #  "fieldOfWork"=>"Research/Education",
-    #  "nrOfSavedItems"=>3,
-    #  "nrOfSavedSearches"=>1,
-    #  "nrOfSocialTags"=>1
-    # }
     Europeana.callAPIMethod("profile",username,password)
   end
 

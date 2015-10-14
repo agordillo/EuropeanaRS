@@ -36,6 +36,7 @@ gem 'omniauth', '1.2.2'
 gem 'omniauth-oauth2', '1.1.2'
 gem 'omniauth-facebook', '1.4.1'
 
+gem 'faker'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
