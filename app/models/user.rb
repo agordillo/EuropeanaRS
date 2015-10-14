@@ -37,9 +37,9 @@ class User < ActiveRecord::Base
 
   def self.defaultSettings
     default_user_settings = {
-      :rs_weights => EuropeanaRS::Application::config.weights["default_rs_weights"],
-      :los_weights => EuropeanaRS::Application::config.weights["default_los_weights"],
-      :us_weights => EuropeanaRS::Application::config.weights["default_us_weights"]
+      :rs_weights => EuropeanaRS::Application::config.weights[:default_rs_weights],
+      :los_weights => EuropeanaRS::Application::config.weights[:default_los_weights],
+      :us_weights => EuropeanaRS::Application::config.weights[:default_us_weights]
     }
   end
 
@@ -51,6 +51,18 @@ class User < ActiveRecord::Base
       user.name = auth.info.name
       user.language = I18n.locale.to_s
     end
+  end
+
+  def self.from_europeana_profile(europeanaProfile)
+    user = User.new
+    user.email = europeanaProfile["email"]
+    user.password = Devise.friendly_token[0,20]
+    user.name = europeanaProfile["userName"]
+    user.language = Europeana.getLanguageFromCountry(europeanaProfile["country"]) || I18n.locale.to_s
+    user.provider = "Europeana"
+    user.uid = "Europeana:" + user.email
+    user.save
+    user
   end
 
 

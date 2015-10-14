@@ -1,4 +1,5 @@
 # Set up Recommender System settings
+# Config accesible in EuropeanaRS::Application::config
 
 Rails.application.configure do
   #Default weights
@@ -8,9 +9,9 @@ Rails.application.configure do
   weights[:default_us_weights] = {}
 
   if config.APP_CONFIG["weights"]
-    weights[:default_rs_weights] = config.APP_CONFIG["default_rs_weights"] if config.APP_CONFIG["default_rs_weights"]
-    weights[:default_los_weights] = config.APP_CONFIG["default_los_weights"] if config.APP_CONFIG["default_los_weights"]
-    weights[:default_us_weights] = config.APP_CONFIG["default_us_weights"] if config.APP_CONFIG["default_us_weights"]
+    weights[:default_rs_weights] = config.APP_CONFIG["weights"]["default_rs_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_rs_weights"]
+    weights[:default_los_weights] = config.APP_CONFIG["weights"]["default_los_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_los_weights"]
+    weights[:default_us_weights] = config.APP_CONFIG["weights"]["default_us_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_us_weights"]
   end
 
   weights[:default_rs_weights] = RecommenderSystem.defaultRSWeights.merge(weights[:default_rs_weights])

@@ -14,6 +14,29 @@ class Europeana
     lo = Lo.new
     lo.europeana_metadata = europeanaItem.to_json rescue nil
     lo.save
+    lo
+  end
+
+  def self.createUserWithCredentials(username,password)
+    #Get user profile
+    userProfile = Europeana.getProfile(username,password)
+    return userProfile if Europeana.isErrorResponse(userProfile)
+
+    #Create user
+    u = User.from_europeana_profile(userProfile)
+
+    if userProfile["nrOfSavedItems"].is_a? Integer and userProfile["nrOfSavedItems"] > 0
+      #TODO. Retrieve saved items
+    end
+
+    if userProfile["nrOfSocialTags"].is_a? Integer and userProfile["nrOfSocialTags"] > 0
+      #TODO. Retrieve tags
+    end
+
+    return u if u.persisted?
+
+    u.valid?
+    return { :errors => u.errors.full_messages.to_sentence, :code => 500 }
   end
 
   #####################
@@ -165,6 +188,23 @@ class Europeana
   #####################
 
   def self.getProfile(username,password)
+    # Answer Example
+    # {
+    #  "apikey"=>"xxxxxx",
+    #  "action"=>"/v2/user/profile.json",
+    #  "success"=>true,
+    #  "email"=>"example@europeana.com",
+    #  "userName"=>"Aldo",
+    #  "registrationDate"=>1442361600000,
+    #  "firstName"=>"Aldo",
+    #  "lastName"=>"Gordillo",
+    #  "company"=>"UPM",
+    #  "country"=>"Spain",
+    #  "fieldOfWork"=>"Research/Education",
+    #  "nrOfSavedItems"=>3,
+    #  "nrOfSavedSearches"=>1,
+    #  "nrOfSocialTags"=>1
+    # }
     Europeana.callAPIMethod("profile",username,password)
   end
 
@@ -189,9 +229,59 @@ class Europeana
     response.is_a? Hash and !response[:errors].blank?
   end
 
+  def self.getAllLanguages
+    ["bg", "de", "en", "es", "et", "fr", "lb", "lv", "nl", "pl", "pt", "ro", "ru", "sr"]
+  end
+
   #Translate ISO 639-1 codes to readable language names
   def self.getReadableLanguage(lanCode="")
     I18n.t("languages." + lanCode, :default => lanCode);
+  end
+
+  def self.getCountryFromLanguage(lanCode="")
+    case lanCode.downcase
+    when "bg"
+      "Bulgaria"
+    when "cy"
+      "Wales"
+    when "de"
+      "Germany"
+    when "en"
+      "England"
+    when "es"
+      "Spain"
+    when "et"
+      "Estonia"
+    when "fr"
+      "France"
+    when "it"
+      "Italy"
+    when "lb"
+      "Luxembourg"
+    when "lv"
+      "Latvia"
+    when "nl"
+      "Netherlands"
+    when "pl"
+      "Poland"
+    when "pt"
+      "Portugal"
+    when "ro"
+      "Romania"
+    when "ru"
+      "Russia"
+    when "sr"
+      "Serbia"
+    else
+      lanCode.downcase
+    end
+  end
+
+  def self.getLanguageFromCountry(country="")
+    getAllLanguages.each do |lanCode|
+      return lanCode if country.downcase==Europeana.getCountryFromLanguage(lanCode).downcase
+    end
+    return I18n.default_locale.to_s
   end
 
 end

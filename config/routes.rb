@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations", :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_scope :user do get "/users/sign_in/europeana/" => 'users/sessions#new_europeana' end
+    devise_scope :user do post "/users/sign_in/europeana/" => 'users/sessions#create_europeana' end
 
   resources :users
   match '/profile', to: 'users#profile', via: [:get]

@@ -20,7 +20,6 @@
     </div>
   <% end %>
   <%= form_tag("/settings", method: "post") do %>
-    <%= hidden_field_tag(:user_settings) %>
     <input type="hidden" name="user_settings"/>
     <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
   <% end %>

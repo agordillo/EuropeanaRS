@@ -71,48 +71,12 @@ class Lo < ActiveRecord::Base
 
     #First try to infer by the Europeana Collection name
     case self.europeana_collection_name
-      when "9200385_Ag_EU_TEL_a0644_Newspapers_Wales"
-        country = "Wales"
-      else
+    when "9200385_Ag_EU_TEL_a0644_Newspapers_Wales"
+      country = "Wales"
+    else
     end
 
-    if country.nil?
-      case self.language
-        when "bg"
-          country = "Bulgaria"
-        when "cy"
-          country = "Wales"
-        when "de"
-          country = "Germany"
-        when "en"
-          country = "England"
-        when "es"
-          country = "Spain"
-        when "et"
-          country = "Estonia"
-        when "fr"
-          country = "France"
-        when "it"
-          country = "Italy"
-        when "lb"
-          country = "Luxembourg"
-        when "lv"
-          country = "Latvia"
-        when "nl"
-          country = "Netherlands"
-        when "pl"
-          country = "Poland"
-        when "pt"
-          country = "Portugal"
-        when "ro"
-          country = "Romania"
-        when "ru"
-          country = "Russia"
-        when "sr"
-          country = "Serbia"
-        else
-      end
-    end
+    country = Europeana.getCountryFromLanguage(self.language) if country.nil?
 
     country
   end

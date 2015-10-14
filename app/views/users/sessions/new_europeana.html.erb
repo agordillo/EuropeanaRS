@@ -1,0 +1,23 @@
+<div id="session_form">
+  <div id="sign_in">
+    <h2><%=t("devise.sessions.new_europeana")%></h2>
+
+    <%= form_tag("/users/sign_in/europeana", method: "post") do %>
+      <div class="field">
+        <p><%=t("dictionary.public_key")%></p>
+        <%= text_field_tag(:public_key, nil, {autofocus: true}) %>
+      </div>
+
+      <div class="field">
+        <p><%=t("dictionary.private_key")%></p>
+        <%= text_field_tag(:private_key) %>
+      </div>
+
+      <div class="actions">
+        <%= submit_tag(t("devise.sessions.new"), {class: "europeanars_button"}) %>
+      </div>
+    <% end %>
+
+    <%= link_to t("dictionary.back"), :back %><br />
+  </div>
+</div>
