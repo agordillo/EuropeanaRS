@@ -31,15 +31,45 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # GET /resource/edit
+  def edit
+    unless resource.ug_password_flag
+      # In Devise, when the user password is changed, the session is lost.
+      # We have to sign in the user again
+      user = current_user #get current user before making changes
+      @raw_password = Devise.friendly_token[0,8]
+      resource.password = @raw_password
+      resource.save!
+      sign_in(user, :bypass=>true)
+    end
+    render :edit
+  end
+
   # PUT /resource
   # We need to use a copy of the resource because we don't want to change
   # the current user in place.
   def update
+    generated_password = resource.encrypted_password unless resource.ug_password_flag
+
     super do |user|
-      #Use language as UI language when possible.
-      if Utils.valid_locale?(user.language)
-        user.ui_language = user.language
-        user.save!
+      if user.errors.blank?
+        userNeedsSaving = false
+
+        #Change password flag when the user specifies a password
+        if !user.ug_password_flag and user.encrypted_password != generated_password
+          user.ug_password_flag = true
+          userNeedsSaving = true
+        end
+
+        #Use language as UI language when possible.
+        if Utils.valid_locale?(user.language) and user.language != user.ui_language
+          user.ui_language = user.language
+          userNeedsSaving = true
+        end
+
+        user.save! if userNeedsSaving
+      else
+        @raw_password = params["user"]["current_password"] unless (resource.ug_password_flag or params["user"].blank?)
       end
     end
   end

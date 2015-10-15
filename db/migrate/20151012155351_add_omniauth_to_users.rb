@@ -4,5 +4,6 @@ class AddOmniauthToUsers < ActiveRecord::Migration
     add_index :users, :provider
     add_column :users, :uid, :string
     add_index :users, :uid
+    add_column :users, :ug_password_flag, :boolean, :default => true
   end
 end

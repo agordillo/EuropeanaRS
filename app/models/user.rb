@@ -4,11 +4,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => EuropeanaRS::Application::config.omniauth_providers
 
+  before_validation :fillPasswordFlag
+  before_validation :fillLanguages
   before_validation :fillSettings
 
   validates :name, :presence => true
   validates :ui_language, :presence => true
   validates :language, :presence => true
+  validates_inclusion_of :ug_password_flag, :in => [true, false]
   validate :checkLanguages
   validate :checkSettings
 
@@ -72,9 +75,27 @@ class User < ActiveRecord::Base
 
   private
 
+  def fillPasswordFlag
+    if self.new_record?
+      if self.provider.blank? or self.uid.blank?
+        self.ug_password_flag = true
+      else
+        #User registered from external provider (using OAuth2 or other authentication mechanisms)
+        self.ug_password_flag = false
+      end
+    end
+    true
+  end
+
   def fillLanguages
     self.ui_language = I18n.locale.to_s unless Utils.valid_locale?(self.ui_language)
     self.language = self.ui_language if self.language.blank?
+    true
+  end
+
+  def fillSettings
+    self.settings = User.defaultSettings.to_json if self.settings.blank?
+    true
   end
 
   def checkLanguages
@@ -82,21 +103,10 @@ class User < ActiveRecord::Base
     true
   end
 
-  def fillSettings
-    self.settings = User.defaultSettings.to_json if self.settings.blank?
-
-    # Weights normalization
-    # parsedSettings["rs_weights"].each{|k,v| parsedSettings["rs_weights"][k] = ((v/rs_weights_sum.to_f).round(4))}
-  end
-
   def checkSettings
     return errors[:base] << "User with empty settings" if self.settings.blank?
 
-    begin
-      parsedSettings = JSON.parse(self.settings)
-    rescue
-      return errors[:base] << "Settings: bad JSON file"
-    end
+    parsedSettings = JSON.parse(self.settings) rescue (return errors[:base] << "Settings: bad JSON file")
 
     #RS Weights
     rs_weights_validation = checkWeightsHash(parsedSettings["rs_weights"],["los_score", "popularity_score", "quality_score", "us_score"])

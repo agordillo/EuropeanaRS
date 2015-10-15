@@ -36,10 +36,14 @@
       <%= f.password_field :password_confirmation, autocomplete: "off" %>
     </div>
 
-    <div class="field">
-      <p><%=t("profile.account_edit.password_current")%></p>
-      <%= f.password_field :current_password, autocomplete: "off" %>
-    </div>
+    <% if resource.ug_password_flag %>
+      <div class="field">
+        <p><%=t("profile.account_edit.password_current")%></p>
+        <%= f.password_field :current_password, autocomplete: "off" %>
+      </div>
+    <% else %>
+      <%= f.hidden_field :current_password, value: @raw_password %>
+    <% end %>
 
     <div class="actions">
       <%= f.submit(t("profile.account_edit.button"), {class: "europeanars_button"}) %>
