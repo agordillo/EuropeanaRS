@@ -31,6 +31,7 @@ es:
     language: "Idioma"
     password: "Contraseña"
     search: "Buscar"
+    tags: "Etiquetas"
     untitled: "Sin título"
     update: "Actualizar"
     username: "Nombre de usuario"

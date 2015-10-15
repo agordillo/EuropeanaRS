@@ -35,7 +35,11 @@ class Europeana
       end
 
       if userProfile["nrOfSocialTags"].is_a? Integer and userProfile["nrOfSocialTags"] > 0
-        #TODO. Retrieve tags
+        tagsResponse = Europeana.getTags(username,password)
+        unless Europeana.isErrorResponse(tagsResponse)
+          tags = Europeana.getTagsFromMyEuropeanaResponse(tagsResponse) rescue nil
+          u.addEuropeanaUserTags(tags)
+        end
       end
     end
 
@@ -272,6 +276,10 @@ class Europeana
       return lanCode if country.downcase==Europeana.getCountryFromLanguage(lanCode).downcase
     end
     return I18n.default_locale.to_s
+  end
+
+  def self.getTagsFromMyEuropeanaResponse(tagsResponse)
+    tagsResponse["items"].map{|item| item["tag"]}.compact.uniq rescue []
   end
 
 end

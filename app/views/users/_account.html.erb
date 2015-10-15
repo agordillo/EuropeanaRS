@@ -14,6 +14,9 @@
   <div class="profile_info_field">
     <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
   </div>
+  <div class="profile_info_field">
+    <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
+  </div>
 
   <p class="profile_sections_separator"></p>
   
@@ -23,6 +26,9 @@
   </div>
   <div class="profile_info_field">
     <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
+  </div>
+  <div class="profile_info_field">
+    <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
   </div>
 
 </div>

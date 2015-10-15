@@ -31,6 +31,10 @@ div#session_form input[type='text'], div#session_form [type='email'], div#sessio
   font-size: 1.2rem;
 }
 
+div#session_form div.field div.select2-container{
+  width: 400px;
+}
+
 div#session_form p.remember_me {
   text-align: left;
   font-weight: normal;

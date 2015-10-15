@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :saved_items, :class_name => "Lo"
 
+  acts_as_taggable
+
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -59,6 +61,12 @@ class User < ActiveRecord::Base
     Lo.where("id_europeana in (?)",ids).each do |lo|
       self.like(lo)
     end
+  end
+
+  def addEuropeanaUserTags(tags)
+    return unless tags.is_a? Array
+    self.tag_list = self.tag_list + tags
+    self.save
   end
 
   #################
