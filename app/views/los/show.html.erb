@@ -88,6 +88,8 @@
           $(likeIcon).removeClass("glyphicon-star").addClass("glyphicon-star-empty");
         }
         $(likeIcon).removeAttr("status");
+      }).error(function(jqXHR,textStatus,errorThrown){
+        //Error handling here.
       });
     });
   });

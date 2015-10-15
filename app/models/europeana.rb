@@ -25,12 +25,18 @@ class Europeana
     #Create user
     u = User.from_europeana_profile(userProfile)
 
-    if userProfile["nrOfSavedItems"].is_a? Integer and userProfile["nrOfSavedItems"] > 0
-      #TODO. Retrieve saved items
-    end
+    if u.persisted?
+      if userProfile["nrOfSavedItems"].is_a? Integer and userProfile["nrOfSavedItems"] > 0
+        savedItemsResponse = Europeana.getItems(username,password)
+        unless Europeana.isErrorResponse(savedItemsResponse)
+          savedItems = savedItemsResponse["items"] rescue nil
+          u.addEuropeanaUserSavedItems(savedItems)
+        end
+      end
 
-    if userProfile["nrOfSocialTags"].is_a? Integer and userProfile["nrOfSocialTags"] > 0
-      #TODO. Retrieve tags
+      if userProfile["nrOfSocialTags"].is_a? Integer and userProfile["nrOfSocialTags"] > 0
+        #TODO. Retrieve tags
+      end
     end
 
     return u if u.persisted?

@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   end
 
   def favorites
-    @favorites = current_user.saved_items
+    @favorites = current_user.saved_items.first(100)
   end
 
   def akeys

@@ -53,6 +53,14 @@ class User < ActiveRecord::Base
     self.saved_items.include?(lo)
   end
 
+  def addEuropeanaUserSavedItems(europeanaUserSavedItems)
+    return unless europeanaUserSavedItems.is_a? Array
+    ids = europeanaUserSavedItems.map{|item| item["europeanaId"]}.compact
+    Lo.where("id_europeana in (?)",ids).each do |lo|
+      self.like(lo)
+    end
+  end
+
   #################
   # Class methods
   #################
