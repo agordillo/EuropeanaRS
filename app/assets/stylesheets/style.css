@@ -66,8 +66,12 @@ p#search_suggestions_separator {
   height: 60px;
 }
 
-div#suggestions_wrapper {
+div.los_carousel_wrapper {
   padding-bottom: 30px;
+}
+
+div.los_carousel {
+  padding-top: 10px;
 }
 
 p.section_title {
@@ -75,10 +79,6 @@ p.section_title {
   font-weight: bold;
   width: 100%;
   border-bottom: 2px solid #333;
-}
-
-#suggestions {
-  padding-top: 10px;
 }
 
 
@@ -171,6 +171,34 @@ div#lo_metadata div.column1 p.europeana_link a {
   color: #2a85e8;
 }
 
+div#lo_metadata div.column1 div.like {
+  display: inline-block;
+  width: 100%;
+  margin-left: 10%;
+  text-align: left;
+  margin-top: 10px;
+}
+
+div#lo_metadata div.column1 div.like a {
+  text-decoration: none;
+  color: inherit !important;
+}
+
+div#lo_metadata div.column1 div.like div {
+  display: inline-block;
+}
+
+div#lo_metadata div.column1 div.like div.like_icon {
+  float: left;
+  font-size: 2.5rem;
+}
+
+div#lo_metadata div.column1 div.like div.like_text {
+  font-size: 1.5rem;
+  margin-top: 6px;
+  margin-left: 5px;
+}
+
 div#lo_metadata div.column1 p.powered_by_europeana {
   font-size: 1.2rem;
   margin-top: 25px;
@@ -206,7 +234,7 @@ div#lo_metadata div.column2 p.field_content {
   font-size: 1rem;
 }
 
-div#lo_suggestions {
+div.lo_suggestions {
   display: inline-block;
   margin-top: 45px;
   width: 100%;

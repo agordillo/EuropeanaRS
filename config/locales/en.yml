@@ -70,6 +70,7 @@ en:
     europeana_collection_name: "Europeana Collection"
     europeana_skos_concept: "SKOS concept"
     language: "Language"
+    like: "Save Resource"
     powered_by_europeana: "Powered by Europeana"
     resource_type: "Resource type"
     tags: "Tags"

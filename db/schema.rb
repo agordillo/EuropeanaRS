@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014095541) do
+ActiveRecord::Schema.define(version: 20151015104355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,11 @@ ActiveRecord::Schema.define(version: 20151014095541) do
     t.integer  "europeana_collection_name_crc32", limit: 8
     t.integer  "country_crc32",                   limit: 8
     t.integer  "europeana_skos_concept_crc32",    limit: 8
+  end
+
+  create_table "los_users", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "lo_id"
   end
 
   create_table "taggings", force: :cascade do |t|

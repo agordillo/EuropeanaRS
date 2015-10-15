@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_and_belongs_to_many :saved_items, :class_name => "Lo"
+
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -35,6 +37,21 @@ class User < ActiveRecord::Base
     user_profile
   end
 
+  #################
+  # User methods
+  #################
+
+  def like(lo)
+    self.saved_items << lo unless (!lo.is_a? Lo or self.like?(lo))
+  end
+
+  def unlike(lo)
+    self.saved_items.delete(lo) unless (!lo.is_a? Lo)
+  end
+
+  def like?(lo)
+    self.saved_items.include?(lo)
+  end
 
   #################
   # Class methods

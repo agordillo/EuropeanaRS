@@ -70,6 +70,7 @@ es:
     europeana_collection_name: "Colección de Europeana"
     europeana_skos_concept: "Concepto SKOS"
     language: "Idioma"
+    like: "Salvar recurso"
     powered_by_europeana: "Powered by Europeana"
     resource_type: "Tipo de recurso"
     tags: "Etiquetas"

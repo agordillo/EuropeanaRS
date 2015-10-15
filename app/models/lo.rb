@@ -1,6 +1,8 @@
 class Lo < ActiveRecord::Base
   attr_accessor :score
 
+  has_and_belongs_to_many :users
+
   acts_as_taggable
 
   validates :id_europeana, :presence => true, :uniqueness => true

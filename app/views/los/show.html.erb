@@ -5,6 +5,14 @@
         <img src="<%=@lo.thumbnail_url%>"/>
       <% end %>
       <p class="europeana_link"><a target="_blank" href="<%=@lo.url%>"><%=t("los.view_at_europeana")%> <span class="glyphicon glyphicon-new-window"></span></a></p>
+      <% if user_signed_in? %>
+        <div class="like">
+          <a href="#" id="like">
+            <div class="like_icon"><span class="glyphicon glyphicon <%=current_user.like?(@lo) ? 'glyphicon-star' : 'glyphicon-star-empty'%>"></span></div>
+            <div class="like_text"><%=t("los.like")%></div>
+          </a>
+        </div>
+      <% end %>
       <p class="powered_by_europeana"><img src="/assets/Europeana_icon.png"/> <%=t("los.powered_by_europeana")%></p>
     </div>
     <div class="column2">
@@ -47,26 +55,40 @@
       <% end %>
     </div>
   </div>
-  <div id="lo_suggestions">
-    <p class="section_title"><%=t("recommendations.suggested_resources")%></p>
-    <div id="suggestions">
-      <% @suggestions.each do |lo| %>
-        <div>
-          <%= render "los/lo_box", lo: lo %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
+  <%= render "los/carousel", :los => @suggestions, :title => t("recommendations.suggested_resources"), :extraClasses => ["lo_suggestions"] %>
 </div>
 
 <script>
   $(document).ready(function(){
-    $('#suggestions').slick({
-      infinite: true,
-      slidesToShow: 5,
-      slidesToScroll: 1,
-      dots: true
+    $("#like").click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+
+      var likeIcon = $(this).find("span.glyphicon");
+
+      var status = $(likeIcon).attr("status");
+      if(status === "loading"){
+        return false;
+      } else {
+        $(likeIcon).attr("status","loading");
+      }
+
+      var likeLo = $(likeIcon).hasClass("glyphicon-star-empty");
+
+      var data = {};
+      data["like"] = likeLo.toString();
+
+      $.ajax({
+        url: "<%=like_lo_path(@lo)%>",
+        data: data
+      }).done(function(data){
+        if(data && data.like==true){
+          $(likeIcon).removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+        } else {
+          $(likeIcon).removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+        }
+        $(likeIcon).removeAttr("status");
+      });
     });
   });
 </script>

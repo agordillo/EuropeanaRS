@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations", :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do get "/users/sign_in/europeana/" => 'users/sessions#new_europeana' end
-    devise_scope :user do post "/users/sign_in/europeana/" => 'users/sessions#create_europeana' end
+  devise_scope :user do post "/users/sign_in/europeana/" => 'users/sessions#create_europeana' end
 
   resources :users
   match '/profile', to: 'users#profile', via: [:get]
@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   match '/favorites', to: 'users#favorites', via: [:get]
   match '/api_keys', to: 'users#akeys', via: [:get]
 
-  resources :los
+  resources :los do
+    get 'like', on: :member
+  end
 
   match '/search', to: 'search#search', via: [:get, :post]
   match '/change_locale', to: 'locales#change_locale', via: [:get]

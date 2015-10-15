@@ -1,3 +1,4 @@
 <div class="profile_section_wrapper">
   <p class="profile_section_title"><%=t("profile.menu.favorites")%></p>
+  <%= render "los/carousel", :los => @favorites, :slidesToShow => 4 %>
 </div>

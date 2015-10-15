@@ -1,0 +1,28 @@
+<% id ||= "carousel" %>
+<% title ||= nil %>
+<% slidesToShow ||= 5 %>
+<% extraClasses ||= [] %>
+
+<div class="los_carousel_wrapper <%=extraClasses.join(" ")%>">
+  <% unless title.blank? %>
+    <p class="section_title"><%=title%></p>
+  <% end %>
+  <div id="<%=id%>" class="los_carousel">
+    <% los.each do |lo| %>
+      <div>
+        <%= render "los/lo_box", lo: lo %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#<%=id%>").slick({
+      infinite: true,
+      slidesToShow: "<%=slidesToShow%>",
+      slidesToScroll: 1,
+      dots: true
+    });
+  });
+</script>
