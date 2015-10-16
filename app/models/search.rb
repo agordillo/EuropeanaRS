@@ -126,11 +126,15 @@ class Search
     # Results sorting
     if opts[:order].blank?
       if browse==true
-        #Browse can't order by relevance. Order by year by default.
-        opts[:order] = 'year ASC'
+        #Browse can't order by relevance. Order randomly by default.
+        opts[:order] = "random"
       else
         opts[:order] = nil
       end
+    end
+
+    if opts[:order] == "random"
+      opts[:order] = 'RAND()'
     end
 
     #Filtering results without an attribute when sorting by this attribute.

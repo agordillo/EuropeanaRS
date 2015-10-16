@@ -8,6 +8,7 @@ ThinkingSphinx::Index.define :lo, :with => :active_record do
   has created_at, updated_at
   has year
   has metadata_quality
+  has popularity
 
   has resource_type_crc32, :as => :resource_type
   has language_crc32, :as => :language

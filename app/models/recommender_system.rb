@@ -22,7 +22,7 @@ class RecommenderSystem
     filteredLOs = filter(rankedLOs,options)
 
     #Step 4: Sorting
-    sortedLOs = filteredLOs.sort! { |a,b|  b.score <=> a.score }
+    sortedLOs = filteredLOs.sort { |a,b|  b.score <=> a.score }
 
     #Step 5: Delivering
     return sortedLOs.first(options[:n])
@@ -41,12 +41,14 @@ class RecommenderSystem
     # Search resources using the search engine
     searchOptions = {};
 
-    searchOptions[:n] = 100
+    searchOptions[:n] = EuropeanaRS::Application::config.maxPreselectionSize
     searchOptions[:models] = [Lo]
 
     # Define some filters for the preselection
+    
     # A. Query
     searchOptions[:query] = options[:query] unless options[:query].blank?
+    
     # B. Language
     preselectionLanguage = nil
     if options[:lo_profile][:language]
@@ -55,6 +57,16 @@ class RecommenderSystem
       preselectionLanguage = options[:user_profile][:language]
     end
     searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
+    
+    # B (Alternative). Multilanguage approach.
+    # preselectionLanguages = []
+    # if options[:lo_profile][:language]
+    #   preselectionLanguages << options[:lo_profile][:language]
+    # end
+    # if options[:user_profile][:language]
+    #   preselectionLanguages << options[:user_profile][:language]
+    # end
+    # searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
     
     # First attempt for the preselection
     preSelection = Search.search(searchOptions)

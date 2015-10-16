@@ -144,6 +144,7 @@ en:
     sort_results_by:
       novelty: "Novelty"
       quality: "Quality"
+      random: "Random"
       relevance: "Relevance"
       title: "Sort results by"
       year: "Year (oldest first)"

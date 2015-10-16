@@ -34,6 +34,7 @@
             <% unless params[:query].blank? %>
               <li value="relevance"><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span> <%=t("search.sort_results_by.relevance")%></a></li>
             <% end %>
+            <li value="random"><a href="#"><span class="glyphicon glyphicon-align-center" aria-hidden="true"></span> <%=t("search.sort_results_by.random")%></a></li>
             <li value="year_desc"><a href="#"><span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span> <%=t("search.sort_results_by.novelty")%></a></li>
             <li value="year_asc"><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> <%=t("search.sort_results_by.year")%></a></li>
             <li value="quality"><a href="#"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> <%=t("search.sort_results_by.quality")%></a></li>
@@ -297,7 +298,7 @@
       this.query = ("<%= params[:query].blank? ? "" : params[:query] %>");
       this.resultsPerPage = parseInt("<%=@results.per_page%>");
       this.currentPageNumber = parseInt("<%=@results.current_page%>");
-      this.sortBy =  ("<%= params[:sort_by].blank? ? (params[:query].blank? ? 'year_asc' : 'relevance') : params[:sort_by]%>");
+      this.sortBy =  ("<%= params[:sort_by].blank? ? (params[:query].blank? ? 'random' : 'relevance') : params[:sort_by]%>");
       this.languages = ("<%= params[:languages].blank? ? "" : params[:languages]%>");
       this.yearMin = parseInt("<%= params[:yearMin].blank? ? 1600 : params[:yearMin]%>");
       this.yearMax = parseInt("<%= params[:yearMax].blank? ? 2015 : params[:yearMax]%>");
@@ -330,7 +331,7 @@
       //Do not allow sort by relevance on browses
       if(searchTerms.trim()===""){
         if(sortBy === "relevance"){
-          sortBy = "year_asc";
+          sortBy = "random";
         }
       }
       sortByQuery = "&sort_by=" + sortBy;

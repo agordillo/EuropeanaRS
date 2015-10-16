@@ -14,6 +14,8 @@ class SearchController < ApplicationController
       order = 'year DESC'
     when 'quality'
       order = 'metadata_quality DESC'
+    when 'random'
+      order = 'random'
     else
       #order by relevance
       order = nil

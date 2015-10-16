@@ -144,6 +144,7 @@ es:
     sort_results_by:
       novelty: "Novedad"
       quality: "Calidad"
+      random: "Aleatorio"
       relevance: "Relevancia"
       title: "Ordenar resultados por"
       year: "Año"

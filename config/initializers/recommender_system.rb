@@ -23,9 +23,10 @@ Rails.application.configure do
   config.weights = weights
 
   #Store some variables in configuration to speed things up
-  config.repository_total_entries = Lo.count
+  config.maxPreselectionSize = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)
   config.maxTextLength = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
-
+  config.repository_total_entries = Lo.count
+  
   #Keep words in the configuration
   words = {}
   Word.where("occurrences > ?",1).first(5000000).each do |word|

@@ -30,8 +30,8 @@ class User < ActiveRecord::Base
     (JSON.parse(self.settings)).recursive_symbolize_keys rescue User.defaultSettings
   end
 
-  def past_los
-    []
+  def past_los(n=3)
+    self.saved_items.last(n).map{|lo| lo.profile}
   end
 
   def profile
