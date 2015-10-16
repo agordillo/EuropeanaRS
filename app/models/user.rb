@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 
   before_validation :fillPasswordFlag
   before_validation :fillLanguages
+  before_validation :fillTags
   before_validation :fillSettings
 
   validates :name, :presence => true
@@ -17,6 +18,7 @@ class User < ActiveRecord::Base
   validates :language, :presence => true
   validates_inclusion_of :ug_password_flag, :in => [true, false]
   validate :checkLanguages
+  validate :checkTags
   validate :checkSettings
 
 
@@ -126,6 +128,35 @@ class User < ActiveRecord::Base
     true
   end
 
+  def fillTags
+    return true if self.tag_list.blank?
+
+    tagsConfig = EuropeanaRS::Application::config.tags
+    self.tag_list = self.tag_list.first(tagsConfig["maxTags"]) if self.tag_list.length > tagsConfig["maxTags"]
+
+    tagsToDelete = []
+    self.tag_list.each do |tag|
+      tL = tag.length
+      if (tL < tagsConfig["minLength"] || tL > tagsConfig["maxLength"])
+        tagsToDelete << tag
+        break
+      end
+
+      tagsConfig["tagSeparators"].each do |s|
+        if tag.include?(s)
+          tagsToDelete << tag
+          break 
+        end
+      end
+    end
+
+    tagsToDelete.each do |tag|
+      self.tag_list.delete(tag)
+    end
+
+    true
+  end
+
   def fillSettings
     self.settings = User.defaultSettings.to_json if self.settings.blank?
     true
@@ -133,6 +164,35 @@ class User < ActiveRecord::Base
 
   def checkLanguages
     return errors[:base] << "Invalid user UI locale" unless Utils.valid_locale?(self.ui_language)
+    true
+  end
+
+  def checkTags
+    return true if self.tag_list.blank?
+
+    tagsConfig = EuropeanaRS::Application::config.tags
+    return errors[:base] << ("Tag limit is " + tagsConfig["maxTags"].to_s) if self.tag_list.length > tagsConfig["maxTags"]
+    
+    self.tag_list.each do |tag|
+      tL = tag.length
+
+      if (tL < tagsConfig["minLength"] || tL > tagsConfig["maxLength"])
+        errors[:base] << ("Invalid tag length for tag '" + tag + "'") 
+        break
+      end
+
+      tagsConfig["tagSeparators"].each do |s|
+        if tag.include?(s)
+          errors[:base] << ("Invalid tag '" + tag + "'")
+          break 
+        end
+      end
+
+      break unless errors[:base].blank?
+    end
+
+    return errors[:base] unless errors[:base].blank?
+
     true
   end
 

@@ -26,7 +26,10 @@ class UsersController < ApplicationController
       flash[:notice] = I18n.t("profile.edit.messages.success")
       redirect_to "/profile"
     else
-      flash[:alert] = I18n.t("profile.edit.messages.success")
+      @user = current_user
+      @user.valid?
+      flash[:alert] = I18n.t("profile.edit.messages.fail", :reason => @user.errors.full_messages.to_sentence)
+      render :edit
     end
   end
 

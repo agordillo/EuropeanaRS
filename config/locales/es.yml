@@ -95,7 +95,7 @@ es:
       title: "Editar mi perfil de usuario"
       messages:
         success: "El perfil de usuario se actualizó satisfactoriamente."
-        fail: "El perfil de usuario no pudo ser actualizado."
+        fail: "El perfil de usuario no pudo ser actualizado por el siguiente motivo: %{reason}."
     settings:
       description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador, y los pesos aplicados para calcular las similaridades entre elementos."
       notifications:

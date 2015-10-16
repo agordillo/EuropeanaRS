@@ -95,7 +95,7 @@ en:
       title: "Edit my user profile"
       messages:
         success: "User profile updated succesfully."
-        fail: "User profile couldn't be updated."
+        fail: "User profile couldn't be updated for the following reason: %{reason}."
     settings:
       description: "In this section you can change the settings of the Recommender System for your user.<br/> Concretely, you can change the general weights of the recommender, and the weights applied to measure similarities between items."
       notifications:
