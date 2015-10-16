@@ -47,10 +47,12 @@ class User < ActiveRecord::Base
 
   def like(lo)
     self.saved_items << lo unless (!lo.is_a? Lo or self.like?(lo))
+    lo.update_like_count
   end
 
   def unlike(lo)
     self.saved_items.delete(lo) unless (!lo.is_a? Lo)
+    lo.update_like_count
   end
 
   def like?(lo)

@@ -5,13 +5,18 @@ class Lo < ActiveRecord::Base
 
   acts_as_taggable
 
+  before_validation :parseMetadata
+  before_validation :crc32_fields
+
   validates :id_europeana, :presence => true, :uniqueness => true
   validates :europeana_metadata, :presence => true
   validates :url, :presence => true, :uniqueness => true
   validates :title, :presence => true
 
-  before_validation :parseMetadata
-  before_validation :crc32_fields
+
+  #################
+  # Getters
+  #################
 
   def profile
     lo_profile = {}
@@ -22,6 +27,24 @@ class Lo < ActiveRecord::Base
 
     lo_profile
   end
+
+  def readable_language
+    Europeana.getReadableLanguage(self.language)
+  end
+
+  #################
+  # Lo methods
+  #################
+  def update_visit_count
+    self.update(:visit_count => self.visit_count+1)
+  end
+
+  def update_like_count
+    likes = self.users.length
+    self.update(:like_count => likes) if self.like_count != likes
+  end
+
+  private 
 
   def parseMetadata
     europeanaItem = JSON.parse(self.europeana_metadata) rescue nil
@@ -44,7 +67,7 @@ class Lo < ActiveRecord::Base
     self.year = europeanaItem["year"].first.to_i unless europeanaItem["year"].nil?
     self.metadata_quality = europeanaItem["europeanaCompleteness"]
     self.europeana_collection_name = europeanaItem["europeanaCollectionName"].first unless europeanaItem["europeanaCollectionName"].nil?
-    self.country = self.inferCountry #this should be done after assign the language and the europeana collection name
+    self.country = Europeana.inferCountryFromLanguage(self.language,self.europeana_collection_name)
 
     #Concept
     self.europeana_skos_concept = europeanaItem["edmConcept"].first unless europeanaItem["edmConcept"].nil?
@@ -63,28 +86,6 @@ class Lo < ActiveRecord::Base
     self.europeana_collection_name_crc32 = self.europeana_collection_name.to_crc32 unless self.europeana_collection_name.nil?
     self.country_crc32 = self.country.to_crc32 unless self.country.nil?
     self.europeana_skos_concept_crc32 = self.europeana_skos_concept.to_crc32 unless self.europeana_skos_concept.nil?
-  end
-
-  def inferCountry
-    #Currently Europeana does not provide information about the country.
-    #So, we try to infer the country from the collection or language of the item.
-
-    country = nil
-
-    #First try to infer by the Europeana Collection name
-    case self.europeana_collection_name
-    when "9200385_Ag_EU_TEL_a0644_Newspapers_Wales"
-      country = "Wales"
-    else
-    end
-
-    country = Europeana.getCountryFromLanguage(self.language) if country.nil?
-
-    country
-  end
-
-  def readable_language
-    Europeana.getReadableLanguage(self.language)
   end
 
 end

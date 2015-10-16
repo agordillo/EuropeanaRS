@@ -278,6 +278,24 @@ class Europeana
     return I18n.default_locale.to_s
   end
 
+  def self.inferCountryFromLanguage(language,europeanaCollectionName=nil)
+    #Currently Europeana does not provide information about the country.
+    #So, we try to infer the country from the collection or language of the item.
+
+    country = nil
+
+    #First try to infer by the Europeana Collection name
+    case europeanaCollectionName
+    when "9200385_Ag_EU_TEL_a0644_Newspapers_Wales"
+      country = "Wales"
+    else
+    end
+
+    country = Europeana.getCountryFromLanguage(language) if country.nil?
+
+    country
+  end
+
   def self.getTagsFromMyEuropeanaResponse(tagsResponse)
     tagsResponse["items"].map{|item| item["tag"]}.compact.uniq rescue []
   end

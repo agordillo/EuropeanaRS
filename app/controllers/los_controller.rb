@@ -5,6 +5,7 @@ class LosController < ApplicationController
   def show
     @lo = Lo.find_by_id(params[:id])
     return redirect_to(view_context.home_path, :alert => 'Learning Object Not Found') unless @lo
+    @lo.update_visit_count
     @suggestions = RecommenderSystem.suggestions({:n => 20, :user_profile => current_user_profile, :user_settings => current_user_settings, :lo_profile => @lo.profile})
   end
 
