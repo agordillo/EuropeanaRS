@@ -67,7 +67,7 @@ div.profile_section_wrapper {
 }
 
 div.profile_section_wrapper p.profile_sections_separator {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 div.profile_section_wrapper p.profile_section_title {
@@ -80,11 +80,11 @@ div.profile_section_wrapper p.profile_section_title {
 div.profile_section_wrapper div.profile_section_actions {
   width: 100%;
   text-align: right;
-  margin-bottom: 12px;
+  margin-bottom: 1px;
 }
 
 div.profile_section_wrapper div.profile_section_actions.withoutdescription {
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 div.profile_section_description {
@@ -92,6 +92,7 @@ div.profile_section_description {
   font-size: 1.3rem;
   font-style: italic;
   color: #333;
+  width: 90%;
 }
 
 div.profile_section_description.withoutactions {
@@ -114,6 +115,7 @@ div.profile_section_wrapper div.profile_section_actions ul li {
 
 div.profile_section_wrapper div.profile_info_field {
   font-size: 1.4rem;
+  width: 90%;
 }
 
 div.profile_section_wrapper span.profile_info_field_title {

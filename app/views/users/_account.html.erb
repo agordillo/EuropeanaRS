@@ -3,32 +3,32 @@
   <div class="profile_section_actions withoutdescription">
     <ul>
       <li><%= link_to(t("dictionary.edit"), edit_user_registration_path)%></li>
-    </ul
->  </div>
+    </ul>
+  </div>
   <div class="profile_info_field">
     <span class="profile_info_field_title"><%=t("dictionary.username")%>:</span> <span class="profile_info_field_value"><%=current_user.name%></span>
   </div>
   <div class="profile_info_field">
     <span class="profile_info_field_title"><%=t("dictionary.email")%>:</span> <span class="profile_info_field_value"><%=current_user.email%></span>
   </div>
-  <div class="profile_info_field">
-    <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
-  </div>
-  <div class="profile_info_field">
-    <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
-  </div>
 
   <p class="profile_sections_separator"></p>
   
   <p class="profile_section_title"><%=t("profile.account.user_profile_title")%></p>
-  <div class="profile_section_description withoutactions">
+  <div class="profile_section_actions">
+    <ul>
+      <li><%= link_to(t("dictionary.edit"), edit_user_path(current_user))%></li>
+    </ul>
+  </div>
+  <div class="profile_section_description">
     <p><%=t("profile.account.user_profile_description").html_safe%></p>
   </div>
   <div class="profile_info_field">
     <span class="profile_info_field_title"><%=t("dictionary.language")%>:</span> <span class="profile_info_field_value"><%=Europeana.getReadableLanguage(current_user.language)%></span>
   </div>
-  <div class="profile_info_field">
-    <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
-  </div>
-
+  <% unless current_user.tag_list.blank? %>
+    <div class="profile_info_field">
+      <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
+    </div>
+  <% end %>
 </div>

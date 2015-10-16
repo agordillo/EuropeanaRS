@@ -90,6 +90,12 @@ es:
       password: "Contraseña (deja este campo en blanco si no quieres cambiarla)"
       password_current: "Contraseña actual (necesitamos tu contraseña actual para confirmar tus cambios)"
       title: "Editar mi cuenta de usuario"
+    edit:
+      button: "Actualizar mi Perfil"
+      title: "Editar mi perfil de usuario"
+      messages:
+        success: "El perfil de usuario se actualizó satisfactoriamente."
+        fail: "El perfil de usuario no pudo ser actualizado."
     settings:
       description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador, y los pesos aplicados para calcular las similaridades entre elementos."
       notifications:

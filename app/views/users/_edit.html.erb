@@ -1,0 +1,41 @@
+<div id="edit_account">
+  <h2><%=t("profile.edit.title")%></h2>
+
+  <%= form_for(@user) do |f| %>
+    
+    <div class="field">
+      <p><%=t("dictionary.language")%></p>
+      <%= f.select :language, options_for_select(options_for_select_all_languages, @user.language), {}, { :class => 'account_language' } %>
+    </div>
+
+    <div class="field" lang="en">
+      <p><%=t("dictionary.tags")%></p>
+      <%= f.text_field :tag_list, value: @user.tag_list.join(","), :id => "user_tags" %>
+    </div>
+
+    <br/>
+    <div class="actions">
+      <%= f.submit(t("profile.edit.button"), {class: "europeanars_button"}) %>
+    </div>
+  <% end %>
+
+  <%= link_to t("dictionary.back"), :back %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var select2Locale = $.fn.select2.locales["<%=current_user.ui_language%>"];
+    if(typeof select2Locale != "undefined"){
+      $.extend($.fn.select2.defaults, select2Locale);
+    }
+    $("#user_tags").select2({
+      tags: [],
+      tokenSeparators: <%=raw EuropeanaRS::Application::config.tags['tagSeparators']%>,
+      dropdownCssClass: 'select2_tags',
+      minimumInputLength: parseInt("<%=EuropeanaRS::Application::config.tags['minLength']%>"),
+      maximumInputLength: parseInt("<%=EuropeanaRS::Application::config.tags['maxLength']%>"),
+      maximumSelectionSize: parseInt("<%=EuropeanaRS::Application::config.tags['maxTags']%>")
+    })
+  });
+</script>
+

@@ -20,6 +20,16 @@ module EuropeanaRS
 
     config.domain = (config.APP_CONFIG["domain"] || "localhost:3000")
 
+    #Tags
+    config.tags = (config.APP_CONFIG["tags"] || {})
+    default_tags = {
+        "minLength" => 2,
+        "maxLength" => 20,
+        "maxTags" => 10,
+        "tagSeparators" => [',',';']
+    }
+    config.tags = default_tags.merge(config.tags)
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

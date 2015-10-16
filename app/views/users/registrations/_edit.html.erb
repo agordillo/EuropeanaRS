@@ -22,17 +22,6 @@
     </div>
 
     <div class="field">
-      <p><%=t("dictionary.language")%></p>
-      <%= f.select :language, options_for_select(options_for_select_all_languages, resource.language), {}, { :class => 'account_language' } %>
-    </div>
-
-    <div class="field">
-      <p><%=t("dictionary.tags")%></p>
-      <%= f.hidden_field :tag_list, value: resource.tag_list %>
-      <%= f.text_field :tag_list, value: resource.tag_list.join(","), :id => "user_tags" %>
-    </div>
-
-    <div class="field">
       <p><%=t("profile.account_edit.password")%></p>
       <%= f.password_field :password, autocomplete: "off" %>
     </div>
@@ -65,13 +54,4 @@
   <%= link_to t("dictionary.back"), :back %>
   
 </div>
-
-<script>
-  $(document).ready(function(){
-    $("#user_tags").select2({
-      tags: [],
-      tokenSeparators: [',', ' ']
-    })
-  });
-</script>
 
