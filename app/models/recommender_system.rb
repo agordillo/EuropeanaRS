@@ -163,17 +163,16 @@ class RecommenderSystem
   end
 
   #Quality Score, [0,1] scale
-  #Metadata quality is the europeanaCompleteness field, which is a  number in a 1-10 scale.
+  #Metadata quality is the europeanaCompleteness field, which is a number in a 1-10 scale.
   def self.qualityScore(lo)
     return [[(lo.metadata_quality-1)/9.to_f,0].max,1].min rescue 0
   end
 
   #Popularity Score, [0,1] scale
+  #Popularity is calcuated in the 'context:updatePopularityMetrics' task. The popularity field is an integer in a 1-10 scale.
   def self.popularityScore(lo)
-    #TODO
-    return 0
+    return [[lo.popularity/100.to_f,0].max,1].min rescue 0
   end
-
 
 
   private
@@ -311,21 +310,21 @@ class RecommenderSystem
   def self.getRSWeights(options={})
     explicitRSWeights = options[:rs_weights] || {}
     userRSWeights = options[:user_settings][:rs_weights] if options[:user_settings]
-    userRSWeights = EuropeanaRS::Application::config.weights[:default_rs_weights] if userRSWeights.blank?
+    userRSWeights = EuropeanaRS::Application::config.weights[:default_rs] if userRSWeights.blank?
     userRSWeights.merge(explicitRSWeights)
   end
 
   def self.getLoSWeights(options={})
     explicitLoSWeights = options[:los_weights] || {}
     userLoSWeights = options[:user_settings][:los_weights] if options[:user_settings]
-    userLoSWeights = EuropeanaRS::Application::config.weights[:default_los_weights] if userLoSWeights.blank?
+    userLoSWeights = EuropeanaRS::Application::config.weights[:default_los] if userLoSWeights.blank?
     userLoSWeights.merge(explicitLoSWeights)
   end
 
   def self.getUSWeights(options={})
     explicitUSWeights = options[:us_weights] || {}
     userUSWeights = options[:user_settings][:us_weights] if options[:user_settings]
-    userUSWeights = EuropeanaRS::Application::config.weights[:default_us_weights] if userUSWeights.blank?
+    userUSWeights = EuropeanaRS::Application::config.weights[:default_us] if userUSWeights.blank?
     userUSWeights.merge(explicitUSWeights)
   end
 
@@ -354,6 +353,13 @@ class RecommenderSystem
     {
       :language => 0.5,
       :los => 0.5
+    }
+  end
+
+  def self.defaultPopularityWeights
+    {
+      :visit_count => 0.5,
+      :like_count => 0.5
     }
   end
 

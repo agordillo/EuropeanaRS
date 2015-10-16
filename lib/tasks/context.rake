@@ -9,6 +9,43 @@ namespace :context do
     puts "Task finished"
   end
 
+  #Usage
+  #Development:   bundle exec rake context:updatePopularityMetrics
+  task :updatePopularityMetrics => :environment do
+    puts "Updating popularity metrics"
+    timeStart = Time.now
+    
+    popularityWeights = EuropeanaRS::Application::config.weights[:popularity]
+
+    #Multiply each weight by 100, to store the popularity in a 0-100 scale.
+    popularityWeights.each do |key,value|
+      popularityWeights[key] *= 100
+    end
+
+    #Calculate maximumns
+    maxVisitCount = [Lo.order('visit_count DESC').first.visit_count,1].max
+    maxLikeCount = [Lo.order('like_count DESC').first.like_count,1].max
+
+    #Calculate popularity for each Learning Object
+    Lo.all.each do |lo|
+      popularity = (lo.visit_count/maxVisitCount.to_f) * popularityWeights[:visit_count] + (lo.like_count/maxLikeCount.to_f) * popularityWeights[:like_count]
+      popularity = [0,[popularity.round,100].min].max
+      lo.update_column :popularity, popularity if popularity != lo.popularity
+    end
+
+    #Normalize popularity
+    maxPopularity = [Lo.order('popularity DESC').first.popularity,1].max
+    Lo.all.each do |lo|
+      popularity = (lo.popularity/maxPopularity.to_f) * 100
+      popularity = [0,[popularity.round,100].min].max
+      lo.update_column :popularity, popularity if popularity != lo.popularity
+    end
+
+    timeFinish = Time.now
+    puts "Updating popularity: Task finished"
+    puts "Elapsed time: " + (timeFinish - timeStart).round(1).to_s + " (s)"
+  end
+
   #How to use: bundle exec rake context:updateWordsFrequency
   task :updateWordsFrequency => :environment do |t, args|
     puts "Updating Words Frequency (for calculating TF-IDF)"

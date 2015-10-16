@@ -4,19 +4,21 @@
 Rails.application.configure do
   #Default weights
   weights = {}
-  weights[:default_rs_weights] = {}
-  weights[:default_los_weights] = {}
-  weights[:default_us_weights] = {}
+  weights[:default_rs] = {}
+  weights[:default_los] = {}
+  weights[:default_us] = {}
 
   if config.APP_CONFIG["weights"]
-    weights[:default_rs_weights] = config.APP_CONFIG["weights"]["default_rs_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_rs_weights"]
-    weights[:default_los_weights] = config.APP_CONFIG["weights"]["default_los_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_los_weights"]
-    weights[:default_us_weights] = config.APP_CONFIG["weights"]["default_us_weights"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_us_weights"]
+    weights[:default_rs] = config.APP_CONFIG["weights"]["default_rs"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_rs"]
+    weights[:default_los] = config.APP_CONFIG["weights"]["default_los"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_los"]
+    weights[:default_us] = config.APP_CONFIG["weights"]["default_us"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_us"]
+    weights[:popularity] = config.APP_CONFIG["weights"]["popularity"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["popularity"]
   end
 
-  weights[:default_rs_weights] = RecommenderSystem.defaultRSWeights.merge(weights[:default_rs_weights])
-  weights[:default_los_weights] = RecommenderSystem.defaultLoSWeights.merge(weights[:default_los_weights])
-  weights[:default_us_weights] = RecommenderSystem.defaultUSWeights.merge(weights[:default_us_weights])
+  weights[:default_rs] = RecommenderSystem.defaultRSWeights.merge(weights[:default_rs])
+  weights[:default_los] = RecommenderSystem.defaultLoSWeights.merge(weights[:default_los])
+  weights[:default_us] = RecommenderSystem.defaultUSWeights.merge(weights[:default_us])
+  weights[:popularity] = RecommenderSystem.defaultPopularityWeights.merge(weights[:popularity])
 
   config.weights = weights
 

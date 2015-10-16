@@ -79,9 +79,9 @@ class User < ActiveRecord::Base
 
   def self.defaultSettings
     default_user_settings = {
-      :rs_weights => EuropeanaRS::Application::config.weights[:default_rs_weights],
-      :los_weights => EuropeanaRS::Application::config.weights[:default_los_weights],
-      :us_weights => EuropeanaRS::Application::config.weights[:default_us_weights]
+      :rs_weights => EuropeanaRS::Application::config.weights[:default_rs],
+      :los_weights => EuropeanaRS::Application::config.weights[:default_los],
+      :us_weights => EuropeanaRS::Application::config.weights[:default_us]
     }
   end
 

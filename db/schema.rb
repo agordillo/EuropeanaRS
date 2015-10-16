@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20151016103930) do
     t.integer  "europeana_skos_concept_crc32",    limit: 8
     t.integer  "visit_count",                               default: 0
     t.integer  "like_count",                                default: 0
+    t.integer  "popularity",                                default: 0
   end
 
   create_table "los_users", id: false, force: :cascade do |t|

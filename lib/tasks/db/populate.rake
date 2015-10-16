@@ -139,6 +139,23 @@ namespace :db do
 
       puts "Task finished"
     end
+
+    # How to use:
+    # bundle exec rake db:populate:popularityFields
+    task :popularityFields, [:start] => :environment do |t, args|
+      puts "Populating popularity fields with random values"
+
+      ActiveRecord::Base.uncached do
+        Lo.find_each do |lo|
+          lo.update_column :visit_count, (100 + rand(900))
+          lo.update_column :like_count, (100 + rand(900))
+        end
+      end
+
+      Rake::Task["context:updatePopularityMetrics"].invoke
+
+      puts "Popularity fields population: Task finished"
+    end
   end
 
 end

@@ -21,19 +21,22 @@ development:
   # my_europeana: "mimic" #To use a mimic of the MyEuropeana API instead of the real one. This should be used only for development.
   max_text_length: 60 #Maximun length in characters of the texts that will be taking into account when measuing semantic distances. High values could lead to performance issues.
   weights:
-    default_rs_weights:
+    default_rs:
       los_score: 0.4
       us_score: 0.4
       quality_score: 0.1
       popularity_score: 0.1
-    default_los_weights:
+    default_los:
       title: 0.2
       description: 0.15
       language: 0.5
       years: 0.15
-    default_us_weights:
+    default_us:
       language: 0.5
       los: 0.5
+    popularity:
+      visit_count: 0.5
+      like_count: 0.5
 
 test:
   secret_token: ""
