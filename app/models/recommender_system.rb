@@ -43,30 +43,32 @@ class RecommenderSystem
 
     searchOptions[:n] = EuropeanaRS::Application::config.maxPreselectionSize
     searchOptions[:models] = [Lo]
+    searchOptions[:order] = "random"
 
     # Define some filters for the preselection
     
     # A. Query
     searchOptions[:query] = options[:query] unless options[:query].blank?
     
-    # B. Language
-    preselectionLanguage = nil
+    # B. Language. Multilanguage approach.
+    preselectionLanguages = []
     if options[:lo_profile][:language]
-      preselectionLanguage = options[:lo_profile][:language]
-    elsif options[:user_profile][:language]
-      preselectionLanguage = options[:user_profile][:language]
+      preselectionLanguages << options[:lo_profile][:language]
     end
-    searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
-    
-    # B (Alternative). Multilanguage approach.
-    # preselectionLanguages = []
+    if options[:user_profile][:language]
+      preselectionLanguages << options[:user_profile][:language]
+    end
+    searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
+
+    # B. Language (Alternative). Single language approach
+    # preselectionLanguage = nil
     # if options[:lo_profile][:language]
-    #   preselectionLanguages << options[:lo_profile][:language]
+    #   preselectionLanguage = options[:lo_profile][:language]
+    # elsif options[:user_profile][:language]
+    #   preselectionLanguage = options[:user_profile][:language]
     # end
-    # if options[:user_profile][:language]
-    #   preselectionLanguages << options[:user_profile][:language]
-    # end
-    # searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
+    # searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
+    
     
     # First attempt for the preselection
     preSelection = Search.search(searchOptions)

@@ -20,7 +20,7 @@
   $(document).ready(function(){
     $("#<%=id%>").slick({
       infinite: true,
-      slidesToShow: "<%=slidesToShow%>",
+      slidesToShow: parseInt("<%=slidesToShow%>"),
       slidesToScroll: 1,
       dots: true
     });
