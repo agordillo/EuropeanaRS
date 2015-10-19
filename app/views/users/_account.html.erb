@@ -31,4 +31,10 @@
       <span class="profile_info_field_title"><%=t("dictionary.tags")%>:</span> <span class="profile_info_field_value"><%=current_user.tag_list%></span>
     </div>
   <% end %>
+  <% unless @saved_lo_profiles.blank? %>
+    <div class="profile_info_field">
+      <span class="profile_info_field_title"><%=t("profile.account.liked_resources")%>:</span>
+      <%= render "los/carousel", :los => @saved_lo_profiles, :loProfiles => true, :slidesToShow => 4, :extraClasses => ["account_liked_los"] %>
+    </div>
+  <% end %>
 </div>

@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   devise_scope :user do post "/users/sign_in/europeana/" => 'users/sessions#create_europeana' end
 
   resources :users
-  match '/profile', to: 'users#profile', via: [:get]
-  match '/account', to: 'users#profile', via: [:get]
+  match '/profile', to: 'users#show', via: [:get]
+  match '/account', to: 'users#show', via: [:get]
   match '/settings', to: 'users#settings', via: [:get]
   match '/settings', to: 'users#update_settings', via: [:post]
   match '/favorites', to: 'users#favorites', via: [:get]

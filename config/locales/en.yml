@@ -79,6 +79,7 @@ en:
     year: "Year"
   profile:
     account:
+      liked_resources: "Viewed and saved resources"
       user_profile_description: "This section shows all the information that EuropeanaRS has of your user.<br/> The more information the system has, the better will be the generated recommendations."
       user_profile_title: "User Information"
       title: "My Account"

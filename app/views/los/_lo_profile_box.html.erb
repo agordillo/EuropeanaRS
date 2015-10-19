@@ -9,4 +9,9 @@
       <img title="<%=lo[:title]%>" src="<%=lo[:thumbnail_url]%>"/>
     <% end %>
   <% end %>
+  <% if lo[:external] %>
+    <%= link_to(lo[:url]) do %>
+      <div class="external_lo_profile_badge" title="External resource"><img src="/assets/Europeana_icon.png"></div>
+    <% end %>
+  <% end %>
 </div>

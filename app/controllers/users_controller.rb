@@ -3,10 +3,7 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-  end
-
-  def profile
-    render "show"
+    @saved_lo_profiles = current_user.saved_lo_profiles.map{|loProfile| loProfile.profile}
   end
 
   def edit
@@ -31,9 +28,6 @@ class UsersController < ApplicationController
       flash[:alert] = I18n.t("profile.edit.messages.fail", :reason => @user.errors.full_messages.to_sentence)
       render :edit
     end
-  end
-
-  def account
   end
 
   #GET /settings

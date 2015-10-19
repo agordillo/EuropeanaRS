@@ -19,6 +19,14 @@ class LoProfile < ActiveRecord::Base
   end
 
   #################
+  # LoProfile methods
+  #################
+
+  def external?
+    self.lo_id.nil?
+  end
+
+  #################
   # Class Methods
   #################
 
@@ -68,6 +76,7 @@ class LoProfile < ActiveRecord::Base
     lo_profile[:popularity] = record.popularity
 
     #Fields used for visual representation
+    lo_profile[:external] = (record.is_a? LoProfile and record.external?)
     lo_profile[:url] = (record.is_a? Lo) ? Rails.application.routes.url_helpers.lo_path(record) : record.url
     lo_profile[:thumbnail_url] = record.thumbnail_url
 
