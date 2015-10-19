@@ -1,0 +1,12 @@
+<div class="lo_box"%>
+  <p>
+    <%= link_to(lo[:url],:title => lo[:title]) do %>
+      <%= lo[:title] %>
+    <% end %>
+  </p>
+  <% unless lo[:thumbnail_url].blank? %>
+    <%= link_to(lo[:url]) do %>
+      <img title="<%=lo[:title]%>" src="<%=lo[:thumbnail_url]%>"/>
+    <% end %>
+  <% end %>
+</div>

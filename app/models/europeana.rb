@@ -10,11 +10,25 @@ class Europeana
   # EuropeanaRS methods
   #####################
 
-  def self.saveRecord(europeanaItem)
+  def self.createLoFromItem(europeanaItem)
     lo = Lo.new
     lo.europeana_metadata = europeanaItem.to_json rescue nil
     lo.save
     lo
+  end
+
+  def self.createLoProfileFromMyEuropeanaItem(europeanaItem)
+    lo_profile = {}
+    lo_profile[:title] = europeanaItem["title"]
+    lo_profile[:description] = europeanaItem["description"]
+    lo_profile[:language] = europeanaItem["language"]
+    lo_profile[:year] = europeanaItem["year"].to_i unless europeanaItem["year"].nil?
+    lo_profile[:metadata_quality] = europeanaItem["europeanaCompleteness"]
+    lo_profile[:popularity] = 0
+    lo_profile[:url] = europeanaItem["guid"]
+    lo_profile[:thumbnail_url] = europeanaItem["edmPreview"]
+
+    LoProfile.fromLoProfile(lo_profile)
   end
 
   def self.createUserWithCredentials(username,password)

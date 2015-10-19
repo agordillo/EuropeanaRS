@@ -2,6 +2,8 @@
 <% title ||= nil %>
 <% slidesToShow ||= 5 %>
 <% extraClasses ||= [] %>
+<% loProfiles ||= false %>
+<% loPartialName = (loProfiles ? "lo_profile_box" : "lo_box") %>
 
 <div class="los_carousel_wrapper <%=extraClasses.join(" ")%>">
   <% unless title.blank? %>
@@ -10,7 +12,7 @@
   <div id="<%=id%>" class="los_carousel">
     <% los.each do |lo| %>
       <div>
-        <%= render "los/lo_box", lo: lo %>
+        <%= render "los/" + loPartialName, lo: lo %>
       </div>
     <% end %>
   </div>

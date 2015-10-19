@@ -112,7 +112,7 @@ namespace :db do
       return false if response.nil?
 
       response["items"].each do |europeanaItem|
-        Europeana.saveRecord(europeanaItem)
+        Europeana.createLoFromItem(europeanaItem)
       end
 
       true

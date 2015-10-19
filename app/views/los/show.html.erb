@@ -55,7 +55,7 @@
       <% end %>
     </div>
   </div>
-  <%= render "los/carousel", :los => @suggestions, :title => t("recommendations.suggested_resources"), :extraClasses => ["lo_suggestions"] %>
+  <%= render "los/carousel", :los => @suggestions, :loProfiles => true, :title => t("recommendations.suggested_resources"), :extraClasses => ["lo_suggestions"] %>
 </div>
 
 <script>

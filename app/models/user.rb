@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :saved_items, :class_name => "Lo"
+  has_and_belongs_to_many :saved_lo_profiles, :class_name => "LoProfile"
 
   acts_as_taggable
 
@@ -30,14 +31,18 @@ class User < ActiveRecord::Base
     (JSON.parse(self.settings)).recursive_symbolize_keys rescue User.defaultSettings
   end
 
-  def past_los(n=3)
-    self.saved_items.last(n).map{|lo| lo.profile}
+  def pastLos(n=3)
+    all_lops = self.saved_lo_profiles
+    pastLos = all_lops.where("lo_id is NOT null").last((n/2.to_f).round)
+    nFill = (n-pastLos.length)
+    pastLos += all_lops.limit(nFill).where("lo_id is NULL or lo_id not in (?)", pastLos.map{|loProfile| loProfile.lo_id}).order("RANDOM()") if nFill > 0
+    pastLos.map{|loProfile| loProfile.profile}
   end
 
   def profile
     user_profile = {}
     user_profile[:language] = self.language
-    user_profile[:los] = self.past_los
+    user_profile[:los] = self.pastLos
     user_profile
   end
 
@@ -46,13 +51,21 @@ class User < ActiveRecord::Base
   #################
 
   def like(lo)
-    self.saved_items << lo unless (!lo.is_a? Lo or self.like?(lo))
-    lo.update_like_count
+    if lo.is_a? Lo and !self.like?(lo)
+      self.saved_items << lo
+      loProfile = LoProfile.fromLo(lo)
+      self.saved_lo_profiles << loProfile
+      lo.update_like_count
+    end
   end
 
   def unlike(lo)
-    self.saved_items.delete(lo) unless (!lo.is_a? Lo)
-    lo.update_like_count
+    if lo.is_a? Lo and self.like?(lo)
+      self.saved_items.delete(lo)
+      loProfile = LoProfile.fromLo(lo)
+      self.saved_lo_profiles.delete(loProfile)
+      lo.update_like_count
+    end
   end
 
   def like?(lo)
@@ -61,9 +74,18 @@ class User < ActiveRecord::Base
 
   def addEuropeanaUserSavedItems(europeanaUserSavedItems)
     return unless europeanaUserSavedItems.is_a? Array
-    ids = europeanaUserSavedItems.map{|item| item["europeanaId"]}.compact
+    europeanaUserSavedItems = europeanaUserSavedItems.reject{|item| item["europeanaId"].blank?}
+    ids = europeanaUserSavedItems.map{|item| item["europeanaId"]}
     Lo.where("id_europeana in (?)",ids).each do |lo|
       self.like(lo)
+      ids.delete(lo.id_europeana)
+    end
+    #Add external LO profiles
+    europeanaUserSavedItems.select{|item| ids.include?(item["europeanaId"])}.each do |item|
+      loProfile = Europeana.createLoProfileFromMyEuropeanaItem(item)
+      if loProfile.persisted?
+        self.saved_lo_profiles << loProfile unless self.saved_lo_profiles.include?(loProfile)
+      end
     end
   end
 

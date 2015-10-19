@@ -22,7 +22,7 @@ class RecommenderSystem
     filteredLOs = filter(rankedLOs,options)
 
     #Step 4: Sorting
-    sortedLOs = filteredLOs.sort { |a,b|  b.score <=> a.score }
+    sortedLOs = filteredLOs.sort { |a,b|  b[:score] <=> a[:score] }
 
     #Step 5: Delivering
     return sortedLOs.first(options[:n])
@@ -94,6 +94,9 @@ class RecommenderSystem
       end
     end
 
+    #Convert LOs to profile LOs
+    preSelection = preSelection.map{|lo| lo.profile}
+
     return preSelection
   end
 
@@ -112,22 +115,20 @@ class RecommenderSystem
       weights_sum = (weights_sum-weights[:los_score])
       weights[:us_score] = 0
     end
-    weights.each { |k, v| weights[k] = v/weights_sum.to_f } if weights_sum < 1
+    weights.each { |k, v| weights[k] = [1,v/weights_sum.to_f].min } if weights_sum < 1
 
     calculateLoSimilarityScore = (weights[:los_score]>0)
     calculateUserSimilarityScore = (weights[:us_score]>0)
     calculateQualityScore = (weights[:quality_score]>0)
     calculatePopularityScore = (weights[:popularity_score]>0)
 
-    preSelectionLOs.map{ |lo|
-      loProfile = lo.profile
-
+    preSelectionLOs.map{ |loProfile|
       los_score = calculateLoSimilarityScore ? RecommenderSystem.loProfileSimilarityScore(options[:lo_profile],loProfile) : 0
       us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile) : 0
-      quality_score = calculateQualityScore ? RecommenderSystem.qualityScore(lo) : 0
-      popularity_score = calculatePopularityScore ? RecommenderSystem.popularityScore(lo) : 0
+      quality_score = calculateQualityScore ? RecommenderSystem.qualityScore(loProfile) : 0
+      popularity_score = calculatePopularityScore ? RecommenderSystem.popularityScore(loProfile) : 0
 
-      lo.score = weights[:los_score] * los_score + weights[:us_score] * us_score + weights[:quality_score] * quality_score + weights[:popularity_score] * popularity_score
+      loProfile[:score] = weights[:los_score] * los_score + weights[:us_score] * us_score + weights[:quality_score] * quality_score + weights[:popularity_score] * popularity_score
     }
 
     preSelectionLOs
@@ -178,14 +179,14 @@ class RecommenderSystem
 
   #Quality Score, [0,1] scale
   #Metadata quality is the europeanaCompleteness field, which is a number in a 1-10 scale.
-  def self.qualityScore(lo)
-    return [[(lo.metadata_quality-1)/9.to_f,0].max,1].min rescue 0
+  def self.qualityScore(loProfile)
+    return [[(loProfile[:metadata_quality]-1)/9.to_f,0].max,1].min
   end
 
   #Popularity Score, [0,1] scale
   #Popularity is calcuated in the 'context:updatePopularityMetrics' task. The popularity field is an integer in a 1-10 scale.
-  def self.popularityScore(lo)
-    return [[lo.popularity/100.to_f,0].max,1].min rescue 0
+  def self.popularityScore(loProfile)
+    return [[loProfile[:popularity]/100.to_f,0].max,1].min
   end
 
 

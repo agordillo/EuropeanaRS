@@ -14,7 +14,7 @@
 
 <p id="search_suggestions_separator"></p>
 
-<%= render "los/carousel", :los => @suggestions, :title => t("recommendations.suggested_resources") %>
+<%= render "los/carousel", :los => @suggestions, :loProfiles => true, :title => t("recommendations.suggested_resources") %>
 
 <script>
   $(document).ready(function(){

@@ -1,6 +1,4 @@
 class Lo < ActiveRecord::Base
-  attr_accessor :score
-
   has_and_belongs_to_many :users
 
   acts_as_taggable
@@ -19,13 +17,7 @@ class Lo < ActiveRecord::Base
   #################
 
   def profile
-    lo_profile = {}
-    lo_profile[:title] = self.title
-    lo_profile[:description] = self.description
-    lo_profile[:language] = self.language
-    lo_profile[:year] = self.year
-
-    lo_profile
+    LoProfile.toProfile(self)
   end
 
   def readable_language
