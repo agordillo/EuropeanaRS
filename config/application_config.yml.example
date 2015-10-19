@@ -38,6 +38,20 @@ development:
     popularity:
       visit_count: 0.5
       like_count: 0.5
+  filters:
+    default_rs:
+      los_score: 0
+      us_score: 0
+      quality_score: 0
+      popularity_score: 0
+    default_los:
+      title: 0
+      description: 0
+      language: 0
+      years: 0
+    default_us:
+      language: 0
+      los: 0
 
 test:
   secret_token: ""

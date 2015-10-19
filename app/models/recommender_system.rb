@@ -105,28 +105,40 @@ class RecommenderSystem
     return preSelectionLOs if preSelectionLOs.blank?
 
     weights = RecommenderSystem.getRSWeights(options)
+    filters = RecommenderSystem.getRSFilters(options)
 
     weights_sum = 1
     if options[:lo_profile].blank?
       weights_sum = (weights_sum-weights[:los_score])
       weights[:los_score] = 0
+      filters[:los_score] = 0
     end
     if options[:user_profile].blank?
       weights_sum = (weights_sum-weights[:los_score])
       weights[:us_score] = 0
+      filters[:us_score] = 0
     end
     weights.each { |k, v| weights[k] = [1,v/weights_sum.to_f].min } if weights_sum < 1
 
-    calculateLoSimilarityScore = (weights[:los_score]>0)
-    calculateUserSimilarityScore = (weights[:us_score]>0)
-    calculateQualityScore = (weights[:quality_score]>0)
-    calculatePopularityScore = (weights[:popularity_score]>0)
+    calculateLoSimilarityScore = ((weights[:los_score]>0)||(filters[:los_score]>0))
+    calculateUserSimilarityScore = ((weights[:us_score]>0)||(filters[:us_score]>0))
+    calculateQualityScore = ((weights[:quality_score]>0)||(filters[:quality_score]>0))
+    calculatePopularityScore = ((weights[:popularity_score]>0)||(filters[:popularity_score]>0))
 
     preSelectionLOs.map{ |loProfile|
+      next if loProfile[:filtered]==true
+
       los_score = calculateLoSimilarityScore ? RecommenderSystem.loProfileSimilarityScore(options[:lo_profile],loProfile) : 0
+      (loProfile[:filtered]=true and next) if (calculateLoSimilarityScore and los_score < filters[:los_score])
+      
       us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile) : 0
+      (loProfile[:filtered]=true and next) if (calculateUserSimilarityScore and us_score < filters[:us_score])
+      
       quality_score = calculateQualityScore ? RecommenderSystem.qualityScore(loProfile) : 0
+      (loProfile[:filtered]=true and next) if (calculateQualityScore and quality_score < filters[:quality_score])
+      
       popularity_score = calculatePopularityScore ? RecommenderSystem.popularityScore(loProfile) : 0
+      (loProfile[:filtered]=true and next) if (calculatePopularityScore and popularity_score < filters[:popularity_score])
 
       loProfile[:score] = weights[:los_score] * los_score + weights[:us_score] * us_score + weights[:quality_score] * quality_score + weights[:popularity_score] * popularity_score
     }
@@ -135,10 +147,9 @@ class RecommenderSystem
   end
 
   #Step 3: Filtering
+  #Filtered Learning Objects are marked with the lo[:filtered] key.
   def self.filter(rankedLOs,options)
-    filteredLOs = rankedLOs
-    #TODO
-    filteredLOs
+    rankedLOs.select{|lo| lo[:filtered].nil? }
   end
 
 
@@ -323,24 +334,44 @@ class RecommenderSystem
   ############
 
   def self.getRSWeights(options={})
-    explicitRSWeights = options[:rs_weights] || {}
-    userRSWeights = options[:user_settings][:rs_weights] if options[:user_settings]
-    userRSWeights = EuropeanaRS::Application::config.weights[:default_rs] if userRSWeights.blank?
-    userRSWeights.merge(explicitRSWeights)
+    getRSUserSetting("rs","weights",options)
   end
 
   def self.getLoSWeights(options={})
-    explicitLoSWeights = options[:los_weights] || {}
-    userLoSWeights = options[:user_settings][:los_weights] if options[:user_settings]
-    userLoSWeights = EuropeanaRS::Application::config.weights[:default_los] if userLoSWeights.blank?
-    userLoSWeights.merge(explicitLoSWeights)
+    getRSUserSetting("los","weights",options)
   end
 
   def self.getUSWeights(options={})
-    explicitUSWeights = options[:us_weights] || {}
-    userUSWeights = options[:user_settings][:us_weights] if options[:user_settings]
-    userUSWeights = EuropeanaRS::Application::config.weights[:default_us] if userUSWeights.blank?
-    userUSWeights.merge(explicitUSWeights)
+    getRSUserSetting("us","weights",options)
+  end
+
+  def self.getRSFilters(options={})
+    getRSUserSetting("rs","filters",options)
+  end
+
+  def self.getLoSFilters(options={})
+    getRSUserSetting("los","filters",options)
+  end
+
+  def self.getUSFilters(options={})
+    getRSUserSetting("us","filters",options)
+  end
+
+  def self.getRSUserSetting(settingName,settingFamily,options={})
+    settingKey = (settingName + "_" + settingFamily).to_sym #e.g. :rs_weights
+    explicitSetting = options[settingKey] || {}
+    userSettings = options[:user_settings][settingKey] if options[:user_settings]
+    if userSettings.blank?
+      defaultKey = ("default_" + settingName).to_sym #e.g. :default_rs
+      case settingFamily
+      when "weights"
+        europeanaRSConfig = EuropeanaRS::Application::config.weights
+      when "filters"
+        europeanaRSConfig = EuropeanaRS::Application::config.filters
+      end
+      userSettings = europeanaRSConfig[defaultKey] unless europeanaRSConfig.nil?
+    end
+    userSettings.merge(explicitSetting)
   end
 
   # Default weights for the Recommender System provided by EuropeanaRS
@@ -375,6 +406,34 @@ class RecommenderSystem
     {
       :visit_count => 0.5,
       :like_count => 0.5
+    }
+  end
+
+  # Default filters for the Recommender System provided by EuropeanaRS
+  # These filters can be overriden in the application_config.yml file.
+  # The current default filters can be accesed in the EuropeanaRS::Application::config.filters variable.
+  def self.defaultRSFilters
+    {
+      :los_score => 0,
+      :us_score => 0,
+      :quality_score => 0,
+      :popularity_score => 0
+    }
+  end
+
+  def self.defaultLoSFilters
+    {
+      :title => 0,
+      :description => 0,
+      :language => 0,
+      :years => 0
+    }
+  end
+
+  def self.defaultUSFilters
+    {
+      :language => 0,
+      :los => 0
     }
   end
 

@@ -98,7 +98,7 @@ en:
         success: "User profile updated succesfully."
         fail: "User profile couldn't be updated for the following reason: %{reason}."
     settings:
-      description: "In this section you can change the settings of the Recommender System for your user.<br/> Concretely, you can change the general weights of the recommender, and the weights applied to measure similarities between items."
+      description: "In this section you can change the settings of the Recommender System for your user.<br/> Concretely, you can change the general weights of the recommender, and the weights applied to measure similarities between items.<br/> You can also set filters, both general and similarity, setting thresholds for the different criteria."
       notifications:
         errors:
           bad_weights: "The weights you have selected are not correct."
@@ -106,8 +106,11 @@ en:
         success:
           generic: "Settings updated succesfully"
       title: "Settings"
+      title_general_filters: "General Filters"
       title_general_weights: "General Weights"
+      title_los_filters: "Filters for Learning Object Similarity"
       title_los_weights: "Learning Object Similarity Weights"
+      title_us_filters: "Filters for User Profile Similarity"
       title_us_weights: "User Profile Similarity Weights"
       weights:
         general:

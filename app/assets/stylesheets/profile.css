@@ -125,22 +125,22 @@ div.profile_section_wrapper span.profile_info_field_title {
 div.profile_section_wrapper span.profile_info_field_value {
 }
 
-div.profile_section_wrapper.weights_section p.slider_title {
+div.profile_section_wrapper.settings_section p.slider_title {
   font-size: 1.4rem;
   margin-top: 15px;
   margin-bottom: 6px;
 }
 
-div.profile_section_wrapper.weights_section p.slider_title input {
+div.profile_section_wrapper.settings_section p.slider_title input {
   font-weight: bold;
 }
 
-div.profile_section_wrapper.weights_section div.slider {
+div.profile_section_wrapper.settings_section div.slider {
   width: 40%;
   margin-bottom: 20px;
 }
 
-div.profile_section_wrapper.weights_section div.weights_sum_circle {
+div.profile_section_wrapper.settings_section div.weights_sum_circle {
   background: white;
   color: black;
   border-radius:50%;
@@ -155,12 +155,12 @@ div.profile_section_wrapper.weights_section div.weights_sum_circle {
   cursor: default;
 }
 
-div.profile_section_wrapper.weights_section div.weights_sum_circle.errors {
+div.profile_section_wrapper.settings_section div.weights_sum_circle.errors {
   color: red;
   cursor: pointer;
 }
 
-div.profile_section_wrapper.weights_section form input.europeanars_button {
+div.profile_section_wrapper.settings_section form input.europeanars_button {
   width: 99%;
   margin-top: 5px;
   margin-bottom: 35px;

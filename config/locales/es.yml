@@ -98,7 +98,7 @@ es:
         success: "El perfil de usuario se actualizó satisfactoriamente."
         fail: "El perfil de usuario no pudo ser actualizado por el siguiente motivo: %{reason}."
     settings:
-      description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador, y los pesos aplicados para calcular las similaridades entre elementos."
+      description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador y los pesos aplicados para calcular las similaridades entre elementos.<br/> También puedes establecer filtros, tanto generales como de similaridad, fijando valores umbrales para los diferentes criterios."
       notifications:
         errors:
           bad_weights: "Los pesos que has seleccionado no son correctos."
@@ -106,8 +106,11 @@ es:
         success:
           generic: "Ajustes actualizados satisfactoriamente"
       title: "Ajustes"
+      title_general_filters: "Filtros Generales"
       title_general_weights: "Pesos Generales"
+      title_los_filters: "Filtros para Similaridad de Objetos de Aprendizaje"
       title_los_weights: "Pesos de Similaridad de Objetos de Aprendizaje"
+      title_us_filters: "Filtros para Similaridad de Perfil de Usuario"
       title_us_weights: "Pesos de Similaridad del Perfil de Usuario"
       weights:
         general:

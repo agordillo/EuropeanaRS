@@ -7,6 +7,7 @@ Rails.application.configure do
   weights[:default_rs] = {}
   weights[:default_los] = {}
   weights[:default_us] = {}
+  weights[:popularity] = {}
 
   if config.APP_CONFIG["weights"]
     weights[:default_rs] = config.APP_CONFIG["weights"]["default_rs"].recursive_symbolize_keys if config.APP_CONFIG["weights"]["default_rs"]
@@ -21,6 +22,26 @@ Rails.application.configure do
   weights[:popularity] = RecommenderSystem.defaultPopularityWeights.merge(weights[:popularity])
 
   config.weights = weights
+
+
+  #Default filters
+  filters = {}
+  filters[:default_rs] = {}
+  filters[:default_los] = {}
+  filters[:default_us] = {}
+
+  if config.APP_CONFIG["filters"]
+    filters[:default_rs] = config.APP_CONFIG["filters"]["default_rs"].recursive_symbolize_keys if config.APP_CONFIG["filters"]["default_rs"]
+    filters[:default_los] = config.APP_CONFIG["filters"]["default_los"].recursive_symbolize_keys if config.APP_CONFIG["filters"]["default_los"]
+    filters[:default_us] = config.APP_CONFIG["filters"]["default_us"].recursive_symbolize_keys if config.APP_CONFIG["filters"]["default_us"]
+  end
+
+  filters[:default_rs] = RecommenderSystem.defaultRSFilters.merge(filters[:default_rs])
+  filters[:default_los] = RecommenderSystem.defaultLoSFilters.merge(filters[:default_los])
+  filters[:default_us] = RecommenderSystem.defaultUSFilters.merge(filters[:default_us])
+
+  config.filters = filters
+
 
   #Store some variables in configuration to speed things up
   config.maxPreselectionSize = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)

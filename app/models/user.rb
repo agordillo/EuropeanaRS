@@ -103,7 +103,10 @@ class User < ActiveRecord::Base
     default_user_settings = {
       :rs_weights => EuropeanaRS::Application::config.weights[:default_rs],
       :los_weights => EuropeanaRS::Application::config.weights[:default_los],
-      :us_weights => EuropeanaRS::Application::config.weights[:default_us]
+      :us_weights => EuropeanaRS::Application::config.weights[:default_us],
+      :rs_filters => EuropeanaRS::Application::config.filters[:default_rs],
+      :los_filters => EuropeanaRS::Application::config.filters[:default_los],
+      :us_filters => EuropeanaRS::Application::config.filters[:default_us]
     }
   end
 
@@ -182,7 +185,8 @@ class User < ActiveRecord::Base
   end
 
   def fillSettings
-    self.settings = User.defaultSettings.to_json if self.settings.blank?
+    self.settings = (User.defaultSettings.merge(self.parsedSettings)).to_json
+
     true
   end
 
@@ -226,38 +230,53 @@ class User < ActiveRecord::Base
     parsedSettings = JSON.parse(self.settings) rescue (return errors[:base] << "Settings: bad JSON file")
 
     #RS Weights
-    rs_weights_validation = checkWeightsHash(parsedSettings["rs_weights"],["los_score", "popularity_score", "quality_score", "us_score"])
+    rs_weights_validation = checkSettingHash(parsedSettings["rs_weights"],"weights",["los_score", "popularity_score", "quality_score", "us_score"])
     return errors[:base] << rs_weights_validation unless rs_weights_validation.blank?
 
     #LoS Weights
-    los_weights_validation = checkWeightsHash(parsedSettings["los_weights"],["title", "description", "language", "years"])
+    los_weights_validation = checkSettingHash(parsedSettings["los_weights"],"weights",["title", "description", "language", "years"])
     return errors[:base] << los_weights_validation unless los_weights_validation.blank?
 
     #US Weights
-    us_weights_validation = checkWeightsHash(parsedSettings["us_weights"],["language", "los"])
+    us_weights_validation = checkSettingHash(parsedSettings["us_weights"],"weights",["language", "los"])
     return errors[:base] << us_weights_validation unless us_weights_validation.blank?
+
+    #RS Filters
+    rs_filters_validation = checkSettingHash(parsedSettings["rs_filters"],"filters",["los_score", "popularity_score", "quality_score", "us_score"])
+    return errors[:base] << rs_filters_validation unless rs_filters_validation.blank?
+
+    #LoS Filters
+    los_filters_validation = checkSettingHash(parsedSettings["los_filters"],"filters",["title", "description", "language", "years"])
+    return errors[:base] << los_filters_validation unless los_filters_validation.blank?
+
+    #US Filters
+    us_filters_validation = checkSettingHash(parsedSettings["us_filters"],"filters",["language", "los"])
+    return errors[:base] << us_filters_validation unless us_filters_validation.blank?
 
     true
   end
 
-  def checkWeightsHash(weightsHash,validKeys)
-    unless weightsHash.blank?
+  def checkSettingHash(settingHash,settingFamily,validKeys)
+    unless settingHash.blank?
 
       #Completeness
-      unless (weightsHash.keys.sort_by{|k| k} === validKeys.sort_by{|k| k})
-        return "RS Weights: bad structure or missing weights"
+      unless (settingHash.keys.sort_by{|k| k} === validKeys.sort_by{|k| k})
+        return "Setting value: bad structure or missing keys"
       end
 
       #Individual values
-      unless weightsHash.select{|k,v| !v.is_a? Numeric or v>1}.length === 0
-        return "RS Weights: invalid weight value"
+      unless settingHash.select{|k,v| !v.is_a? Numeric or v>1 or v<0}.length === 0
+        return "Setting value: invalid numeric value"
       end
 
-      #Sum value
-      rs_weights_sum = weightsHash.map{|k,v| v}.sum
-      if rs_weights_sum != 1
-        return "RS Weights: all weights need to sum 1"
+      if settingFamily == "weights"
+        #Weights Sum value
+        rs_weights_sum = settingHash.map{|k,v| v}.sum
+        if rs_weights_sum != 1
+          return "RS Weights: all weights need to sum 1"
+        end
       end
+
     end
   end
 

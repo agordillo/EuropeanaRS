@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div class="profile_section_wrapper weights_section">
+<div class="profile_section_wrapper settings_section weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_general_weights")%></p>
   <div class="weights_sum_circle"><%=@user_settings[:rs_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["los","us","quality","popularity"].each do |criterion| %>
@@ -25,7 +25,7 @@
   <% end %>
 </div>
 
-<div class="profile_section_wrapper weights_section">
+<div class="profile_section_wrapper settings_section weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_los_weights")%></p>
   <div class="weights_sum_circle"><%=@user_settings[:los_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["title","description","language","years"].each do |criterion| %>
@@ -46,7 +46,7 @@
   <% end %>
 </div>
 
-<div class="profile_section_wrapper weights_section">
+<div class="profile_section_wrapper settings_section weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_us_weights")%></p>
   <div class="weights_sum_circle"><%=@user_settings[:us_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
   <% ["language", "los"].each do |criterion| %>
@@ -57,6 +57,67 @@
           <input type="text" class="slider_value" readonly />
         </p>
         <div id="us_weight_<%=criterion%>" class="slider" value="<%=@user_settings[:us_weights][(criterion).to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <%= hidden_field_tag(:user_settings) %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+<br/><br/>
+
+<div class="profile_section_wrapper settings_section filters_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_general_filters")%></p>
+  <% ["los","us","quality","popularity"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.general." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="general_filter_<%=criterion%>" class="slider" value="<%=@user_settings[:rs_filters][(criterion + "_score").to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+<div class="profile_section_wrapper settings_section filters_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_los_filters")%></p>
+  <% ["title","description","language","years"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.los." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="los_filter_<%=criterion%>" class="slider" value="<%=@user_settings[:los_filters][(criterion).to_sym]*100%>"></div>
+      </div>
+    </div>
+  <% end %>
+  <%= form_tag("/settings", method: "post") do %>
+    <%= hidden_field_tag(:user_settings) %>
+    <input type="hidden" name="user_settings"/>
+    <%= submit_tag(t("dictionary.update"), { class: "europeanars_button" }) %>
+  <% end %>
+</div>
+
+<div class="profile_section_wrapper settings_section filters_section">
+  <p class="profile_section_title"><%=t("profile.settings.title_us_filters")%></p>
+  <% ["language", "los"].each do |criterion| %>
+    <div class="profile_info_field">
+      <div class="settings_slider_wrapper">
+        <p class="slider_title">
+          <span><%=t("profile.settings.weights.us." + criterion)%>:</span>
+          <input type="text" class="slider_value" readonly />
+        </p>
+        <div id="us_filter_<%=criterion%>" class="slider" value="<%=@user_settings[:us_filters][(criterion).to_sym]*100%>"></div>
       </div>
     </div>
   <% end %>
@@ -84,7 +145,7 @@
     ///////////
 
     var loadEvents = function(){
-      $("div.profile_section_wrapper div.settings_slider_wrapper div.slider").each(function(index,sliderDOM){
+      $("div.profile_section_wrapper.settings_section div.settings_slider_wrapper div.slider").each(function(index,sliderDOM){
           $(sliderDOM).slider({
             range: "max",
             orientation: "horizontal",
@@ -104,16 +165,21 @@
           $(textForSlider(sliderDOM)).val($(sliderDOM).slider("value") + "%");
       });
 
-      $("div.profile_section_wrapper.weights_section form").each(function(index,formDOM){
+      $("div.profile_section_wrapper.settings_section form").each(function(index,formDOM){
         $(formDOM).submit(function(e){
 
-          var weightsSum = parseInt($(formDOM).parents("div.profile_section_wrapper.weights_section").find("div.weights_sum_circle").html());
-          if(!validWeight(weightsSum)){
-            event.preventDefault();
-            alert("<%=I18n.t('profile.settings.notifications.errors.bad_weights')%>");
-            return;
-          }
+          var weightSection = $(formDOM).parents("div.profile_section_wrapper.weights_section");
+          var isWeightForm = $(weightSection).length > 0;
 
+          if(isWeightForm){
+            var weightsSum = parseInt($(weightSection).find("div.weights_sum_circle").html());
+            if(!validWeight(weightsSum)){
+              event.preventDefault();
+              alert("<%=I18n.t('profile.settings.notifications.errors.bad_weights')%>");
+              return;
+            }
+          }
+          
           var userSettings;
           try {
             userSettings = JSON.stringify(buildUserSettings());
@@ -243,6 +309,25 @@
       user_settings["us_weights"] = {}
       <% ["language","los"].each do |criterion| %>
         user_settings["us_weights"]["<%=criterion%>"] = $("#us_weight_<%=criterion%>").slider("value")/100;
+      <% end %>
+
+
+      //General RS Filters
+      user_settings["rs_filters"] = {}
+      <% ["los","us","quality","popularity"].each do |criterion| %>
+        user_settings["rs_filters"]["<%=criterion%>_score"] = $("#general_filter_<%=criterion%>").slider("value")/100;
+      <% end %>
+
+      //Filters for Learning Object Similarity
+      user_settings["los_filters"] = {}
+      <% ["title","description","language","years"].each do |criterion| %>
+        user_settings["los_filters"]["<%=criterion%>"] = $("#los_filter_<%=criterion%>").slider("value")/100;
+      <% end %>
+
+      //Filters for User Similarity
+      user_settings["us_filters"] = {}
+      <% ["language","los"].each do |criterion| %>
+        user_settings["us_filters"]["<%=criterion%>"] = $("#us_filter_<%=criterion%>").slider("value")/100;
       <% end %>
 
       return user_settings;
