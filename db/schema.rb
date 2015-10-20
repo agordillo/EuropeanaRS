@@ -31,12 +31,12 @@ ActiveRecord::Schema.define(version: 20151019101959) do
     t.text     "description"
     t.string   "language"
     t.integer  "year"
-    t.integer  "metadata_quality", default: 0
-    t.integer  "popularity",       default: 0
+    t.integer  "quality",       default: 0
+    t.integer  "popularity",    default: 0
     t.text     "url"
     t.text     "thumbnail_url"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "lo_profiles_users", id: false, force: :cascade do |t|

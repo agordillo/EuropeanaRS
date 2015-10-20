@@ -8,7 +8,7 @@ class AddLoProfiles < ActiveRecord::Migration
       t.string :language
       t.integer :year
 
-      t.integer :metadata_quality, :default => 0
+      t.integer :quality, :default => 0
       t.integer :popularity, :default => 0
 
       t.text :url

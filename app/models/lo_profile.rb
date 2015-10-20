@@ -39,7 +39,7 @@ class LoProfile < ActiveRecord::Base
       loProfile.language = lo.language
       loProfile.year = lo.year
 
-      loProfile.metadata_quality = lo.metadata_quality
+      loProfile.quality = lo.metadata_quality
       loProfile.popularity = lo.popularity
 
       loProfile.url = Rails.application.routes.url_helpers.lo_path(lo)
@@ -54,7 +54,7 @@ class LoProfile < ActiveRecord::Base
       loProfileRecord.language = loProfile[:language]
       loProfileRecord.year = loProfile[:year]
 
-      loProfileRecord.metadata_quality = loProfile[:metadata_quality]
+      loProfileRecord.quality = loProfile[:quality]
       loProfileRecord.popularity = loProfile[:popularity]
 
       loProfileRecord.url = loProfile[:url]
@@ -72,7 +72,7 @@ class LoProfile < ActiveRecord::Base
     lo_profile[:year] = record.year
 
     #Fields used for the RS
-    lo_profile[:metadata_quality] = record.metadata_quality
+    lo_profile[:quality] = record.respond_to?("quality") ? record.quality : record.metadata_quality
     lo_profile[:popularity] = record.popularity
 
     #Fields used for visual representation

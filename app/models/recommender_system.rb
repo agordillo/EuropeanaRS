@@ -148,7 +148,7 @@ class RecommenderSystem
       los_score = calculateLoSimilarityScore ? RecommenderSystem.loProfileSimilarityScore(options[:lo_profile],loProfile,options,loSFilters) : 0
       (loProfile[:filtered]=true and next) if (calculateLoSimilarityScore and los_score < filters[:los_score])
       
-      us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile) : 0
+      us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile,options,uSFilters) : 0
       (loProfile[:filtered]=true and next) if (calculateUserSimilarityScore and us_score < filters[:us_score])
       
       quality_score = calculateQualityScore ? RecommenderSystem.qualityScore(loProfile) : 0
@@ -212,9 +212,9 @@ class RecommenderSystem
   end
 
   #Quality Score, [0,1] scale
-  #Metadata quality is the europeanaCompleteness field, which is a number in a 1-10 scale.
+  #For Europeana Items, quality is the metadata quality obtained from the europeanaCompleteness field, which is a number in a 1-10 scale.
   def self.qualityScore(loProfile)
-    return [[(loProfile[:metadata_quality]-1)/9.to_f,0].max,1].min
+    return [[(loProfile[:quality]-1)/9.to_f,0].max,1].min
   end
 
   #Popularity Score, [0,1] scale
