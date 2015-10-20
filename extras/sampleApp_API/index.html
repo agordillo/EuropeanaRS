@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EuropeanaRS API: Sample Application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="js/slick.js"></script>
+  <script src="js/europeanars.js"></script>
+  <script src="js/app.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
+  <link rel="stylesheet" type="text/css" href="css/app.css"/>
+</head>
+<body>
+
+<header>
+  <div id="logo">
+    <img alt="EuropeanaRS logo" src="images/Europeanars_logo.png"/>
+    <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+  </div>
+</header>
+
+<div id="container">
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">1</div>
+      <div class="step_title">
+        <p>Choose a Learning Object</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="carousel_wrapper">
+        <div id="los_carousel" class="carousel"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">2</div>
+      <div class="step_title">
+        <p>Choose a User</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="carousel_wrapper">
+        <div id="users_carousel" class="carousel"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">3</div>
+      <div class="step_title">
+        <p>Request suggested resources to EuropeanaRS</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="carousel_wrapper">
+        <div id="suggestions_carousel" class="carousel"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+</footer>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    APP.init();
+  });
+</script>
+
+</body>
+</html>

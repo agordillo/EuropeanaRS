@@ -1,0 +1,125 @@
+* {
+  outline: none !important;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #dadada;
+  font-size: 12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+header {
+  padding: 2% 5% 0% 5%;
+}
+
+div#container {
+  width: 94%;
+  height: 84%;
+  padding: 2% 5% 2% 5%;
+  overflow: hidden;
+}
+
+div#logo {
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+div#logo img {
+  height: 150px;
+  width: auto;
+}
+
+div#logo p {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 1.7rem;
+  color: #999;
+  font-weight: lighter;
+  cursor: default;
+}
+
+div.step_section {
+  position: relative;
+  margin-top: 30px;
+}
+
+div.step_section div.step_title_wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+div.step_section div.step_title_wrapper div.step_section_number {
+  display: inline-block;
+  background: white;
+  color: black;
+  border-radius: 50%;
+  border: 2px solid black;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 17px 0px;
+  width: 75px;
+  cursor: default;
+}
+
+div.step_section div.step_title_wrapper div.step_title {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: default;
+}
+
+div.carousel_wrapper {
+  width: 95%;
+}
+
+div.lo_carousel_item {
+  position: relative;
+  min-height: 293px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+div.lo_carousel_item p {
+  text-align: center;
+  width: 80%;
+  padding: 0% 10%;
+  font-size: 1.3rem;
+  height: 42px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+  background: #333;
+  color: white;
+  line-height: 19px;
+  margin-top: 0px;
+}
+
+div.lo_carousel_item a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+div.lo_carousel_item img {
+  margin: auto;
+  height: 240px;
+  width: auto;
+  max-width: 80%;
+  margin-bottom: 4px;
+}
