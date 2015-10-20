@@ -5,8 +5,17 @@ namespace :context do
   #How to use: bundle exec rake context:update
   task :update => :environment do |t, args|
     puts "Updating EuropeanaRS context"
+    Rake::Task["context:clearExpiredSessions"].invoke
+    Rake::Task["context:updatePopularityMetrics"].invoke
     Rake::Task["context:updateWordsFrequency"].invoke
     puts "Task finished"
+  end
+
+  #How to use: bundle exec rake context:clearExpiredSessions
+  task :clearExpiredSessions => :environment do
+    sql = "DELETE FROM sessions WHERE updated_at < (CURRENT_TIMESTAMP - INTERVAL '1 seconds');" #PostgreSQL
+    # sql = 'DELETE FROM sessions WHERE updated_at < DATE_SUB(NOW(), INTERVAL 1 DAY);' #MySQL
+    ActiveRecord::Base.connection.execute(sql)
   end
 
   #Usage

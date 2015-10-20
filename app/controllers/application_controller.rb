@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     else
       user_profile = {}
       user_profile[:language] = I18n.locale.to_s
-      user_profile[:los] = []
+      user_profile[:los] = Session.getUserData(session.id)["lo_profiles"] || []
     end
     
     user_profile

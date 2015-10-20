@@ -5,7 +5,7 @@ class LosController < ApplicationController
   def show
     @lo = Lo.find_by_id(params[:id])
     return redirect_to(view_context.home_path, :alert => 'Learning Object Not Found') unless @lo
-    @lo.update_visit_count
+    on_visit(@lo)
     @suggestions = RecommenderSystem.suggestions({:n => 20, :user_profile => current_user_profile, :user_settings => current_user_settings, :lo_profile => @lo.profile})
   end
 
@@ -38,6 +38,25 @@ class LosController < ApplicationController
       else
         return redirect_to(view_context.home_path, :alert => errors)
       end
+    end
+  end
+
+  private
+
+  def on_visit(lo)
+    lo.update_visit_count
+    store_lo_profile_in_session(lo.profile) unless user_signed_in?
+  end
+
+  def store_lo_profile_in_session(loProfile)
+    sessionRecord = Session.getOrCreateUserData(session.id)
+    userData = sessionRecord.getUserData
+
+    userData["lo_profiles"] = [] if userData["lo_profiles"].nil?
+    loProfileIds = userData["lo_profiles"].map{|loProfile| loProfile["url"]}
+    unless loProfileIds.include?(loProfile[:url])
+      userData["lo_profiles"] = (userData["lo_profiles"].first(2) << loProfile)
+      sessionRecord.updateUserData(userData)
     end
   end
 
