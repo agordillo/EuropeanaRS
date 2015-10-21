@@ -172,8 +172,9 @@ APP = (function(){
 
 
   var init = function(options){
+    EuropeanaRS_API.init({debug: true, mimic: true});
+    // EuropeanaRS_API.init({debug: true, API_URL: "http://localhost:32000/api/"});
     _initUI();
-    EuropeanaRS_API.init();
   };
 
   var _initUI = function(){
@@ -246,6 +247,12 @@ APP = (function(){
       e.preventDefault();
       e.stopPropagation();
       _selectUser(this);
+    });
+
+    $("#submit").click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      _callRSAPI();
     });
   };
 
@@ -349,6 +356,85 @@ APP = (function(){
       $(noSelectedMessage).hide();
       $(table).css("display","inline-block");
     }
+  };
+
+  var _drawResults = function(results){
+    var resultsDOM = $("#suggestions_carousel");
+    _cleanCarousel(resultsDOM);
+
+    var rL = results.length;
+    for(var i=0; i<rL; i++){
+      $(resultsDOM).prepend(_generateLoDOM(results[i]));
+    }
+
+    $(resultsDOM).show();
+
+    //Init slick
+    $(resultsDOM).slick({
+      infinite: true,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      dots: true
+    });
+  };
+
+  var _cleanCarousel = function(carouselDOM){
+    if($(carouselDOM).hasClass("slick-initialized")){
+      //Clean slides
+      $(carouselDOM).slick('slickFilter', function(){
+        return false;  
+      });
+      //Unslick
+      $(carouselDOM).slick("unslick");
+    }
+    $(carouselDOM).css("display","none");
+  };
+
+  ////////////
+  // API functions
+  ///////////
+
+  var _callRSAPI = function(){
+    if((typeof selected_lo == "undefined")&&(typeof selected_user == "undefined")){
+      return alert("You must select at least one learning object or one user");
+    }
+
+    var options = {};
+
+    var data = {};
+
+    if(typeof selected_lo != "undefined"){
+      //Build LO profile reading inputs from UI
+      var loTable = $("#lo_selection table");
+
+      data["lo_profile"] = {};
+      data["lo_profile"]["title"] = $(loTable).find("input[name='lo_title']").val();
+      data["lo_profile"]["description"] = $(loTable).find("input[name='lo_description']").val();
+      data["lo_profile"]["language"] = $(loTable).find("input[name='lo_language']").val();
+      data["lo_profile"]["year"] = $(loTable).find("input[name='lo_year']").val();
+    }
+
+    if(typeof selected_user != "undefined"){
+      //Build User profile reading inputs from UI
+      var userTable = $("#user_selection table");
+
+      data["user_profile"] = {};
+      data["user_profile"]["title"] = $(userTable).find("input[name='user_name']").val();
+      data["user_profile"]["language"] = $(userTable).find("input[name='user_language']").val();
+    }
+
+    //TODO: RS settings
+
+    //TODO: User settings
+
+    options["data"] = data;
+
+    EuropeanaRS_API.callAPI(options,function(data){
+      var results = data["results"];
+      _drawResults(results);
+    }, function(error){
+      alert(error.toString());
+    });
   };
 
   ////////////

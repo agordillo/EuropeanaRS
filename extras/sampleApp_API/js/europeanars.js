@@ -6,28 +6,35 @@ EuropeanaRS_API = (function(){
 
   var _settings;
 
-  var init = function(options){
-    setSettings(options);
+  var init = function(settings){ 
+    _settings = _initSettings(settings);
 
     EuropeanaRS_API.Utils.init(_settings);
     EuropeanaRS_API.Core.init(_settings);
+    EuropeanaRS_API.Mimic.init(_settings);
 
     EuropeanaRS_API.Utils.debug("EuropeanaRS_API Initialized")
   };
 
-  var setSettings = function(options){
-    options = options || {};
-    _settings = options;
+  var _initSettings = function(settings){
+    settings = settings || {};
+    settings.debug = settings.debug || false;
+    settings.API_URL = settings.API_URL || "http://localhost:3000/api";
+    return settings;
   };
 
   var getSettings = function(){
     return _settings;
   };
 
+  var callAPI = function(data,successCallback,failCallback){
+    return EuropeanaRS_API.Core.callAPI(data,successCallback,failCallback);
+  };
+
   return {
-    init : init,
+    init        : init,
     getSettings : getSettings,
-    setSettings : setSettings
+    callAPI     : callAPI
   };
 
 })();
@@ -40,56 +47,45 @@ EuropeanaRS_API = (function(){
 EuropeanaRS_API.Core = (function(API,undefined){
 
   //Constants
-  var QUERY_TIMEOUT = 8000;
+  var API_URL;
 
-  var init = function(){
+  var init = function(settings){
+    API_URL = settings.API_URL;
   };
 
-  var _buildQuery = function(searchTerms,settings){
-    searchTerms = (typeof searchTerms == "string" ? searchTerms : "");
+  var callAPI = function(options,successCallback,failCallback){
+    options = options || {};
+    options.data = options.data || {};
 
-    var query = "/apis/search?n="+settings.n+"&q="+searchTerms+"&type="+settings.entities_type;
-
-    if(settings.sort_by){
-      query += "&sort_by="+settings.sort_by;
+    if(API.getSettings().mimic === true){
+      return successCallback(EuropeanaRS_API.Mimic.getResponse(options));
     }
-
-    if(settings.startDate){
-      query += "&startDate="+settings.startDate;
-    }
-
-    if(settings.endDate){
-      query += "&endDate="+settings.endDate;
-    }
-
-    if(settings.language){
-      query += "&language="+settings.language;
-    }
-
-    if(settings.qualityThreshold){
-      query += "&qualityThreshold="+settings.qualityThreshold;
-    }
-
-    return query;
+    
+    _callAPI(options,successCallback,failCallback);
   };
 
-  var search = function(callback){
-    var API_URL = "";
+  var _callAPI = function(options,successCallback,failCallback){
     $.ajax({
-      type    : 'GET',
-      url     : API_URL,
-      success : function(data) {
-        
+      type: "POST",
+      url: API_URL,
+      data: options.data,
+      dataType: "json",
+      success: function(data){
+        if(typeof successCallback == "function"){
+          successCallback(data);
+        }
       },
       error: function(error){
-        V.Utils.debug("Error connecting with the API",true);
+        if(typeof failCallback == "function"){
+          failCallback("Error connecting with EuropeanaRS API at: " + API_URL);
+        }
       }
     });
   };
 
   return {
-    init    : init,
-    search  : search
+    init      : init,
+    callAPI  : callAPI
   };
 
 }) (EuropeanaRS_API);
@@ -97,11 +93,15 @@ EuropeanaRS_API.Core = (function(API,undefined){
 
 EuropeanaRS_API.Utils = (function(API,undefined){
 
-  var init = function(){
+  //Vars
+  var debug = false;
+
+  var init = function(settings){
+    debug = settings.debug;
   };
 
   var debug = function(msg,isError){
-    if(console){
+    if((debug)&&(console)){
       if(isError){
         console.error(msg);
       } else {
@@ -110,9 +110,171 @@ EuropeanaRS_API.Utils = (function(API,undefined){
     }
   };
 
+  var shuffle = function(o){
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+  };
+
   return {
-    init: init,
-    debug: debug
+    init    : init,
+    debug   : debug,
+    shuffle : shuffle
+  };
+
+}) (EuropeanaRS_API);
+
+
+EuropeanaRS_API.Mimic = (function(API,undefined){
+
+  //Constants
+  var LOs = [
+    {
+      title: "Beogradske novine - 1917-11-09",
+      description: "god. III, br. 308",
+      language: "sr",
+      year: 1917,
+      url: "http://localhost:3000/los/128863",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fvelikirat.nb.rs%2Farchive%2Fsquare_thumbnails%2F3e6274ede1b4ce7be2d3e2c7d9a2f84f.jpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Drywa - 1911-02-16",
+      language: "lv",
+      year: 1911,
+      url: "http://localhost:3000/los/227554",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2FDrywa%2F1911%2F02%2F16%2Fp_001_drya1911n071_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Le Figaro - 1912-10-25",
+      description: "1912/10/25 (Numéro 299).",
+      language: "fr",
+      year: 1912,
+      url: "http://localhost:3000/los/64391",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k289746m%2Ff1.thumbnail&size=LARGE&type=TEXT"
+    },
+    {
+      title: "La Presse - 1905-12-12",
+      description: "1905/12/12 (Numéro 4944).",
+      language: "fr",
+      year: 1905,
+      url: "http://localhost:3000/los/59148",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k551546p%2Ff1.thumbnail&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Monitor Polski - 1921-03-24",
+      language: "pl",
+      year: 1921,
+      url: "http://localhost:3000/los/77119",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLP%2FMonitor_Polski%2F1921%2F03%2F24%2Fszzzid90126%2F0001_jpgid24185683.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "South Wales daily news - 1895-07-30",
+      description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
+      language: "en",
+      year: 1895,
+      url: "http://localhost:3000/los/170304",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Opregte Haarlemsche Courant - 1862-07-14",
+      language: "nl",
+      year: 1862,
+      url: "http://localhost:3000/los/96627",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fimageviewer.kb.nl%2FImagingService%2FimagingService%3Fid%3Dddd%3A010544530%3Ampeg21%3Ap001%3Aimage%26w%3D200&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Luxemburger Wort - 1923-03-19",
+      description: "Luxemburger Wort 1923-03-19",
+      language: "lb",
+      year: 1923,
+      url: "http://localhost:3000/los/5138",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.eluxemburgensia.lu%2Fserials%2Fget_thumb.jsp%3Fid%3D1302934&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Päevaleht - 1931-11-02",
+      language: "et",
+      year: 1931,
+      url: "http://localhost:3000/",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-5%2Fimage%2FNLE%2FP%C3%A4evaleht%2F1931%2F11%2F02%2F1%2F19311102_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "La Correspondencia de España - 1860-02-26",
+      description: "Es el primer periódico que inicia el periodismo de empresa en España y como diario vespertino de carácter nacional estrictamente informativo e independiente de los partidos políticos, alejado, por tanto, del doctrinarismo, y ser a la vez el primero en también alcanzar las mayores tiradas nunca conocidas antes en la prensa española. Es heredera de Carta autógrafa que, desde octubre de 1848, empezó a redactar el sevillano Manuel María de Santa Ana (1820-1894) en hojas manuscritas y después litografiadas, como un servicio confidencial de noticias que recababa directamente en los centros e instituciones oficiales y otras entidades para distribuirlas fundamentalmente a los propios periódicos y otros abonados. En 1851 había cambiado su título a La correspondencia autógrafa para ser ya impresa y diaria para, en octubre de 1859, adoptar su título definitivo, cuando Santa Ana lo tenía arrendado al futuro propietario de La época (1849-1936), Ignacio José Escobar (1823-1897), quien la había puesto al servicio de la Unión Liberal del general Leopoldo O’Donnell (1809-1867), regresando a manos de su fundador en abril del año siguiente. La colección de la Biblioteca Nacional de España comienza el dos enero de 1860, con las indicaciones Segunda época, año XII, número 487, pues continúa la secuencia de La correspondencia autógrafa.",
+      language: "es",
+      year: 1860,
+      url: "http://localhost:3000/los/225608",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000001107%2Flow.jpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Berliner Tageblatt - 1887-01-16",
+      language: "de",
+      year: 1887,
+      url: "http://localhost:3000/los/213185",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-2%2Fimage%2FSBB%2FBerliner_Tageblatt%2F1887%2F01%2F16%2F0%2FF_SBB_00001_18870116_016_027_0_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Evening express - 1908-02-25",
+      description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
+      language: "en",
+      year: 1908,
+      url: "http://localhost:3000/los/177283",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F4186537%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Allgemeine Österreichische Gerichtszeitung - 1891-04-14",
+      language: "de",
+      year: 1891,
+      url: "http://localhost:3000/los/214425",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fanno.onb.ac.at%2Fcgi-content%2Fannoshow%3Fiiif%3Daog%7C18910414%7C1%7Cfull%7Cfull%7C0%7C70&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Илюстрация светлина: XLI, No 6/7 (1933)",
+      language: "bg",
+      year: 1933,
+      url: "http://localhost:3000/128543",
+      thumbnail_url:  "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.theeuropeanlibrary.org%2Fcontent%2Fnbkm%2Fa0645%2F2810.jpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Сегодня - 1937-06-05",
+      language: "ru",
+      year: 1937,
+      url: "http://localhost:3000/los/227824",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2F%D0%A1%D0%B5%D0%B3%D0%BE%D0%B4%D0%BD%D1%8F%2F1937%2F06%2F05%2F1%2Fpa_001_sego1937n152-1_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "Kaja - 1920-03-12",
+      language: "et",
+      year: 1920,
+      url: "http://localhost:3000/los/226641",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-3%2Fimage%2FNLE%2FKaja%2F1920%2F03%2F12%2F1%2F19200312_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+    },
+    {
+      title: "La Época (Madrid. 1849) - 1864-10-13",
+      description: "Diario vespertino fundado por Diego Coello y Quesada (182-1897) el uno de abril de 1849, a principios del siglo veinte será ya el decano de la prensa diaria política madrileña, extinguiéndose su vida a escasos días del golpe de Estado de julio de 1936.",
+      language: "es",
+      year: 1864,
+      url: "http://localhost:3000/los/147835",
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000192072%2Flow.jpg&size=LARGE&type=TEXT"
+    }
+  ];
+
+  var init = function(){
+  };
+
+  var getResponse = function(options){
+    var response = {};
+    response["results"] = getLOs();
+    response["total_results"] = response["results"].length;
+    return response;
+  };
+
+  var getLOs = function(){
+    return EuropeanaRS_API.Utils.shuffle(LOs);
+  };
+
+  return {
+    init        : init,
+    getResponse : getResponse,
+    getLOs      : getLOs
   };
 
 }) (EuropeanaRS_API);

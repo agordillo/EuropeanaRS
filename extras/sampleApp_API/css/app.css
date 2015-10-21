@@ -195,11 +195,11 @@ div.step_section p.copyright_notice {
 
 #selections table th:first-child {
   text-align: left;
-  width: 20%;
 }
 
 #selections table th:nth-child(2) {
   text-align: left;
+  width: 100%;
 }
 
 #selections p.no_selection {
@@ -213,4 +213,14 @@ div.step_section p.copyright_notice {
 
 #suggestions_carousel {
   display: none;
+  min-height: 330px;
+  margin-top: 20px;
+}
+
+#submit {
+  min-height: 35px;
+  font-size: 1.4rem;
+  padding: 5px;
+  margin-left: 88px;
+  margin-top: 10px;
 }
