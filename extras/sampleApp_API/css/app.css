@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   height: 100%;
   padding: 0px;
@@ -23,8 +23,8 @@ header {
 }
 
 div#container {
-  width: 94%;
-  height: 84%;
+  width: 90%;
+  height: auto;
   padding: 2% 5% 2% 5%;
   overflow: hidden;
 }
@@ -82,10 +82,11 @@ div.step_section div.step_title_wrapper div.step_title {
 }
 
 div.carousel_wrapper {
-  width: 95%;
+  width: 96%;
+  margin-left: 2%;
 }
 
-div.lo_carousel_item {
+div.carousel_item {
   position: relative;
   min-height: 293px;
   text-align: center;
@@ -96,7 +97,7 @@ div.lo_carousel_item {
   cursor: pointer;
 }
 
-div.lo_carousel_item p {
+div.carousel_item p {
   text-align: center;
   width: 80%;
   padding: 0% 10%;
@@ -111,15 +112,105 @@ div.lo_carousel_item p {
   margin-top: 0px;
 }
 
-div.lo_carousel_item a {
+div.carousel_item a {
   color: inherit !important;
   text-decoration: none !important;
 }
 
-div.lo_carousel_item img {
+div.carousel_item img {
   margin: auto;
   height: 240px;
   width: auto;
   max-width: 80%;
   margin-bottom: 4px;
+}
+
+div.carousel_item.selected {
+  outline: 2px solid black !important;
+  border-radius: 0px;
+}
+
+div.step_section p.copyright_notice {
+  margin-top: 45px;
+  font-style: italic;
+  font-size: 0.8rem;
+  margin-bottom: 40px;
+  text-align: right;
+  padding-right: 25px;
+}
+
+#selections div.step_content_wrapper {
+  width: 95%;
+  margin-left: 3%;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+#selections div.step_content_wrapper #lo_selection, #selections div.step_content_wrapper #user_selection {
+  width: 49%;
+  height: auto;
+  border: 1px solid black;
+  display: inline-block;
+  float: left;
+}
+
+#selections div.step_content_wrapper #lo_selection {
+  margin-right: 1%;
+}
+
+#selections div.step_content_wrapper div.header {
+  text-align: center;
+  width: 80%;
+  padding: 10px 10%;
+  font-size: 1.3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+  background: #333;
+  color: white;
+  line-height: 19px;
+  margin-top: 0px;
+}
+
+#selections div.step_content_wrapper div.body {
+  min-height: 300px;
+}
+
+#selections table {
+  border: 0px;
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+#selections table th {
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+#selections table th input {
+  width: 100%;
+}
+
+#selections table th:first-child {
+  text-align: left;
+  width: 20%;
+}
+
+#selections table th:nth-child(2) {
+  text-align: left;
+}
+
+#selections p.no_selection {
+  width: 90%;
+  text-align: center;
+  display: inline-block;
+  padding: 5%;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+#suggestions_carousel {
+  display: none;
 }

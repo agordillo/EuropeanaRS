@@ -1,4 +1,11 @@
 APP = (function(){
+  
+  //Global vars (state)
+  var selected_lo;
+  var selected_user;
+
+
+  //Constants
 
   var LOs = [
     {
@@ -130,6 +137,39 @@ APP = (function(){
     }
   ];
 
+  var Users = [
+    {
+      name: "Alejandro Olivárez",
+      language: "es",
+      avatar: "images/avatars/1.jpg"
+    },
+    {
+      name: "Clark DuBuque",
+      language: "en",
+      avatar: "images/avatars/2.jpg"
+    },
+    {
+      name: "Lucas van Schouten",
+      language: "nl",
+      avatar: "images/avatars/3.jpg"
+    },
+    {
+      name: "Lenia Böhm",
+      language: "de",
+      avatar: "images/avatars/4.jpg"
+    },
+    {
+      name: "Julie Marchal",
+      language: "fr",
+      avatar: "images/avatars/5.jpg"
+    },
+    {
+      name: "Aletha Wiegand",
+      language: "est",
+      avatar: "images/avatars/6.jpg"
+    }
+  ];
+
 
   var init = function(options){
     _initUI();
@@ -148,10 +188,17 @@ APP = (function(){
     for(var i=0; i<nLOs; i++){
       $(losDOM).prepend(_generateLoDOM(LOs[i]));
     }
+
+    var usersDOM = $("#users_carousel");
+    Users = _shuffle(Users);
+    var nUsers = Users.length;
+    for(var j=0; j<nUsers; j++){
+      $(usersDOM).prepend(_generateUserDOM(Users[j]));
+    }
   };
 
   var _generateLoDOM = function(lo){
-    var loDOM = $("<div class='lo_carousel_item'></div>");
+    var loDOM = $("<div class='carousel_item lo_carousel_item'></div>");
     $(loDOM).append("<p>" + lo["title"] + "</p>");
 
     var img = $("<img/>");
@@ -162,10 +209,29 @@ APP = (function(){
     return $("<div></div>").append(loDOM);
   };
 
+  var _generateUserDOM = function(user){
+    var userDOM = $("<div class='carousel_item user_carousel_item'></div>");
+    $(userDOM).append("<p>" + user["name"] + "</p>");
+
+    var img = $("<img/>");
+    $(img).attr("title",user["name"]);
+    $(img).attr("src",user["avatar"]);
+    $(userDOM).append(img);
+
+    return $("<div></div>").append(userDOM);
+  };
+
   var _initComponents = function(){
     $("#los_carousel").slick({
       infinite: true,
-      slidesToShow: 5,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      dots: true
+    });
+
+    $("#users_carousel").slick({
+      infinite: true,
+      slidesToShow: 4,
       slidesToScroll: 1,
       dots: true
     });
@@ -173,19 +239,116 @@ APP = (function(){
     $("div.lo_carousel_item").click(function(e){
       e.preventDefault();
       e.stopPropagation();
-      var title = $(this).find("p").html();
-      var nLOs = LOs.length;
-      for(var i=0; i<nLOs; i++){
-        if (LOs[i].title === title) {
-          _displayLo(LOs[i]);
-          break;
-        }
-      }
+      _selectLo(this);
+    });
+
+    $("div.user_carousel_item").click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      _selectUser(this);
     });
   };
 
-  var _displayLo = function(lo){
-    alert("Display LO with title: "+ lo["title"])
+  var _selectLo = function(loDOM){
+    var lo;
+    var title = $(loDOM).find("p").html();
+    var nLOs = LOs.length;
+    for(var i=0; i<nLOs; i++){
+      if (LOs[i].title === title) {
+        lo = LOs[i];
+        break;
+      }
+    }
+
+    $("#los_carousel div.lo_carousel_item").removeClass("selected");
+
+    if(typeof lo != "undefined"){
+      if((typeof selected_lo != "undefined")&&(lo["title"] === selected_lo["title"])){
+        selected_lo = undefined;
+      } else {
+        selected_lo = lo
+        $(loDOM).addClass("selected");
+      }
+    } else {
+      selected_lo = undefined;
+    }
+
+    _drawSelectedLo();
+  };
+
+  var _drawSelectedLo = function(){
+    var loDOM = $("#lo_selection");
+    var table = $(loDOM).find("table");
+    var noSelectedMessage = $(loDOM).find("p.no_selection");
+
+    if(typeof selected_lo == "undefined"){
+      //Nothing selected
+      $(table).hide();
+      $(noSelectedMessage).show();
+
+      //Remove input values
+      $(table).find("input").val("");
+      $(table).find("th[name='lo_url']").html("");
+    } else {
+      //Fill LO values
+      $(table).find("input[name='lo_title']").val(selected_lo.title);
+      $(table).find("input[name='lo_description']").val(selected_lo.description);
+      $(table).find("input[name='lo_language']").val(selected_lo.language);
+      $(table).find("input[name='lo_year']").val(selected_lo.year);
+      $(table).find("th[name='lo_url']").html("<a href='" + selected_lo.url + "' target='_blank'>" + selected_lo.url + "</a>");
+
+      $(noSelectedMessage).hide();
+      $(table).css("display","inline-block");
+    }
+  };
+
+  var _selectUser = function(userDOM){
+    var user;
+    var name = $(userDOM).find("p").html();
+    var nUsers = Users.length;
+    for(var i=0; i<nUsers; i++){
+      if (Users[i].name === name) {
+        user = Users[i];
+        break;
+      }
+    }
+
+    $("#users_carousel div.user_carousel_item").removeClass("selected");
+
+    if(typeof user != "undefined"){
+      if((typeof selected_user != "undefined")&&(user["name"] === selected_user["name"])){
+        selected_user = undefined;
+      } else {
+        selected_user = user
+        $(userDOM).addClass("selected");
+      }
+    } else {
+      selected_user = undefined;
+    }
+
+    _drawSelectedUser();
+  };
+
+  var _drawSelectedUser = function(){
+    var userDOM = $("#user_selection");
+    var table = $(userDOM).find("table");
+    var noSelectedMessage = $(userDOM).find("p.no_selection");
+
+    if(typeof selected_user == "undefined"){
+      //Nothing selected
+      $(table).hide();
+      $(noSelectedMessage).show();
+
+      //Remove input values
+      $(table).find("input").val("");
+    } else {
+      //Fill LO values
+      $(table).find("input[name='user_name']").val(selected_user.name);
+      $(table).find("input[name='user_language']").val(selected_user.language);
+
+      $(noSelectedMessage).hide();
+      $(table).css("display","inline-block");
+    }
   };
 
   ////////////
