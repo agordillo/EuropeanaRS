@@ -31,6 +31,7 @@ class RecommenderSystem
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
     options = {:n => 10, :user_profile => {}, :lo_profile => {}}.merge(options)
+    options[:n] = options[:n].to_i
     options
   end
 
@@ -95,7 +96,7 @@ class RecommenderSystem
     end
 
     #Convert LOs to profile LOs
-    preSelection = preSelection.map{|lo| lo.profile}
+    preSelection = preSelection.map{|lo| lo.profile({:external => true})}
 
     return preSelection
   end
@@ -182,11 +183,11 @@ class RecommenderSystem
     titleS = RecommenderSystem.getSemanticDistance(loProfileA[:title],loProfileB[:title])
     descriptionS = RecommenderSystem.getSemanticDistance(loProfileA[:description],loProfileB[:description])
     languageS = RecommenderSystem.getSemanticDistanceForCategoricalFields(loProfileA[:language],loProfileB[:language])
-    yearsS = RecommenderSystem.getSemanticDistanceForYears(loProfileA[:year],loProfileB[:year])
+    yearS = RecommenderSystem.getSemanticDistanceForYears(loProfileA[:year],loProfileB[:year])
 
-    return -1 if (!filters.blank? and (titleS < filters[:title] || descriptionS < filters[:description] || languageS < filters[:language] || yearsS < filters[:years]))
+    return -1 if (!filters.blank? and (titleS < filters[:title] || descriptionS < filters[:description] || languageS < filters[:language] || yearS < filters[:year]))
 
-    return weights[:title] * titleS + weights[:description] * descriptionS + weights[:language] * languageS + weights[:years] * yearsS
+    return weights[:title] * titleS + weights[:description] * descriptionS + weights[:language] * languageS + weights[:year] * yearS
   end
 
   #User profile Similarity Score, [0,1] scale
@@ -414,7 +415,7 @@ class RecommenderSystem
       :title => 0.2,
       :description => 0.15,
       :language => 0.5,
-      :years => 0.15
+      :year => 0.15
     }
   end
 
@@ -449,7 +450,7 @@ class RecommenderSystem
       :title => 0,
       :description => 0,
       :language => 0,
-      :years => 0
+      :year => 0
     }
   end
 

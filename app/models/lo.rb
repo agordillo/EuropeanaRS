@@ -16,8 +16,8 @@ class Lo < ActiveRecord::Base
   # Getters
   #################
 
-  def profile
-    LoProfile.toProfile(self)
+  def profile(options={})
+    LoProfile.toProfile(self,options)
   end
 
   def readable_language

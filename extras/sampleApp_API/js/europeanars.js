@@ -53,22 +53,21 @@ EuropeanaRS_API.Core = (function(API,undefined){
     API_URL = settings.API_URL;
   };
 
-  var callAPI = function(options,successCallback,failCallback){
-    options = options || {};
-    options.data = options.data || {};
+  var callAPI = function(data,successCallback,failCallback){
+    data = data || {};
 
     if(API.getSettings().mimic === true){
-      return successCallback(EuropeanaRS_API.Mimic.getResponse(options));
+      return successCallback(EuropeanaRS_API.Mimic.getResponse(data));
     }
     
-    _callAPI(options,successCallback,failCallback);
+    _callAPI(data,successCallback,failCallback);
   };
 
-  var _callAPI = function(options,successCallback,failCallback){
+  var _callAPI = function(data,successCallback,failCallback){
     $.ajax({
       type: "POST",
       url: API_URL,
-      data: options.data,
+      data: data,
       dataType: "json",
       success: function(data){
         if(typeof successCallback == "function"){

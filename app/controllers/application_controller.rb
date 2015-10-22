@@ -55,12 +55,6 @@ class ApplicationController < ActionController::Base
   # Methods to enable CORS (http://www.tsheffler.com/blog/?p=428)
   #############
 
-  def cors_set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    headers['Access-Control-Max-Age'] = "1728000"
-  end
-
   # If this is a preflight OPTIONS request, then short-circuit the
   # request, return only the necessary headers and return an empty
   # text/plain.
@@ -72,6 +66,12 @@ class ApplicationController < ActionController::Base
       headers['Access-Control-Max-Age'] = '1728000'
       render :text => '', :content_type => 'text/plain'
     end
+  end
+
+  def cors_set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    headers['Access-Control-Max-Age'] = "1728000"
   end
 
 

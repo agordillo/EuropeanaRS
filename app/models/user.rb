@@ -95,6 +95,11 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def resetSettings
+    self.settings = User.defaultSettings.to_json
+    self.save!
+  end
+
   #################
   # Class methods
   #################
@@ -186,7 +191,6 @@ class User < ActiveRecord::Base
 
   def fillSettings
     self.settings = (User.defaultSettings.merge(self.parsedSettings)).to_json
-
     true
   end
 
@@ -234,7 +238,7 @@ class User < ActiveRecord::Base
     return errors[:base] << rs_weights_validation unless rs_weights_validation.blank?
 
     #LoS Weights
-    los_weights_validation = checkSettingHash(parsedSettings["los_weights"],"weights",["title", "description", "language", "years"])
+    los_weights_validation = checkSettingHash(parsedSettings["los_weights"],"weights",["title", "description", "language", "year"])
     return errors[:base] << los_weights_validation unless los_weights_validation.blank?
 
     #US Weights
@@ -246,7 +250,7 @@ class User < ActiveRecord::Base
     return errors[:base] << rs_filters_validation unless rs_filters_validation.blank?
 
     #LoS Filters
-    los_filters_validation = checkSettingHash(parsedSettings["los_filters"],"filters",["title", "description", "language", "years"])
+    los_filters_validation = checkSettingHash(parsedSettings["los_filters"],"filters",["title", "description", "language", "year"])
     return errors[:base] << los_filters_validation unless los_filters_validation.blank?
 
     #US Filters

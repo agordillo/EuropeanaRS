@@ -172,8 +172,8 @@ APP = (function(){
 
 
   var init = function(options){
-    EuropeanaRS_API.init({debug: true, mimic: true});
-    // EuropeanaRS_API.init({debug: true, API_URL: "http://localhost:32000/api/"});
+    // EuropeanaRS_API.init({debug: true, mimic: true});
+    EuropeanaRS_API.init({debug: true, API_URL: "http://localhost:3000/api/"});
     _initUI();
   };
 
@@ -368,6 +368,7 @@ APP = (function(){
     }
 
     $(resultsDOM).show();
+    $(resultsDOM).css("visibility","visible");
 
     //Init slick
     $(resultsDOM).slick({
@@ -395,13 +396,22 @@ APP = (function(){
   ///////////
 
   var _callRSAPI = function(){
+    var submitDOM = $("#sumbit");
+    var status = $(submitDOM).attr("disabled");
+    if(status === "disabled"){
+      return;
+    } 
+
+    //Validation
     if((typeof selected_lo == "undefined")&&(typeof selected_user == "undefined")){
       return alert("You must select at least one learning object or one user");
     }
 
-    var options = {};
+    $(this).attr("disabled","disabled"); //Disable button
 
+    //Build params
     var data = {};
+    data["n"] = 20
 
     if(typeof selected_lo != "undefined"){
       //Build LO profile reading inputs from UI
@@ -419,7 +429,6 @@ APP = (function(){
       var userTable = $("#user_selection table");
 
       data["user_profile"] = {};
-      data["user_profile"]["title"] = $(userTable).find("input[name='user_name']").val();
       data["user_profile"]["language"] = $(userTable).find("input[name='user_language']").val();
     }
 
@@ -427,9 +436,7 @@ APP = (function(){
 
     //TODO: User settings
 
-    options["data"] = data;
-
-    EuropeanaRS_API.callAPI(options,function(data){
+    EuropeanaRS_API.callAPI(data,function(data){
       var results = data["results"];
       _drawResults(results);
     }, function(error){

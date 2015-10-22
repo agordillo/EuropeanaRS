@@ -28,7 +28,7 @@
 <div class="profile_section_wrapper settings_section weights_section">
   <p class="profile_section_title"><%=t("profile.settings.title_los_weights")%></p>
   <div class="weights_sum_circle"><%=@user_settings[:los_weights].map{|k,v| v}.sum.round(0)*100%>%</div>
-  <% ["title","description","language","years"].each do |criterion| %>
+  <% ["title","description","language","year"].each do |criterion| %>
     <div class="profile_info_field">
       <div class="settings_slider_wrapper">
         <p class="slider_title">
@@ -90,7 +90,7 @@
 
 <div class="profile_section_wrapper settings_section filters_section">
   <p class="profile_section_title"><%=t("profile.settings.title_los_filters")%></p>
-  <% ["title","description","language","years"].each do |criterion| %>
+  <% ["title","description","language","year"].each do |criterion| %>
     <div class="profile_info_field">
       <div class="settings_slider_wrapper">
         <p class="slider_title">
@@ -301,7 +301,7 @@
 
       //Learning Object Similarity Weights
       user_settings["los_weights"] = {}
-      <% ["title","description","language","years"].each do |criterion| %>
+      <% ["title","description","language","year"].each do |criterion| %>
         user_settings["los_weights"]["<%=criterion%>"] = $("#los_weight_<%=criterion%>").slider("value")/100;
       <% end %>
 
@@ -320,7 +320,7 @@
 
       //Filters for Learning Object Similarity
       user_settings["los_filters"] = {}
-      <% ["title","description","language","years"].each do |criterion| %>
+      <% ["title","description","language","year"].each do |criterion| %>
         user_settings["los_filters"]["<%=criterion%>"] = $("#los_filter_<%=criterion%>").slider("value")/100;
       <% end %>
 

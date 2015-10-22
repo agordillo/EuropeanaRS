@@ -212,7 +212,7 @@ div.step_section p.copyright_notice {
 }
 
 #suggestions_carousel {
-  display: none;
+  visibility: hidden;
   min-height: 330px;
   margin-top: 20px;
 }

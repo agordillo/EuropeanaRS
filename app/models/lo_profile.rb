@@ -10,8 +10,8 @@ class LoProfile < ActiveRecord::Base
   # Getters
   #################
 
-  def profile
-    LoProfile.toProfile(self)
+  def profile(options={})
+    LoProfile.toProfile(self,options)
   end
 
   def readable_language
@@ -62,7 +62,7 @@ class LoProfile < ActiveRecord::Base
     end
   end
 
-  def self.toProfile(record)
+  def self.toProfile(record,options={})
     lo_profile = {}
 
     #Fields used to get similarity
@@ -76,8 +76,12 @@ class LoProfile < ActiveRecord::Base
     lo_profile[:popularity] = record.popularity
 
     #Fields used for visual representation
-    lo_profile[:external] = (record.is_a? LoProfile and record.external?)
-    lo_profile[:url] = (record.is_a? Lo) ? Rails.application.routes.url_helpers.lo_path(record) : record.url
+    if options[:external]
+      lo_profile[:url] = record.url
+    else
+      lo_profile[:external] = (record.is_a? LoProfile and record.external?)
+      lo_profile[:url] = (record.is_a? Lo) ? Rails.application.routes.url_helpers.lo_path(record) : record.url
+    end
     lo_profile[:thumbnail_url] = record.thumbnail_url
 
     lo_profile

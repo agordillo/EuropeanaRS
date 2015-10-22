@@ -31,7 +31,7 @@ development:
       title: 0.2
       description: 0.15
       language: 0.5
-      years: 0.15
+      year: 0.15
     default_us:
       language: 0.5
       los: 0.5
@@ -48,7 +48,7 @@ development:
       title: 0
       description: 0
       language: 0
-      years: 0
+      year: 0
     default_us:
       language: 0
       los: 0
