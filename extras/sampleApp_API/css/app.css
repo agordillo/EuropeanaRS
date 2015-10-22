@@ -112,7 +112,7 @@ div.carousel_item p {
   margin-top: 0px;
 }
 
-div.carousel_item a {
+div.carousel a, div.carousel_item a {
   color: inherit !important;
   text-decoration: none !important;
 }

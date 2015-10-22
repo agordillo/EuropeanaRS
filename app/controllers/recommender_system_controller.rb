@@ -14,7 +14,11 @@ class RecommenderSystemController < ApplicationController
 
 
   def api
-    #1. Sanitize params
+    #1. Sanitize params and parsing
+    unless params["user_profile"].blank?
+      params["user_profile"]["los"] = JSON.parse(params["user_profile"]["los"]).first(EuropeanaRS::Application::config.max_user_los) rescue [] unless params["user_profile"]["los"].blank?
+    end
+
     permitedParamsLo = [:title, :description, :language, :year]
     permitedParamsUser = [:language, los: permitedParamsLo]
     permitedParamsWeights = [default_rs: [:los_score, :us_score, :quality_score, :popularity_score] , default_los: permitedParamsLo, default_us: permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}]
@@ -32,7 +36,7 @@ class RecommenderSystemController < ApplicationController
     response["total_results"] = suggestions.length
     response["results"] = suggestions
 
-    # Filter attributes like score, if wanted.
+    # Filter attributes like score, if desired.
     # suggestions = suggestions.map{|loProfile| loProfile.except(:score)}
 
     respond_to do |format|

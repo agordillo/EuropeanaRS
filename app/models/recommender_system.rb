@@ -32,6 +32,7 @@ class RecommenderSystem
   def self.prepareOptions(options={})
     options = {:n => 10, :user_profile => {}, :lo_profile => {}}.merge(options)
     options[:n] = options[:n].to_i
+    options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].nil?
     options
   end
 
@@ -59,6 +60,12 @@ class RecommenderSystem
     if options[:user_profile][:language]
       preselectionLanguages << options[:user_profile][:language]
     end
+    if options[:user_profile][:los]
+      preselectionLanguages += options[:user_profile][:los].map{|lo| lo[:language]}.compact
+    end
+    preselectionLanguages.uniq!
+    preselectionLanguages = preselectionLanguages & Europeana.getAllLanguages
+
     searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
 
     # B. Language (Alternative). Single language approach
