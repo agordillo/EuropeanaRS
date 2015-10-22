@@ -96,7 +96,7 @@ class RecommenderSystem
     end
 
     #Convert LOs to profile LOs
-    preSelection = preSelection.map{|lo| lo.profile({:external => true})}
+    preSelection = preSelection.map{|lo| lo.profile({:external => options[:external]})}
 
     return preSelection
   end
