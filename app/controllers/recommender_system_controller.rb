@@ -19,7 +19,7 @@ class RecommenderSystemController < ApplicationController
       params["user_profile"]["los"] = JSON.parse(params["user_profile"]["los"]).first(EuropeanaRS::Application::config.max_user_los) rescue [] unless params["user_profile"]["los"].blank?
     end
 
-    permitedParamsLo = [:title, :description, :language, :year]
+    permitedParamsLo = [:title, :description, :language, :year, :id_europeana]
     permitedParamsUser = [:language, los: permitedParamsLo]
     permitedParamsWeights = [default_rs: [:los_score, :us_score, :quality_score, :popularity_score] , default_los: permitedParamsLo, default_us: permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}]
     permitedParamsFilters = permitedParamsWeights

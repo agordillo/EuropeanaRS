@@ -73,6 +73,7 @@ class Lo < ActiveRecord::Base
   end
 
   def crc32_fields
+    self.id_europeana_crc32 = self.id_europeana.to_crc32 unless self.id_europeana.nil?
     self.resource_type_crc32 = self.resource_type.to_crc32 unless self.resource_type.nil?
     self.language_crc32 = self.language.to_crc32 unless self.language.nil?
     self.europeana_collection_name_crc32 = self.europeana_collection_name.to_crc32 unless self.europeana_collection_name.nil?

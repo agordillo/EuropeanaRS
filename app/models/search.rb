@@ -109,9 +109,15 @@ class Search
     opts[:without] = {}
 
     if options[:ids_to_avoid].is_a? Array
-      options[:ids_to_avoid] = options[:ids_to_avoid].compact
-      unless options[:ids_to_avoid].empty?
-        opts[:without][:lo_id] = options[:ids_to_avoid]
+      options[:ids_to_avoid].compact!
+      opts[:without][:lo_id] = options[:ids_to_avoid] unless options[:ids_to_avoid].empty?
+    end
+
+    if options[:europeana_ids_to_avoid].is_a? Array
+      options[:europeana_ids_to_avoid].compact!
+      unless options[:europeana_ids_to_avoid].empty?
+        options[:europeana_ids_to_avoid].map!{|europeana_id| europeana_id.to_s.to_crc32}
+        opts[:without][:id_europeana] = options[:europeana_ids_to_avoid]
       end
     end
 

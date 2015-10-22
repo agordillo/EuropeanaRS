@@ -10,6 +10,7 @@ ThinkingSphinx::Index.define :lo, :with => :active_record do
   has metadata_quality
   has popularity
 
+  has id_europeana_crc32, :as => :id_europeana
   has resource_type_crc32, :as => :resource_type
   has language_crc32, :as => :language
   has europeana_collection_name_crc32, :as => :europeana_collection_name

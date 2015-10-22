@@ -133,14 +133,16 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "sr",
       year: 1917,
       url: "http://localhost:3000/los/128863",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fvelikirat.nb.rs%2Farchive%2Fsquare_thumbnails%2F3e6274ede1b4ce7be2d3e2c7d9a2f84f.jpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fvelikirat.nb.rs%2Farchive%2Fsquare_thumbnails%2F3e6274ede1b4ce7be2d3e2c7d9a2f84f.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200367/BibliographicResource_3000113569955"
     },
     {
       title: "Drywa - 1911-02-16",
       language: "lv",
       year: 1911,
       url: "http://localhost:3000/los/227554",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2FDrywa%2F1911%2F02%2F16%2Fp_001_drya1911n071_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2FDrywa%2F1911%2F02%2F16%2Fp_001_drya1911n071_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200303/BibliographicResource_3000059908745"
     },
     {
       title: "Le Figaro - 1912-10-25",
@@ -148,7 +150,8 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "fr",
       year: 1912,
       url: "http://localhost:3000/los/64391",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k289746m%2Ff1.thumbnail&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k289746m%2Ff1.thumbnail&size=LARGE&type=TEXT",
+      id_europeana: "/9200408/BibliographicResource_3000113908719"
     },
     {
       title: "La Presse - 1905-12-12",
@@ -156,14 +159,16 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "fr",
       year: 1905,
       url: "http://localhost:3000/los/59148",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k551546p%2Ff1.thumbnail&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k551546p%2Ff1.thumbnail&size=LARGE&type=TEXT",
+      id_europeana: "/9200408/BibliographicResource_3000113885753"
     },
     {
       title: "Monitor Polski - 1921-03-24",
       language: "pl",
       year: 1921,
       url: "http://localhost:3000/los/77119",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLP%2FMonitor_Polski%2F1921%2F03%2F24%2Fszzzid90126%2F0001_jpgid24185683.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLP%2FMonitor_Polski%2F1921%2F03%2F24%2Fszzzid90126%2F0001_jpgid24185683.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200357/BibliographicResource_3000095237568"
     },
     {
       title: "South Wales daily news - 1895-07-30",
@@ -171,14 +176,16 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "en",
       year: 1895,
       url: "http://localhost:3000/los/170304",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200385/BibliographicResource_3000117394576"
     },
     {
       title: "Opregte Haarlemsche Courant - 1862-07-14",
       language: "nl",
       year: 1862,
       url: "http://localhost:3000/los/96627",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fimageviewer.kb.nl%2FImagingService%2FimagingService%3Fid%3Dddd%3A010544530%3Ampeg21%3Ap001%3Aimage%26w%3D200&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fimageviewer.kb.nl%2FImagingService%2FimagingService%3Fid%3Dddd%3A010544530%3Ampeg21%3Ap001%3Aimage%26w%3D200&size=LARGE&type=TEXT",
+      id_europeana: "/9200359/BibliographicResource_3000115644637"
     },
     {
       title: "Luxemburger Wort - 1923-03-19",
@@ -186,14 +193,16 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "lb",
       year: 1923,
       url: "http://localhost:3000/los/5138",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.eluxemburgensia.lu%2Fserials%2Fget_thumb.jsp%3Fid%3D1302934&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.eluxemburgensia.lu%2Fserials%2Fget_thumb.jsp%3Fid%3D1302934&size=LARGE&type=TEXT",
+      id_europeana: "/9200360/BibliographicResource_3000100145488"
     },
     {
       title: "Päevaleht - 1931-11-02",
       language: "et",
       year: 1931,
       url: "http://localhost:3000/",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-5%2Fimage%2FNLE%2FP%C3%A4evaleht%2F1931%2F11%2F02%2F1%2F19311102_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-5%2Fimage%2FNLE%2FP%C3%A4evaleht%2F1931%2F11%2F02%2F1%2F19311102_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200356/BibliographicResource_3000117744644"
     },
     {
       title: "La Correspondencia de España - 1860-02-26",
@@ -201,14 +210,16 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "es",
       year: 1860,
       url: "http://localhost:3000/los/225608",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000001107%2Flow.jpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000001107%2Flow.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200302/BibliographicResource_2000092066231"
     },
     {
       title: "Berliner Tageblatt - 1887-01-16",
       language: "de",
       year: 1887,
       url: "http://localhost:3000/los/213185",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-2%2Fimage%2FSBB%2FBerliner_Tageblatt%2F1887%2F01%2F16%2F0%2FF_SBB_00001_18870116_016_027_0_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-2%2Fimage%2FSBB%2FBerliner_Tageblatt%2F1887%2F01%2F16%2F0%2FF_SBB_00001_18870116_016_027_0_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200355/BibliographicResource_3000097233590"
     },
     {
       title: "Evening express - 1908-02-25",
@@ -216,35 +227,40 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "en",
       year: 1908,
       url: "http://localhost:3000/los/177283",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F4186537%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F4186537%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200385/BibliographicResource_3000117425315"
     },
     {
       title: "Allgemeine Österreichische Gerichtszeitung - 1891-04-14",
       language: "de",
       year: 1891,
       url: "http://localhost:3000/los/214425",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fanno.onb.ac.at%2Fcgi-content%2Fannoshow%3Fiiif%3Daog%7C18910414%7C1%7Cfull%7Cfull%7C0%7C70&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fanno.onb.ac.at%2Fcgi-content%2Fannoshow%3Fiiif%3Daog%7C18910414%7C1%7Cfull%7Cfull%7C0%7C70&size=LARGE&type=TEXT",
+      id_europeana: "/9200384/BibliographicResource_3000116408021"
     },
     {
       title: "Илюстрация светлина: XLI, No 6/7 (1933)",
       language: "bg",
       year: 1933,
       url: "http://localhost:3000/128543",
-      thumbnail_url:  "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.theeuropeanlibrary.org%2Fcontent%2Fnbkm%2Fa0645%2F2810.jpg&size=LARGE&type=TEXT"
+      thumbnail_url:  "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fwww.theeuropeanlibrary.org%2Fcontent%2Fnbkm%2Fa0645%2F2810.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200374/BibliographicResource_3000116155035"
     },
     {
       title: "Сегодня - 1937-06-05",
       language: "ru",
       year: 1937,
       url: "http://localhost:3000/los/227824",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2F%D0%A1%D0%B5%D0%B3%D0%BE%D0%B4%D0%BD%D1%8F%2F1937%2F06%2F05%2F1%2Fpa_001_sego1937n152-1_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-1%2Fimage%2FNLL%2F%D0%A1%D0%B5%D0%B3%D0%BE%D0%B4%D0%BD%D1%8F%2F1937%2F06%2F05%2F1%2Fpa_001_sego1937n152-1_001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200303/BibliographicResource_3000059920859"
     },
     {
       title: "Kaja - 1920-03-12",
       language: "et",
       year: 1920,
       url: "http://localhost:3000/los/226641",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-3%2Fimage%2FNLE%2FKaja%2F1920%2F03%2F12%2F1%2F19200312_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fport2.theeuropeanlibrary.org%2Ffcgi-bin%2Fiipsrv2.fcgi%3FFIF%3Dnode-3%2Fimage%2FNLE%2FKaja%2F1920%2F03%2F12%2F1%2F19200312_1-0001.jp2%26wid%3D200%26cvt%3Djpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200356/BibliographicResource_3000117822431"
     },
     {
       title: "La Época (Madrid. 1849) - 1864-10-13",
@@ -252,7 +268,8 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       language: "es",
       year: 1864,
       url: "http://localhost:3000/los/147835",
-      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000192072%2Flow.jpg&size=LARGE&type=TEXT"
+      thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000192072%2Flow.jpg&size=LARGE&type=TEXT",
+      id_europeana: "/9200302/BibliographicResource_3000014625800"
     }
   ];
 

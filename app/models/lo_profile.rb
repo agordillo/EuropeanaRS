@@ -83,6 +83,7 @@ class LoProfile < ActiveRecord::Base
       lo_profile[:url] = (record.is_a? Lo) ? Rails.application.routes.url_helpers.lo_path(record) : record.url
     end
     lo_profile[:thumbnail_url] = record.thumbnail_url
+    lo_profile[:id_europeana] = record.id_europeana if record.respond_to?("id_europeana")
 
     lo_profile
   end

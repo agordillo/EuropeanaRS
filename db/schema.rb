@@ -61,14 +61,15 @@ ActiveRecord::Schema.define(version: 20151020124019) do
     t.string   "country"
     t.string   "resource_type"
     t.string   "europeana_skos_concept"
+    t.integer  "visit_count",                               default: 0
+    t.integer  "like_count",                                default: 0
+    t.integer  "popularity",                                default: 0
     t.integer  "resource_type_crc32",             limit: 8
     t.integer  "language_crc32",                  limit: 8
     t.integer  "europeana_collection_name_crc32", limit: 8
     t.integer  "country_crc32",                   limit: 8
     t.integer  "europeana_skos_concept_crc32",    limit: 8
-    t.integer  "visit_count",                               default: 0
-    t.integer  "like_count",                                default: 0
-    t.integer  "popularity",                                default: 0
+    t.integer  "id_europeana_crc32",              limit: 8
   end
 
   create_table "los_users", id: false, force: :cascade do |t|
