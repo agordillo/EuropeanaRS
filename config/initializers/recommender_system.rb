@@ -44,8 +44,9 @@ Rails.application.configure do
 
 
   #Store some variables in configuration to speed things up
-  config.maxPreselectionSize = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)
-  config.maxTextLength = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
+  config.max_matches = ThinkingSphinx::Configuration.instance.settings["max_matches"] || 10000
+  config.max_preselection_size = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)
+  config.max_text_length = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
   config.max_user_los = (config.APP_CONFIG["max_user_los"].is_a?(Numeric) ? config.APP_CONFIG["max_user_los"] : 5)
   config.repository_total_entries = Lo.count
   

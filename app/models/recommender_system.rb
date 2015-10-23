@@ -43,7 +43,8 @@ class RecommenderSystem
     # Search resources using the search engine
     searchOptions = {};
 
-    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.maxPreselectionSize
+    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.max_preselection_size
+    searchOptions[:n] = [EuropeanaRS::Application::config.max_matches,searchOptions[:n]].min
     searchOptions[:models] = [Lo]
     searchOptions[:order] = "random"
 
@@ -246,8 +247,8 @@ class RecommenderSystem
     return 0 if (textA.blank? or textB.blank?)
 
     #We need to limit the length of the text due to performance issues
-    textA = textA.first(EuropeanaRS::Application::config.maxTextLength)
-    textB = textB.first(EuropeanaRS::Application::config.maxTextLength)
+    textA = textA.first(EuropeanaRS::Application::config.max_text_length)
+    textB = textB.first(EuropeanaRS::Application::config.max_text_length)
 
     numerator = 0
     denominator = 0

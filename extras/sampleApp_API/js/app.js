@@ -452,11 +452,31 @@ APP = (function(){
     data["settings"]["rs_weights"]["quality_score"] = parseInt($('input[weightfamily="general"][weight="quality"]').val())/100;
     data["settings"]["rs_weights"]["popularity_score"] = parseInt($('input[weightfamily="general"][weight="popularity"]').val())/100;
 
+    data["settings"]["los_weights"] = {};
+    data["settings"]["los_weights"]["title"] = parseInt($('input[weightfamily="los"][weight="title"]').val())/100;
+    data["settings"]["los_weights"]["description"] = parseInt($('input[weightfamily="los"][weight="description"]').val())/100;
+    data["settings"]["los_weights"]["language"] = parseInt($('input[weightfamily="los"][weight="language"]').val())/100;
+    data["settings"]["los_weights"]["year"] = parseInt($('input[weightfamily="los"][weight="year"]').val())/100;
+
+    data["settings"]["us_weights"] = {};
+    data["settings"]["us_weights"]["language"] = parseInt($('input[weightfamily="users"][weight="language"]').val())/100;
+    data["settings"]["us_weights"]["los"] = parseInt($('input[weightfamily="users"][weight="los"]').val())/100;
+
     data["settings"]["rs_filters"] = {};
     data["settings"]["rs_filters"]["los_score"] = parseInt($('input[filterfamily="general"][filter="los"]').val())/100;
     data["settings"]["rs_filters"]["us_score"] = parseInt($('input[filterfamily="general"][filter="us"]').val())/100;
     data["settings"]["rs_filters"]["quality_score"] = parseInt($('input[filterfamily="general"][filter="quality"]').val())/100;
     data["settings"]["rs_filters"]["popularity_score"] = parseInt($('input[filterfamily="general"][filter="popularity"]').val())/100;
+
+    data["settings"]["los_filters"] = {};
+    data["settings"]["los_filters"]["title"] = parseInt($('input[filterfamily="los"][filter="title"]').val())/100;
+    data["settings"]["los_filters"]["description"] = parseInt($('input[filterfamily="los"][filter="description"]').val())/100;
+    data["settings"]["los_filters"]["language"] = parseInt($('input[filterfamily="los"][filter="language"]').val())/100;
+    data["settings"]["los_filters"]["year"] = parseInt($('input[filterfamily="los"][filter="year"]').val())/100;
+
+    data["settings"]["us_filters"] = {};
+    data["settings"]["us_filters"]["language"] = parseInt($('input[filterfamily="us"][filter="language"]').val())/100;
+    data["settings"]["us_filters"]["los"] = parseInt($('input[filterfamily="us"][filter="los"]').val())/100;
 
     EuropeanaRS_API.callAPI(data,function(data){
       var results = data["results"];

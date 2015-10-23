@@ -134,7 +134,9 @@
             <th><span>Filter by languages on preselection:</span></th>
             <th><input id="preselection_filter_languages" class="checkbox_setting" type="checkbox" checked="checked"/></th>
           </tr>
-          <tr>
+        </table>
+        <br/>
+        <table>
           <tr class="settings_title">
             <th colspan="2">General Weights</th>
           </tr>
@@ -158,6 +160,50 @@
             <th><span>Total:</span></th>
             <th><input class="weight_sum" weightfamily="general" type="number" value="100" readonly/>%</th>
           </tr>
+        </table>
+        <br/>
+        <table>
+          <tr class="settings_title">
+            <th colspan="2">Learning Object Similarity Weights</th>
+          </tr>
+          <tr>
+            <th><span>Title:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="title" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Description:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="description" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="language" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Years:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="year" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="los" type="number" value="100" readonly/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">User Profile Similarity Weights</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="weight_setting" weightfamily="users" weight="language" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Objects liked by the user:</span></th>
+            <th><input class="weight_setting" weightfamily="users" weight="los" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="users" type="number" value="100" readonly/>%</th>
+          </tr>
+        </table>
+        <br/>
+        <table>
           <tr class="settings_title">
             <th colspan="2">General Filters</th>
           </tr>
@@ -177,7 +223,40 @@
             <th><span>Learning Object Popularity:</span></th>
             <th><input class="filter_setting" filterfamily="general" filter="popularity" type="number" value="0" min="0" max="100" step="1"/>%</th>
           </tr>
-      </table>
+        </table>
+        <br/>
+        <table>
+          <tr class="settings_title">
+            <th colspan="2">Filters for Learning Object Similarity</th>
+          </tr>
+          <tr>
+            <th><span>Title:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="title" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Description:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="description" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="language" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Year:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="year" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">Filters for User Profile Similarity</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="filter_setting" filterfamily="us" filter="language" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Objects liked by the user:</span></th>
+            <th><input class="filter_setting" filterfamily="us" filter="los" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
