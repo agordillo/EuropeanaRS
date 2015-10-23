@@ -32,7 +32,7 @@ class RecommenderSystem
   def self.prepareOptions(options={})
     options = {:n => 10, :user_profile => {}, :lo_profile => {}}.merge(options)
     options[:n] = options[:n].to_i
-    options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].nil?
+    options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].blank?
     options
   end
 
@@ -118,49 +118,45 @@ class RecommenderSystem
 
     weights = RecommenderSystem.getRSWeights(options)
     weights_sum = 1
+    options[:weights_los] = RecommenderSystem.getLoSWeights(options)
+    options[:weights_us] = RecommenderSystem.getUSWeights(options)
 
     filters = RecommenderSystem.getRSFilters(options)
-    loSFilters = nil
-    uSFilters = nil
-    loSFiltering = nil
-    uSFiltering = nil
 
     if options[:lo_profile].blank?
       weights_sum = (weights_sum-weights[:los_score])
       weights[:los_score] = 0
       filters[:los_score] = 0
-      loSFiltering = false
+      options[:filtering_los] = false
     end
     if options[:user_profile].blank?
       weights_sum = (weights_sum-weights[:los_score])
       weights[:us_score] = 0
       filters[:us_score] = 0
-      uSFiltering = false
+      options[:filtering_us] = false
     end
     weights.each { |k, v| weights[k] = [1,v/weights_sum.to_f].min } if weights_sum < 1
 
     #Check if any individual filtering should be performed
-    if loSFiltering.nil?
-      loSFilters = RecommenderSystem.getLoSFilters(options)
-      loSFiltering = loSFilters.map {|k,v| v}.sum > 0
-      loSFilters = nil if loSFiltering===false
+    if options[:filtering_los].nil?
+      options[:filters_los] = RecommenderSystem.getLoSFilters(options)
+      options[:filtering_los] = options[:filters_los].map {|k,v| v}.sum > 0
     end
-    if uSFiltering.nil?
-      uSFilters = RecommenderSystem.getUSFilters(options)
-      uSFiltering = RecommenderSystem.getUSFilters(options).map {|k,v| v}.sum > 0
-      uSFilters = nil if uSFiltering===false
+    if options[:filtering_us].nil?
+      options[:filters_us] = RecommenderSystem.getUSFilters(options)
+      options[:filtering_us] = options[:filters_us].map {|k,v| v}.sum > 0
     end
-    
-    calculateLoSimilarityScore = ((weights[:los_score]>0)||(filters[:los_score]>0)||loSFiltering)
-    calculateUserSimilarityScore = ((weights[:us_score]>0)||(filters[:us_score]>0)||uSFiltering)
+
+    calculateLoSimilarityScore = ((weights[:los_score]>0)||(filters[:los_score]>0)||options[:filtering_los])
+    calculateUserSimilarityScore = ((weights[:us_score]>0)||(filters[:us_score]>0)||options[:filtering_us] )
     calculateQualityScore = ((weights[:quality_score]>0)||(filters[:quality_score]>0))
     calculatePopularityScore = ((weights[:popularity_score]>0)||(filters[:popularity_score]>0))
 
     preSelectionLOs.map{ |loProfile|
-      los_score = calculateLoSimilarityScore ? RecommenderSystem.loProfileSimilarityScore(options[:lo_profile],loProfile,options,loSFilters) : 0
+      los_score = calculateLoSimilarityScore ? RecommenderSystem.loProfileSimilarityScore(options[:lo_profile],loProfile,options) : 0
       (loProfile[:filtered]=true and next) if (calculateLoSimilarityScore and los_score < filters[:los_score])
       
-      us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile,options,uSFilters) : 0
+      us_score = calculateUserSimilarityScore ? RecommenderSystem.userProfileSimilarityScore(options[:user_profile],loProfile,options) : 0
       (loProfile[:filtered]=true and next) if (calculateUserSimilarityScore and us_score < filters[:us_score])
       
       quality_score = calculateQualityScore ? RecommenderSystem.qualityScore(loProfile) : 0
@@ -187,10 +183,10 @@ class RecommenderSystem
   #######################
 
   #Learning Object Similarity Score, [0,1] scale
-  def self.loProfileSimilarityScore(loProfileA,loProfileB,options={},filters={})
-    weights = RecommenderSystem.getLoSWeights(options)
-    filters = RecommenderSystem.getLoSFilters(options) unless filters.nil? #nil means no filtering
-
+  def self.loProfileSimilarityScore(loProfileA,loProfileB,options={})
+    weights = options[:weights_los] || RecommenderSystem.getLoSWeights(options)
+    filters = options[:filtering_los]!=false ? (options[:filters_los] || RecommenderSystem.getLoSFilters(options)) : nil
+    
     titleS = RecommenderSystem.getSemanticDistance(loProfileA[:title],loProfileB[:title])
     descriptionS = RecommenderSystem.getSemanticDistance(loProfileA[:description],loProfileB[:description])
     languageS = RecommenderSystem.getSemanticDistanceForCategoricalFields(loProfileA[:language],loProfileB[:language])
@@ -202,20 +198,18 @@ class RecommenderSystem
   end
 
   #User profile Similarity Score, [0,1] scale
-  def self.userProfileSimilarityScore(userProfile,loProfile,options={},filters={})
-    weights = RecommenderSystem.getUSWeights(options)
-    filters = RecommenderSystem.getUSFilters(options) unless filters.nil? #nil means no filtering
-
+  def self.userProfileSimilarityScore(userProfile,loProfile,options={})
+    weights = options[:weights_us] || RecommenderSystem.getUSWeights(options)
+    filters = options[:filtering_us]!=false ? (options[:filters_us] || RecommenderSystem.getUSFilters(options)) : nil
+    
     languageS = RecommenderSystem.getSemanticDistanceForCategoricalFields(userProfile[:language],loProfile[:language])
 
     losS = 0
     unless userProfile[:los].blank?
-      losSCount = 0
-      userProfile[:los].first(2).each do |pastLoProfile|
-        losS += RecommenderSystem.loProfileSimilarityScore(pastLoProfile,loProfile)
-        losSCount += 1
+      userProfile[:los].each do |pastLoProfile|
+        losS += RecommenderSystem.loProfileSimilarityScore(pastLoProfile,loProfile,options.merge({:filtering_los => false}))
       end
-      losS = losS/losSCount unless losSCount===0
+      losS = losS/userProfile[:los].length
     end
 
     return -1 if (!filters.blank? and (languageS < filters[:language] || losS < filters[:los]))
@@ -394,7 +388,10 @@ class RecommenderSystem
 
   def self.getRSUserSetting(settingName,settingFamily,options={})
     settingKey = (settingName + "_" + settingFamily).to_sym #e.g. :rs_weights
-    explicitSetting = options[settingKey] || {}
+
+    explicitSettings = {}
+    explicitSettings = options[:settings][settingKey] || {} if options[:settings]
+
     userSettings = options[:user_settings][settingKey] if options[:user_settings]
     if userSettings.blank?
       defaultKey = ("default_" + settingName).to_sym #e.g. :default_rs
@@ -406,7 +403,8 @@ class RecommenderSystem
       end
       userSettings = europeanaRSConfig[defaultKey] unless europeanaRSConfig.nil?
     end
-    userSettings.merge(explicitSetting)
+
+    userSettings.merge(explicitSettings)
   end
 
   # Default weights for the Recommender System provided by EuropeanaRS

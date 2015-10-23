@@ -21,11 +21,19 @@ class RecommenderSystemController < ApplicationController
 
     permitedParamsLo = [:title, :description, :language, :year, :id_europeana]
     permitedParamsUser = [:language, los: permitedParamsLo]
-    permitedParamsWeights = [default_rs: [:los_score, :us_score, :quality_score, :popularity_score] , default_los: permitedParamsLo, default_us: permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}]
-    permitedParamsFilters = permitedParamsWeights
-    permitedParamsSettings = [rs_weights: permitedParamsWeights, rs_filters: permitedParamsFilters]
-    options = params.permit(:n, :query, lo_profile: permitedParamsLo, user_profile: permitedParamsUser, user_settings: permitedParamsSettings)
+    permitedParamsUserFields = permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}
+    permitedParamsGeneralWeights = [:los_score, :us_score, :quality_score, :popularity_score]
+    permitedParamsSettings = [rs_weights: permitedParamsGeneralWeights , los_weights: permitedParamsLo, us_weights: permitedParamsUserFields, rs_filters: permitedParamsGeneralWeights, los_filters: permitedParamsLo, us_filters: permitedParamsUserFields]
+    options = params.permit(:n, :query, lo_profile: permitedParamsLo, user_profile: permitedParamsUser, settings: permitedParamsSettings)
     options = {:external => true}.merge(options.to_hash.recursive_symbolize_keys)
+
+    unless options[:settings].blank?
+      options[:settings].each{ |k1,v1|
+        v1.each{ |k2,v2|
+          options[:settings][k1][k2] = v2.to_f
+        }
+      }
+    end
 
     #2. Call EuropeanaRS Recommender System
     suggestions = RecommenderSystem.suggestions(options)

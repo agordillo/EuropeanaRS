@@ -3,10 +3,13 @@
 <head>
   <title>EuropeanaRS API: Sample Application</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script src="js/slick.js"></script>
   <script src="js/europeanars.js"></script>
   <script src="js/app.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css"/>
   <link rel="stylesheet" type="text/css" href="css/slick.css"/>
   <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
   <link rel="stylesheet" type="text/css" href="css/app.css"/>
@@ -110,7 +113,7 @@
     </div>
   </div>
 
-  <div class="step_section">
+  <div id="settings" class="step_section">
     <div class="step_title_wrapper">
       <div class="step_section_number">4</div>
       <div class="step_title">
@@ -118,6 +121,52 @@
       </div>
     </div>
     <div class="step_content_wrapper">
+      <div class="settings_field">
+        <table>
+          <tr class="settings_title">
+            <th colspan="2">General Weights</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object similarity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="los" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>User similarity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="us" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Quality:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="quality" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Popularity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="popularity" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="general" type="number" value="100" readonly/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">General Filters</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object similarity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="los" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>User similarity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="us" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Quality:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="quality" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Popularity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="popularity" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+      </table>
+      </div>
     </div>
   </div>
 

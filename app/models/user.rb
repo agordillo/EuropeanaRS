@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
     (JSON.parse(self.settings)).recursive_symbolize_keys rescue User.defaultSettings
   end
 
-  def pastLos(n=3)
+  def pastLos(n=nil)
+    n = EuropeanaRS::Application::config.max_user_los unless n.is_a? Numeric
     all_lops = self.saved_lo_profiles
     pastLos = all_lops.where("lo_id is NOT null").last((n/2.to_f).round)
     nFill = (n-pastLos.length)

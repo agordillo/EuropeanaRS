@@ -204,6 +204,21 @@ APP = (function(){
       _selectUser(this);
     });
 
+    $('input.weight_setting').change(function(){
+      var newValue = $(this).val();
+      if(!_validateNumber(newValue)){
+        $(this).val(0);
+      }
+      _updateWeightSumFor(this);
+    });
+
+    $('input.filter_setting').change(function(){
+      var newValue = $(this).val();
+      if(!_validateNumber(newValue)){
+        $(this).val(0);
+      }
+    });
+
     $("#submit").click(function(e){
       e.preventDefault();
       e.stopPropagation();
@@ -348,6 +363,38 @@ APP = (function(){
     $(carouselDOM).css("display","none");
   };
 
+  var _updateWeightSumFor = function(inputDOM){
+    var weightSum = 0;
+    var weightFamily = $(inputDOM).attr("weightfamily");
+    $('input[weightFamily="'+weightFamily+'"]:not(".weight_sum")').each(function(index,weightInputDOM){
+      var weight = parseInt($(weightInputDOM).val());
+      if(_validateNumber(weight)){
+        weightSum += weight;
+      }
+    });
+    var weightSumDOM = $('input[weightFamily="'+weightFamily+'"].weight_sum');
+    $(weightSumDOM).val(weightSum);
+    if(weightSum!=100){
+      $(weightSumDOM).addClass("wrong_weight");
+    } else {
+      $(weightSumDOM).removeClass("wrong_weight");
+    }
+  };
+
+  ////////////
+  // Utils
+  ///////////
+
+  var _validateNumber = function(number){
+    if(isNaN(number)){
+      return false;
+    }
+    if((number < 0)||(number > 100)){
+      return false;
+    }
+    return true;
+  };
+
   ////////////
   // API functions
   ///////////
@@ -391,9 +438,20 @@ APP = (function(){
       data["user_profile"]["los"] = JSON.stringify(selected_user.los);
     }
 
-    //TODO: RS settings
+    //RS settings
+    data["settings"] = {};
 
-    //TODO: User settings
+    data["settings"]["rs_weights"] = {};
+    data["settings"]["rs_weights"]["los_score"] = parseInt($('input[weightfamily="general"][weight="los"]').val())/100
+    data["settings"]["rs_weights"]["us_score"] = parseInt($('input[weightfamily="general"][weight="us"]').val())/100;
+    data["settings"]["rs_weights"]["quality_score"] = parseInt($('input[weightfamily="general"][weight="quality"]').val())/100;
+    data["settings"]["rs_weights"]["popularity_score"] = parseInt($('input[weightfamily="general"][weight="popularity"]').val())/100;
+
+    data["settings"]["rs_filters"] = {};
+    data["settings"]["rs_filters"]["los_score"] = parseInt($('input[filterfamily="general"][filter="los"]').val())/100;
+    data["settings"]["rs_filters"]["us_score"] = parseInt($('input[filterfamily="general"][filter="us"]').val())/100;
+    data["settings"]["rs_filters"]["quality_score"] = parseInt($('input[filterfamily="general"][filter="quality"]').val())/100;
+    data["settings"]["rs_filters"]["popularity_score"] = parseInt($('input[filterfamily="general"][filter="popularity"]').val())/100;
 
     EuropeanaRS_API.callAPI(data,function(data){
       var results = data["results"];
