@@ -134,12 +134,13 @@ class RecommenderSystem
       options[:filtering_los] = false
     end
     if options[:user_profile].blank?
-      weights_sum = (weights_sum-weights[:los_score])
+      weights_sum = (weights_sum-weights[:us_score])
       weights[:us_score] = 0
       filters[:us_score] = 0
       options[:filtering_us] = false
     end
-    weights.each { |k, v| weights[k] = [1,v/weights_sum.to_f].min } if weights_sum < 1
+    
+    weights.each { |k, v| weights[k] = [1,v/weights_sum.to_f].min } if (weights_sum < 1 and weights_sum > 0)
 
     #Check if any individual filtering should be performed
     if options[:filtering_los].nil?

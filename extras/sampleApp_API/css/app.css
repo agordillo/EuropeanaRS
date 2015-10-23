@@ -22,10 +22,15 @@ header {
   padding: 2% 5% 0% 5%;
 }
 
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
 div#container {
   width: 90%;
   height: auto;
-  padding: 2% 5% 2% 5%;
+  padding: 2% 5% 1% 5%;
   overflow: hidden;
 }
 
@@ -189,6 +194,10 @@ div.step_section p.copyright_notice {
   font-weight: normal;
 }
 
+#selections table th[name="lo_url"] {
+  word-break: break-all;
+}
+
 #selections table th input {
   width: 100%;
 }
@@ -221,6 +230,18 @@ div.step_section p.copyright_notice {
 #settings table tr {
   font-weight: normal;
   font-size: 1rem;
+}
+
+#settings table tr:first-child {
+  cursor: pointer;
+}
+
+#settings table.minified tr:first-child {
+  display: table-row !important;
+}
+
+#settings table.minified tr {
+  display: none;
 }
 
 #settings table tr.settings_title th {
@@ -263,4 +284,46 @@ input.weight_sum.wrong_weight {
   padding: 5px;
   margin-left: 88px;
   margin-top: 10px;
+}
+
+#noresults {
+  display: none;
+  font-size: 1.6rem;
+  font-weight: normal;
+  font-style: italic;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+p.footer_note {
+  margin-top: 30px;
+  margin-bottom: 5px;
+  font-style: italic;
+  font-size: 1rem;
+  text-align: right;
+  padding-right: 25px;
+}
+
+div.submit_wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+#submit {
+  text-align: center;
+}
+
+#submit img {
+  padding: 10px;
+  height: 70px;
+}
+
+#submit div {
+  float: right;
+  margin-left: 20px;
+  margin-top: 5px;
+  padding: 30px 15px 30px 15px;
+  font-size: 1.6rem;
+  font-weight: bold;
 }

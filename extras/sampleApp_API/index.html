@@ -18,8 +18,11 @@
 
 <header>
   <div id="logo">
-    <img alt="EuropeanaRS logo" src="images/Europeanars_logo.png"/>
+    <a target="_blank" href="http://github.com/agordillo/EuropeanaRS">
+      <img alt="EuropeanaRS logo" src="images/Europeanars_logo.png"/>
+    </a>
     <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+    <p>Sample Application</p>
   </div>
 </header>
 
@@ -122,9 +125,9 @@
     </div>
     <div class="step_content_wrapper">
       <div class="settings_field">
-        <table>
+        <table class="expanded">
           <tr class="settings_title">
-            <th colspan="2">General Settings</th>
+            <th colspan="2">General Settings <span class="expand_icon">-</span></th>
           </tr>
           <tr>
             <th><span>Preselection size:</span></th>
@@ -136,9 +139,9 @@
           </tr>
         </table>
         <br/>
-        <table>
+        <table class="minified">
           <tr class="settings_title">
-            <th colspan="2">General Weights</th>
+            <th colspan="2">General Weights <span class="expand_icon">+</span></th>
           </tr>
           <tr>
             <th><span>Learning Object similarity:</span></th>
@@ -160,27 +163,24 @@
             <th><span>Total:</span></th>
             <th><input class="weight_sum" weightfamily="general" type="number" value="100" readonly/>%</th>
           </tr>
-        </table>
-        <br/>
-        <table>
           <tr class="settings_title">
             <th colspan="2">Learning Object Similarity Weights</th>
           </tr>
           <tr>
             <th><span>Title:</span></th>
-            <th><input class="weight_setting" weightfamily="los" weight="title" type="number" value="40" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="los" weight="title" type="number" value="20" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Description:</span></th>
-            <th><input class="weight_setting" weightfamily="los" weight="description" type="number" value="40" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="los" weight="description" type="number" value="15" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Language:</span></th>
-            <th><input class="weight_setting" weightfamily="los" weight="language" type="number" value="10" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="los" weight="language" type="number" value="50" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Years:</span></th>
-            <th><input class="weight_setting" weightfamily="los" weight="year" type="number" value="10" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="los" weight="year" type="number" value="15" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Total:</span></th>
@@ -191,11 +191,11 @@
           </tr>
           <tr>
             <th><span>Language:</span></th>
-            <th><input class="weight_setting" weightfamily="users" weight="language" type="number" value="40" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="users" weight="language" type="number" value="50" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Learning Objects liked by the user:</span></th>
-            <th><input class="weight_setting" weightfamily="users" weight="los" type="number" value="40" min="0" max="100" step="1"/>%</th>
+            <th><input class="weight_setting" weightfamily="users" weight="los" type="number" value="50" min="0" max="100" step="1"/>%</th>
           </tr>
           <tr>
             <th><span>Total:</span></th>
@@ -203,9 +203,9 @@
           </tr>
         </table>
         <br/>
-        <table>
+        <table class="minified">
           <tr class="settings_title">
-            <th colspan="2">General Filters</th>
+            <th colspan="2">General Filters <span class="expand_icon">+</span></th>
           </tr>
           <tr>
             <th><span>Learning Object similarity:</span></th>
@@ -223,9 +223,6 @@
             <th><span>Learning Object Popularity:</span></th>
             <th><input class="filter_setting" filterfamily="general" filter="popularity" type="number" value="0" min="0" max="100" step="1"/>%</th>
           </tr>
-        </table>
-        <br/>
-        <table>
           <tr class="settings_title">
             <th colspan="2">Filters for Learning Object Similarity</th>
           </tr>
@@ -268,13 +265,19 @@
         <p>Request suggested resources to EuropeanaRS</p>
       </div>
     </div>
-    <div class="step_content_wrapper">
-      <button id="submit" type="button">Request resources to EuropeanaRS</button>
+    <div class="step_content_wrapper submit_wrapper">
+      <button id="submit" type="button"><img src="images/Europeana_icon.png"/><div>Request resources to EuropeanaRS</div></button>
+      <div id="noresults">
+        <p>EuropeanaRS was unable to provide recommendations with the specified options. Try with other settings.</p>
+      </div>
       <div class="carousel_wrapper">
         <div id="suggestions_carousel" class="carousel"></div>
       </div>
     </div>
   </div>
+
+  <br/>
+  <p class="footer_note">EuropeanaRS source code and documentation is available at <a target="_blank" href="https://github.com/agordillo/EuropeanaRS">EuropeanaRS Github Project</a>.</p>
 
 </div>
 

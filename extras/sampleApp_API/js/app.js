@@ -118,11 +118,11 @@ APP = (function(){
   };
 
   var _selectRandomLo = function(){
-    _selectLo($("#los_carousel div.slick-active div.lo_carousel_item")[Math.round(Math.random()*4)]);
+    _selectLo($("#los_carousel div.slick-active div.lo_carousel_item")[Math.round(Math.random()*3)]);
   };
 
   var _selectRandomUser = function(){
-    _selectUser($("#users_carousel div.slick-active div.user_carousel_item")[Math.round(Math.random()*4)]);
+    _selectUser($("#users_carousel div.slick-active div.user_carousel_item")[Math.round(Math.random()*3)]);
   }
 
   var _initUI = function(){
@@ -216,6 +216,23 @@ APP = (function(){
       var newValue = $(this).val();
       if(!_validateNumber(newValue)){
         $(this).val(0);
+      }
+    });
+
+    $("#settings table tr:first-child").click(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+
+      var table = $(this).parents("table");
+      var expanded = $(table).hasClass("expanded");
+      if(expanded){
+        //Minify
+        $(table).removeClass("expanded").addClass("minified");
+        $(this).find("span.expand_icon").html("+");
+      } else {
+        //Expand
+        $(table).removeClass("minified").addClass("expanded");
+        $(this).find("span.expand_icon").html("-");
       }
     });
 
@@ -335,6 +352,12 @@ APP = (function(){
     _cleanCarousel(resultsDOM);
 
     var rL = results.length;
+    if(rL == 0){
+      return $("#noresults").show(); //No results
+    } else {
+      $("#noresults").hide();
+    }
+
     for(var i=0; i<rL; i++){
       $(resultsDOM).prepend(_generateLoDOM(results[i],{"url": true}));
     }
@@ -479,8 +502,7 @@ APP = (function(){
     data["settings"]["us_filters"]["los"] = parseInt($('input[filterfamily="us"][filter="los"]').val())/100;
 
     EuropeanaRS_API.callAPI(data,function(data){
-      var results = data["results"];
-      _drawResults(results);
+      _drawResults(data["results"]);
     }, function(error){
       alert(error.toString());
     });
