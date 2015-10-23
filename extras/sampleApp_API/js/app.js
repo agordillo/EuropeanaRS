@@ -441,6 +441,11 @@ APP = (function(){
     //RS settings
     data["settings"] = {};
 
+    //General settings
+    data["settings"]["preselection_size"] = $("#preselection_size").val();
+    data["settings"]["preselection_filter_languages"] = $("#preselection_filter_languages").is(":checked");
+
+    //Weights and Filters
     data["settings"]["rs_weights"] = {};
     data["settings"]["rs_weights"]["los_score"] = parseInt($('input[weightfamily="general"][weight="los"]').val())/100
     data["settings"]["rs_weights"]["us_score"] = parseInt($('input[weightfamily="general"][weight="us"]').val())/100;

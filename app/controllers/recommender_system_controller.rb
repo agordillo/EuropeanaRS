@@ -23,16 +23,16 @@ class RecommenderSystemController < ApplicationController
     permitedParamsUser = [:language, los: permitedParamsLo]
     permitedParamsUserFields = permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}
     permitedParamsGeneralWeights = [:los_score, :us_score, :quality_score, :popularity_score]
-    permitedParamsSettings = [rs_weights: permitedParamsGeneralWeights , los_weights: permitedParamsLo, us_weights: permitedParamsUserFields, rs_filters: permitedParamsGeneralWeights, los_filters: permitedParamsLo, us_filters: permitedParamsUserFields]
+    permitedParamsSettings = [:preselection_size, :preselection_filter_languages, rs_weights: permitedParamsGeneralWeights , los_weights: permitedParamsLo, us_weights: permitedParamsUserFields, rs_filters: permitedParamsGeneralWeights, los_filters: permitedParamsLo, us_filters: permitedParamsUserFields]
     options = params.permit(:n, :query, lo_profile: permitedParamsLo, user_profile: permitedParamsUser, settings: permitedParamsSettings)
     options = {:external => true}.merge(options.to_hash.recursive_symbolize_keys)
 
     unless options[:settings].blank?
       options[:settings].each{ |k1,v1|
-        v1.each{ |k2,v2|
-          options[:settings][k1][k2] = v2.to_f
-        }
+        v1.each{ |k2,v2| options[:settings][k1][k2] = v2.to_f } if v1.is_a? Hash
       }
+      options[:settings][:preselection_size] = options[:settings][:preselection_size].to_i if options[:settings][:preselection_size].present?
+      options[:settings][:preselection_filter_languages] = (options[:settings][:preselection_filter_languages]=="true") if options[:settings][:preselection_filter_languages].present?
     end
 
     #2. Call EuropeanaRS Recommender System

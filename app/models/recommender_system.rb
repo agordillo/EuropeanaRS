@@ -30,7 +30,7 @@ class RecommenderSystem
 
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
-    options = {:n => 10, :user_profile => {}, :lo_profile => {}}.merge(options)
+    options = {:n => 10, :user_profile => {}, :lo_profile => {}, :settings => {}}.merge(options)
     options[:n] = options[:n].to_i
     options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].blank?
     options
@@ -43,40 +43,43 @@ class RecommenderSystem
     # Search resources using the search engine
     searchOptions = {};
 
-    searchOptions[:n] = EuropeanaRS::Application::config.maxPreselectionSize
+    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.maxPreselectionSize
     searchOptions[:models] = [Lo]
     searchOptions[:order] = "random"
 
     # Define some filters for the preselection
     
     # A. Query
-    searchOptions[:query] = options[:query] unless options[:query].blank?
+    searchOptions[:query] = options[:settings][:query] unless options[:settings][:query].blank?
     
-    # B. Language. Multilanguage approach.
-    preselectionLanguages = []
-    if options[:lo_profile][:language]
-      preselectionLanguages << options[:lo_profile][:language]
-    end
-    if options[:user_profile][:language]
-      preselectionLanguages << options[:user_profile][:language]
-    end
-    if options[:user_profile][:los]
-      preselectionLanguages += options[:user_profile][:los].map{|lo| lo[:language]}.compact
-    end
-    preselectionLanguages.uniq!
-    preselectionLanguages = preselectionLanguages & Europeana.getAllLanguages
+    # B. Language.
+    unless options[:settings][:preselection_filter_languages] == false
+      # B. Multilanguage approach.
+      preselectionLanguages = []
+      if options[:lo_profile][:language]
+        preselectionLanguages << options[:lo_profile][:language]
+      end
+      if options[:user_profile][:language]
+        preselectionLanguages << options[:user_profile][:language]
+      end
+      if options[:user_profile][:los]
+        preselectionLanguages += options[:user_profile][:los].map{|lo| lo[:language]}.compact
+      end
+      preselectionLanguages.uniq!
+      preselectionLanguages = preselectionLanguages & Europeana.getAllLanguages
 
-    searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
+      searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
 
-    # B. Language (Alternative). Single language approach
-    # preselectionLanguage = nil
-    # if options[:lo_profile][:language]
-    #   preselectionLanguage = options[:lo_profile][:language]
-    # elsif options[:user_profile][:language]
-    #   preselectionLanguage = options[:user_profile][:language]
-    # end
-    # searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
-    
+      # B. (Alternative). Single language approach
+      # preselectionLanguage = nil
+      # if options[:lo_profile][:language]
+      #   preselectionLanguage = options[:lo_profile][:language]
+      # elsif options[:user_profile][:language]
+      #   preselectionLanguage = options[:user_profile][:language]
+      # end
+      # searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
+    end
+
     #C. Repeated resources.
     if options[:lo_profile][:id_europeana]
       searchOptions[:europeana_ids_to_avoid] = [options[:lo_profile][:id_europeana]]
