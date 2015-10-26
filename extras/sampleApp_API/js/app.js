@@ -438,7 +438,12 @@ APP = (function(){
 
     //Build params
     var data = {};
-    data["n"] = 20
+
+    var n = parseInt($("#n").val());
+    if(isNaN(n) || (n<1) || (n>100)){
+      n = 20;
+    }
+    data["n"] = n;
 
     if(typeof selected_lo != "undefined"){
       //Build LO profile reading inputs from UI
