@@ -49,15 +49,20 @@ EuropeanaRS_API = (function(){
 EuropeanaRS_API.Core = (function(API,undefined){
 
   //Constants
+  var API_KEY;
   var API_URL;
 
   var init = function(settings){
+    API_KEY = settings.API_KEY;
     API_URL = settings.API_URL;
   };
 
   var callAPI = function(data,successCallback,failCallback){
     data = data || {};
-
+    if(typeof API_KEY != "undefined"){
+      data["api_key"] = API_KEY;
+    }
+    
     if(API.getSettings().mimic === true){
       return successCallback(EuropeanaRS_API.Mimic.getResponse(data));
     }

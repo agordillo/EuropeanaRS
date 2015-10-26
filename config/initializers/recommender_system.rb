@@ -43,6 +43,16 @@ Rails.application.configure do
   config.filters = filters
 
 
+  #EuropeanaRS API
+  config.api = {}
+  config.api[:require_key] = true
+
+  if config.APP_CONFIG["europeanars_api"]
+    if config.APP_CONFIG["europeanars_api"]["require_key"]
+      config.api[:require_key] = (config.APP_CONFIG["europeanars_api"]["require_key"]!="false")
+    end
+  end
+
   #Store some variables in configuration to speed things up
   config.max_matches = ThinkingSphinx::Configuration.instance.settings["max_matches"] || 10000
   config.max_preselection_size = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)

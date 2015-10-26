@@ -33,6 +33,12 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_settings
 
+  #Helper for current app
+  def current_app
+    @current_app
+  end
+  helper_method :current_app
+
   #Wildcard route rescue
   def page_not_found
     respond_to do |format|

@@ -103,7 +103,7 @@ APP = (function(){
 
   var init = function(options){
     // EuropeanaRS_API.init({debug: true, mimic: true});
-    EuropeanaRS_API.init({debug: true, API_URL: "http://localhost:3000/api/"});
+    EuropeanaRS_API.init({debug: true, API_KEY: "7K49Wh6hJkWbDcNWWyT9", API_URL: "http://localhost:3000/api/"});
     _initUI();
 
     //Select random LO
@@ -504,6 +504,7 @@ APP = (function(){
     EuropeanaRS_API.callAPI(data,function(data){
       _drawResults(data["results"]);
     }, function(error){
+      _cleanCarousel($("#suggestions_carousel"));
       alert(error.toString());
     });
   };
