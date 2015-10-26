@@ -1,0 +1,43 @@
+<div class="profile_section_description">
+  <p><%=t("profile.api_keys.info").html_safe%></p>
+</div>
+
+<table class="apps_table">
+  <tr>
+    <th><%=t("apps.name")%></th>
+    <th>API key</th>
+    <th>Private key</th>
+    <th class="centered"><%=t("dictionary.save")%></th>
+    <th class="centered"><%=t("dictionary.remove")%></th>
+  <tr>
+  <tr class="separator"></tr>
+  <% applications.each do |application| %>
+    <tr>
+      <%= form_for(application) do |f| %>
+        <th><%= f.text_field :name, :value => application.name %></th>
+        <th><%=application.app_key%></th>
+        <th><%=application.app_secret%></th>
+        <th class="centered">
+          <button type="submit" class="btn btn-success">
+            <span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+          </button>
+        </th>
+      <% end %>
+      <th class="centered">
+        <%= form_for application, method: :delete do |f| %>
+          <button type="submit" data-confirm="<%=t('dictionary.are_you_sure')%>" class="btn btn-danger">
+            <span class="glyphicon glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+          </button>
+        <% end %>
+      </th>
+    <tr>
+  <% end %>
+</table>
+
+<br/><br/>
+<%= form_for(@app || App.new) do |f| %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.submit(t("profile.api_keys.request_button_new"), {class: "europeanars_button"}) %>
+<% end %>
+
+  

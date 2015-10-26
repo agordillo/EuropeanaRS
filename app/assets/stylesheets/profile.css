@@ -191,3 +191,36 @@ div.lo_box div.external_lo_profile_badge img {
   height: auto;
   margin: 0px;
 }
+
+div.api_keys_section_wrapper input.europeanars_button {
+  padding: 10px;
+  width: 100%;
+}
+
+table.apps_table {
+  width: 100%;
+}
+
+table.apps_table th {
+  padding: 5px 10px;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+
+table.apps_table tr:first-child th {
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-bottom: 1px solid black;
+}
+
+table.apps_table tr.separator {
+  height: 10px;
+}
+
+table.apps_table th.centered {
+  text-align: center;
+}
+
+table.apps_table button[type='submit'] {
+  padding: 4px 8px;
+}

@@ -1,3 +1,9 @@
-<div class="profile_section_wrapper">
+<div class="profile_section_wrapper api_keys_section_wrapper">
   <p class="profile_section_title"><%=t("profile.menu.api_keys")%></p>
+  <br/>
+  <% if @applications.blank? %>
+    <%= render "apps/request" %>
+  <% else %>
+    <%= render "apps/index", :applications => @applications %>
+  <% end %>
 </div>

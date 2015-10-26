@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_and_belongs_to_many :saved_items, :class_name => "Lo"
   has_and_belongs_to_many :saved_lo_profiles, :class_name => "LoProfile"
+  has_many :apps
 
   acts_as_taggable
 
@@ -46,6 +47,7 @@ class User < ActiveRecord::Base
     user_profile[:los] = self.pastLos
     user_profile
   end
+
 
   #################
   # User methods

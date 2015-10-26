@@ -16,6 +16,8 @@ es:
               blank: "no puede estar en blanco"
             password:
               blank: "no puede estar en blanco"
+  apps:
+    name: "Nombre de la aplicación"
   dictionary:
     are_you_sure: "¿Estás seguro?"
     back: "Volver"
@@ -30,6 +32,8 @@ es:
       unspecified: "tiene que ser especificado"
     language: "Idioma"
     password: "Contraseña"
+    remove: "Borrar"
+    save: "Salvar"
     search: "Buscar"
     tags: "Etiquetas"
     untitled: "Sin título"
@@ -91,6 +95,18 @@ es:
       password: "Contraseña (deja este campo en blanco si no quieres cambiarla)"
       password_current: "Contraseña actual (necesitamos tu contraseña actual para confirmar tus cambios)"
       title: "Editar mi cuenta de usuario"
+    api_keys:
+      info: "En esta sección se listan tus API keys para acceder a los servicios de EuropeanaRS.<br/> Puedes encontrar más información sobre el API de EuropeanaRS en la <a target='_blank' href='https://github.com/agordillo/EuropeanaRS/wiki'>wiki</a>."
+      notifications:
+        success: "La API key fue creada satisfactoriamente"
+        failure: "La API key no pudo ser creada"
+      request: "Aquí puedes solicitar una API key para usar el API de EuropeanaRS.<br/> Puedes encontrar más información sobre el API de EuropeanaRS en la <a target='_blank' href='https://github.com/agordillo/EuropeanaRS/wiki'>wiki</a>."
+      request_button: "Consigue una API key"
+      request_button_new: "Consigue otra API key"
+    apps:
+      notifications:
+        success: "La aplicación fue actualizada satisfactoriamente."
+        failure: "Ocurrió un error y la aplicación no pudo ser actualizada."
     edit:
       button: "Actualizar mi Perfil"
       title: "Editar mi perfil de usuario"

@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   match '/settings', to: 'users#update_settings', via: [:post]
   match '/favorites', to: 'users#favorites', via: [:get]
   match '/api_keys', to: 'users#akeys', via: [:get]
-
+ 
+  resources :apps
+  
   resources :los do
     get 'like', on: :member
   end

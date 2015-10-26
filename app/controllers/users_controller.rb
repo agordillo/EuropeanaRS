@@ -57,6 +57,7 @@ class UsersController < ApplicationController
   end
 
   def akeys
+    @applications = current_user.apps.sort_by{|app| app.created_at}
   end
 
 end

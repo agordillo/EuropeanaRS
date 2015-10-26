@@ -1,0 +1,8 @@
+<div class="profile_section_description">
+  <p><%=t("profile.api_keys.request").html_safe%></p>
+</div>
+
+<%= form_for(@app || App.new) do |f| %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.submit(t("profile.api_keys.request_button"), {class: "europeanars_button"}) %>
+<% end %>
