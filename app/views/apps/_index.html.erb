@@ -1,7 +1,3 @@
-<div class="profile_section_description">
-  <p><%=t("profile.api_keys.info").html_safe%></p>
-</div>
-
 <table class="apps_table">
   <tr>
     <th><%=t("apps.name")%></th>
@@ -33,11 +29,5 @@
     <tr>
   <% end %>
 </table>
-
-<br/><br/>
-<%= form_for(@app || App.new) do |f| %>
-  <%= f.hidden_field :user_id, :value => current_user.id %>
-  <%= f.submit(t("profile.api_keys.request_button_new"), {class: "europeanars_button"}) %>
-<% end %>
 
   

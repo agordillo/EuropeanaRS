@@ -2,6 +2,22 @@ class AppsController < ApplicationController
 
   before_filter :authenticate_user!
 
+  def index
+    @applications = current_user.apps.sort_by{|app| app.created_at}
+  end
+
+  def show
+    @application = App.find(params[:id])
+  end
+
+  def edit
+    @application = App.find(params[:id])
+  end
+
+  def new
+    redirect_to "/api_keys"
+  end
+
   def create
     app = App.new(params.require(:app).permit(:name, :app_key, :app_secret))
     app.user_id = current_user.id

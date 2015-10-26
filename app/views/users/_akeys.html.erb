@@ -2,8 +2,8 @@
   <p class="profile_section_title"><%=t("profile.menu.api_keys")%></p>
   <br/>
   <% if @applications.blank? %>
-    <%= render "apps/request" %>
+    <%= render "users/akey_request" %>
   <% else %>
-    <%= render "apps/index", :applications => @applications %>
+    <%= render "users/apps" %>
   <% end %>
 </div>
