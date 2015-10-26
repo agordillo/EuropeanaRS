@@ -1,17 +1,11 @@
-<div class="lo_box"%>
-  <p>
-    <%= link_to(lo[:url],:title => lo[:title]) do %>
-      <%= lo[:title] %>
-    <% end %>
-  </p>
-  <% unless lo[:thumbnail_url].blank? %>
-    <%= link_to(lo[:url]) do %>
+<%= link_to(lo[:url], :title => lo[:title], :target => (lo[:external] ? "_blank" : "_self")) do %>
+  <div class="lo_box"%>
+    <p><%= lo[:title] %></p>
+    <% unless lo[:thumbnail_url].blank? %>
       <img title="<%=lo[:title]%>" src="<%=lo[:thumbnail_url]%>"/>
     <% end %>
-  <% end %>
-  <% if lo[:external] %>
-    <%= link_to(lo[:url]) do %>
+    <% if lo[:external] %>
       <div class="external_lo_profile_badge" title="External resource"><img src="/assets/Europeana_icon.png"></div>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

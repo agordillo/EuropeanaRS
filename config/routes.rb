@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   match '/change_locale', to: 'locales#change_locale', via: [:get]
 
   match '/api', to: 'recommender_system#api', via: [:post]
+  match '/los_api', to: 'los_api#api', via: [:get, :post]
   
   #Wildcard route (This rule should be placed the last)
   match "*not_found", :to => 'application#page_not_found', via: [:get]

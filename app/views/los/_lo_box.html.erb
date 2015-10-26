@@ -1,13 +1,9 @@
-<div class="lo_box"%>
-  <p>
-    <%= link_to(lo,:title => lo.title) do %>
-      <%= lo.title %>
-    <% end %>
-  </p>
-  <% unless lo.thumbnail_url.nil? %>
-    <%= link_to(lo) do %>
+<%= link_to(lo,:title => lo.title) do %>
+  <div class="lo_box"%>
+    <p><%= lo.title %></p>
+    <% unless lo.thumbnail_url.nil? %>
       <img title="<%=lo.title%>" src="<%=lo.thumbnail_url%>"/>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 

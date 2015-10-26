@@ -1,0 +1,37 @@
+<div id="lo_wrapper">
+  <div id="lo_metadata">
+    <div class="column1">
+      <% unless @loProfile[:thumbnail_url].nil? %>
+        <img src="<%=@loProfile[:thumbnail_url]%>"/>
+      <% end %>
+      <% unless @loProfile[:url].nil? %>
+        <p class="europeana_link"><a target="_blank" href="<%=@loProfile[:url]%>"><%=t("los.view_at_europeana")%> <span class="glyphicon glyphicon-new-window"></span></a></p>
+      <% end %>
+      <p class="powered_by_europeana"><img src="/assets/Europeana_icon.png"/> <%=t("los.powered_by_europeana")%></p>
+    </div>
+    <div class="column2">
+      <% unless @loProfile[:title].nil? %>
+        <p class="title"><%= @loProfile[:title] %></p>
+      <% else %>
+        <p class="title"><%=t("dictionary.untitled")%></p>
+      <% end %>
+      <% unless @loProfile[:description].nil? %>
+        <p class="field_title"><%=t("los.description")%></p>
+        <p class="field_content"><%= @loProfile[:description] %></p>
+      <% end %>
+      <% unless @loProfile[:language].nil? %>
+        <p class="field_title"><%=t("los.language")%></p>
+        <p class="field_content"><%= @loProfile[:language] %></p>
+        <% unless Europeana.getCountryFromLanguage(@loProfile[:language]).nil? %>
+          <p class="field_title"><%=t("los.country")%></p>
+          <p class="field_content"><%= Europeana.getCountryFromLanguage(@loProfile[:language]) %></p>
+        <% end %>
+      <% end %>
+      <% unless @loProfile[:year].nil? %>
+        <p class="field_title"><%=t("los.year")%></p>
+        <p class="field_content"><%= @loProfile[:year] %></p>
+      <% end %>
+    </div>
+  </div>
+  <%= render "los/carousel", :los => @suggestions, :loProfiles => true, :title => t("recommendations.suggested_resources"), :extraClasses => ["lo_suggestions"], :slidesToShow => 4 %>
+</div>
