@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EuropeanaRS API JS Library: Sample Application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/europeanars.js"></script>
+</head>
+<body>
+
+<header style="text-align: center; width: 100%">
+  <div id="logo">
+    <a target="_blank" href="http://github.com/agordillo/EuropeanaRS">
+      <img alt="EuropeanaRS logo" src="images/Europeanars_logo.png"/>
+    </a>
+    <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+    <p>API JS Library: Sample Application</p>
+    <p>Check out source code</p>
+  </div>
+</header>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    // 1. Init EuropeanaRS JS API.
+    // We should include the API_KEY and the endpoint with API_URL.
+    EuropeanaRS_API.init({debug: true, API_KEY: "7K49Wh6hJkWbDcNWWyT9", API_URL: "http://localhost:3000/api/"});
+
+
+    // 2. Build params to call the EuropeanaRS API.
+    
+    var data = {};
+    data["n"] = 20; //Request 20 Learning Objects (LOs)
+
+    //Request similar LOs to the following:
+    data["lo_profile"] = {};
+    data["lo_profile"]["title"] = "South Wales daily news - 1895-07-30";
+    data["lo_profile"]["description"] = "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).";
+    data["lo_profile"]["language"] = "en";
+    data["lo_profile"]["year"] = 1895;
+    data["lo_profile"]["id_europeana"] = "/9200385/BibliographicResource_3000117394576"; //The europeana id can be included in order to prevent the system to recommend the same item.
+
+    //Personalize the recommendations for the following user:
+    data["user_profile"] = {};
+    data["user_profile"]["language"] = "en";
+    var eveningExpressLo = {
+          title: "Evening express - 1908-02-25",
+          description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
+          language: "en",
+          year: 1908
+    };
+    var liked_los = [eveningExpressLo];
+    data["user_profile"]["los"] = JSON.stringify(liked_los); //Items liked or visited by the user in the past
+
+    //Use the following settings for the system:
+    data["settings"] = {};
+
+    data["settings"]["preselection_size"] = 300;
+    data["settings"]["preselection_filter_languages"] = "false";
+
+    //Specify general weights
+    //The sum of all weights must be 1. Otherwise can lead to unpredictable behaviours.
+    data["settings"]["rs_weights"] = {};
+    data["settings"]["rs_weights"]["los_score"] = 0.4;
+    data["settings"]["rs_weights"]["us_score"] = 0.4;
+    data["settings"]["rs_weights"]["quality_score"] = 0.1;
+    data["settings"]["rs_weights"]["popularity_score"] = 0.1;
+
+    //More options and settings can be found in the documentation on the EuropeanaRS wiki: 
+    //https://github.com/agordillo/EuropeanaRS/wiki
+
+
+    // 3. Call the EuropeanaRS API using the JS library.
+
+    EuropeanaRS_API.callAPI(data,function(data){
+      console.log("EuropeanaRS API call: success");
+      console.log(data);
+    }, function(error){
+      console.log("EuropeanaRS API call: error");
+      console.log(error.toString());
+    });
+
+  });
+</script>
+
+</body>
+</html>
