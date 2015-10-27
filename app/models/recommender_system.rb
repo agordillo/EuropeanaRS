@@ -71,7 +71,7 @@ class RecommenderSystem
 
       searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
 
-      # B. (Alternative). Single language approach
+      # B. (Alternative). Single language approach.
       # preselectionLanguage = nil
       # if options[:lo_profile][:language]
       #   preselectionLanguage = options[:lo_profile][:language]
@@ -82,10 +82,13 @@ class RecommenderSystem
     end
 
     #C. Repeated resources.
-    if options[:lo_profile][:id_europeana]
-      searchOptions[:europeana_ids_to_avoid] = [options[:lo_profile][:id_europeana]]
+    if options[:lo_profile][:id_repository]
+      case options[:lo_profile][:repository]
+      when "Europeana"
+        searchOptions[:europeana_ids_to_avoid] = [options[:lo_profile][:id_repository]]
+      end
     end
-    
+
     # First attempt for the preselection
     preSelection = Search.search(searchOptions)
 

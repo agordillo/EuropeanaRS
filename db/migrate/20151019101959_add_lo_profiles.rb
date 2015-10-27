@@ -3,6 +3,9 @@ class AddLoProfiles < ActiveRecord::Migration
     create_table :lo_profiles do |t|
       t.integer :lo_id
 
+      t.string :repository
+      t.text :id_repository
+
       t.text :title
       t.text :description
       t.string :language

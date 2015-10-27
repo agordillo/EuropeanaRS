@@ -2,6 +2,8 @@ class LoProfile < ActiveRecord::Base
   belongs_to :lo
   has_and_belongs_to_many :users
 
+  validates :repository, :presence => true
+  validates :id_repository, uniqueness: { scope: :repository }, :presence => true
   validates :url, :presence => true
   validates :title, :presence => true
 
@@ -34,6 +36,9 @@ class LoProfile < ActiveRecord::Base
     where(lo_id: lo.id).first_or_create do |loProfile|
       loProfile.lo_id = lo.id
 
+      loProfile.repository = "Europeana"
+      loProfile.id_repository = lo.id_europeana
+
       loProfile.title = lo.title
       loProfile.description = lo.description
       loProfile.language = lo.language
@@ -49,6 +54,9 @@ class LoProfile < ActiveRecord::Base
 
   def self.fromLoProfile(loProfile)
     where(url: loProfile[:url]).first_or_create do |loProfileRecord|
+      loProfileRecord.repository = loProfile[:repository]
+      loProfileRecord.id_repository = loProfile[:id_repository]
+
       loProfileRecord.title = loProfile[:title]
       loProfileRecord.description = loProfile[:description]
       loProfileRecord.language = loProfile[:language]
@@ -64,6 +72,10 @@ class LoProfile < ActiveRecord::Base
 
   def self.toProfile(record,options={})
     lo_profile = {}
+
+    #Fields used to identify the profile
+    lo_profile[:repository] = "Europeana"
+    lo_profile[:id_repository] = record.respond_to?("id_europeana") ? record.id_europeana : record.id_repository
 
     #Fields used to get similarity
     lo_profile[:title] = record.title
@@ -83,7 +95,6 @@ class LoProfile < ActiveRecord::Base
       lo_profile[:url] = (record.is_a? Lo) ? Rails.application.routes.url_helpers.lo_path(record) : record.url
     end
     lo_profile[:thumbnail_url] = record.thumbnail_url
-    lo_profile[:id_europeana] = record.id_europeana if record.respond_to?("id_europeana")
 
     lo_profile
   end

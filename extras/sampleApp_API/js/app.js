@@ -454,7 +454,8 @@ APP = (function(){
       data["lo_profile"]["description"] = $(loTable).find("input[name='lo_description']").val();
       data["lo_profile"]["language"] = $(loTable).find("input[name='lo_language']").val();
       data["lo_profile"]["year"] = $(loTable).find("input[name='lo_year']").val();
-      data["lo_profile"]["id_europeana"] = selected_lo.id_europeana;
+      data["lo_profile"]["repository"] = "Europeana";
+      data["lo_profile"]["id_repository"] = selected_lo.id_europeana;
     }
 
     if(typeof selected_user != "undefined"){

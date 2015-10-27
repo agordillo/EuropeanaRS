@@ -19,12 +19,17 @@ class Europeana
 
   def self.createLoProfileFromMyEuropeanaItem(europeanaItem)
     lo_profile = {}
+
+    lo_profile[:repository] = "Europeana"
+    lo_profile[:id_repository] = europeanaItem["europeanaId"]
+
     lo_profile[:title] = europeanaItem["title"]
     lo_profile[:description] = europeanaItem["description"]
     lo_profile[:language] = europeanaItem["language"]
     lo_profile[:year] = europeanaItem["year"].to_i unless europeanaItem["year"].nil?
     lo_profile[:quality] = europeanaItem["europeanaCompleteness"]
     lo_profile[:popularity] = 0
+
     lo_profile[:url] = europeanaItem["guid"]
     lo_profile[:thumbnail_url] = europeanaItem["edmPreview"]
 

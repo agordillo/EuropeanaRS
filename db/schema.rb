@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20151026102112) do
 
   create_table "lo_profiles", force: :cascade do |t|
     t.integer  "lo_id"
+    t.string   "repository"
+    t.text     "id_repository"
     t.text     "title"
     t.text     "description"
     t.string   "language"
