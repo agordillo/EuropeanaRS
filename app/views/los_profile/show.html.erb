@@ -22,9 +22,9 @@
       <% unless @loProfile[:language].nil? %>
         <p class="field_title"><%=t("los.language")%></p>
         <p class="field_content"><%= @loProfile[:language] %></p>
-        <% unless Europeana.getCountryFromLanguage(@loProfile[:language]).nil? %>
+        <% unless Utils.getCountryFromLanguage(@loProfile[:language]).nil? %>
           <p class="field_title"><%=t("los.country")%></p>
-          <p class="field_content"><%= Europeana.getCountryFromLanguage(@loProfile[:language]) %></p>
+          <p class="field_content"><%= Utils.getCountryFromLanguage(@loProfile[:language]) %></p>
         <% end %>
       <% end %>
       <% unless @loProfile[:year].nil? %>

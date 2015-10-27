@@ -4,7 +4,6 @@ class LoProfile < ActiveRecord::Base
 
   validates :repository, :presence => true
   validates :id_repository, uniqueness: { scope: :repository }, :presence => true
-  validates :url, :presence => true
   validates :title, :presence => true
 
 
@@ -17,7 +16,7 @@ class LoProfile < ActiveRecord::Base
   end
 
   def readable_language
-    Europeana.getReadableLanguage(self.language)
+    Utils.getReadableLanguage(self.language)
   end
 
   #################
@@ -53,7 +52,7 @@ class LoProfile < ActiveRecord::Base
   end
 
   def self.fromLoProfile(loProfile)
-    where(url: loProfile[:url]).first_or_create do |loProfileRecord|
+    where(repository: loProfile[:repository], id_repository: loProfile[:id_repository]).first_or_create do |loProfileRecord|
       loProfileRecord.repository = loProfile[:repository]
       loProfileRecord.id_repository = loProfile[:id_repository]
 

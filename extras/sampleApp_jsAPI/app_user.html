@@ -20,6 +20,9 @@
 </header>
 
 <script type="text/javascript">
+
+  var API_QUERY_DATA;
+
   $(document).ready(function(){
 
     // 1. Init EuropeanaRS JS API.
@@ -28,7 +31,6 @@
 
 
     // 2. Build params to call the EuropeanaRS API.
-    
     var data = {};
     data["n"] = 20; //Request 20 Learning Objects (LOs)
 
@@ -55,34 +57,30 @@
     var liked_los = [eveningExpressLo];
     data["user_profile"]["los"] = JSON.stringify(liked_los); //Items liked or visited by the user in the past
 
-    //Use the following settings for the system:
-    data["settings"] = {};
+    //Include the id of the user in my application to allow EuropeanaRS to store the user profile for future requests.
+    data["user_id"] = Math.random()*10 + "";
 
-    data["settings"]["preselection_size"] = 300;
-    data["settings"]["preselection_filter_languages"] = "false";
-
-    //Specify general weights
-    //The sum of all weights must be 1. Otherwise can lead to unpredictable behaviours.
-    data["settings"]["rs_weights"] = {};
-    data["settings"]["rs_weights"]["los_score"] = 0.4;
-    data["settings"]["rs_weights"]["us_score"] = 0.4;
-    data["settings"]["rs_weights"]["quality_score"] = 0.1;
-    data["settings"]["rs_weights"]["popularity_score"] = 0.1;
-
+    API_QUERY_DATA = data;
+    
     //More options and settings can be found in the documentation on the EuropeanaRS wiki: 
     //https://github.com/agordillo/EuropeanaRS/wiki
 
-
     // 3. Call the EuropeanaRS API using the JS library.
-
-    EuropeanaRS_API.callAPI(data,function(data){
-      console.log("EuropeanaRS API call: success");
+    EuropeanaRS_API.callAPI(API_QUERY_DATA,function(data){
+      console.log("First EuropeanaRS API call: success");
       console.log(data);
+      delete API_QUERY_DATA["user_profile"];
+      EuropeanaRS_API.callAPI(API_QUERY_DATA,function(data){
+        console.log("Second EuropeanaRS API call: success");
+        console.log(data);
+      }, function(error) {
+        console.log("EuropeanaRS API call: error");
+        console.log(error.toString());
+      });
     }, function(error){
       console.log("EuropeanaRS API call: error");
       console.log(error.toString());
     });
-
   });
 </script>
 

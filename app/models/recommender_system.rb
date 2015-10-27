@@ -67,7 +67,7 @@ class RecommenderSystem
         preselectionLanguages += options[:user_profile][:los].map{|lo| lo[:language]}.compact
       end
       preselectionLanguages.uniq!
-      preselectionLanguages = preselectionLanguages & Europeana.getAllLanguages
+      preselectionLanguages = preselectionLanguages & Utils.getAllLanguages
 
       searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
 

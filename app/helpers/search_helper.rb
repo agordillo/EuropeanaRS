@@ -1,5 +1,5 @@
 module SearchHelper
   def get_languages
-    Europeana.getAllLanguages
+    Utils.getAllLanguages
   end
 end

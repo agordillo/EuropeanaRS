@@ -39,6 +39,14 @@ class RecommenderSystemController < ApplicationController
       options[:settings][:preselection_filter_languages] = (options[:settings][:preselection_filter_languages]=="true") if options[:settings][:preselection_filter_languages].present?
     end
 
+    #If user_id is provided for this app, retrieve user profile from database.
+    if params["user_id"] and current_app
+      userProfile = UserProfile.fromApp(current_app,params["user_id"],options[:user_profile])
+      if userProfile.persisted?
+        options[:user_profile] = userProfile.profile if options[:user_profile].blank?
+      end
+    end
+
     #2. Call EuropeanaRS Recommender System
     suggestions = RecommenderSystem.suggestions(options)
 

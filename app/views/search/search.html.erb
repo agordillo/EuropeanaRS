@@ -50,7 +50,7 @@
         <div class="search_filter_content">
           <ul class="options_for_filter">
             <% get_languages.each do |lanCode| %>
-              <li value="<%=lanCode%>"><%=Europeana.getReadableLanguage(lanCode)%></li>
+              <li value="<%=lanCode%>"><%=Utils.getReadableLanguage(lanCode)%></li>
             <% end %>
           </ul>
         </div>

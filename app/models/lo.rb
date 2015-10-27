@@ -21,7 +21,7 @@ class Lo < ActiveRecord::Base
   end
 
   def readable_language
-    Europeana.getReadableLanguage(self.language)
+    Utils.getReadableLanguage(self.language)
   end
 
   #################

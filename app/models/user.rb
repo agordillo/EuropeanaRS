@@ -135,7 +135,7 @@ class User < ActiveRecord::Base
     user.email = europeanaProfile["email"]
     user.password = Devise.friendly_token[0,20]
     user.name = europeanaProfile["userName"]
-    user.language = Europeana.getLanguageFromCountry(europeanaProfile["country"]) || I18n.locale.to_s
+    user.language = Utils.getLanguageFromCountry(europeanaProfile["country"]) || I18n.locale.to_s
     user.ui_language = Utils.valid_locale?(user.language) ? user.language : I18n.locale.to_s
     user.provider = "Europeana"
     user.uid = "Europeana:" + user.email
