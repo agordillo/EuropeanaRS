@@ -85,8 +85,9 @@ class User < ActiveRecord::Base
     end
     #Add external LO profiles
     europeanaUserSavedItems.select{|item| ids.include?(item["europeanaId"])}.each do |item|
-      loProfile = Europeana.createLoProfileFromMyEuropeanaItem(item)
-      if loProfile.persisted?
+      loProfile = LoProfile.where(:repository => "Europeana", :id_repository => item["europeanaId"]).first
+      loProfile = Europeana.createLoProfileFromMyEuropeanaItem(item) if loProfile.nil?
+      if !loProfile.nil? and loProfile.persisted?
         self.saved_lo_profiles << loProfile unless self.saved_lo_profiles.include?(loProfile)
       end
     end
