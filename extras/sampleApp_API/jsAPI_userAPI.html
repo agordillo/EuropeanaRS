@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EuropeanaRS Users App API: Sample Application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/europeanars.js"></script>
+</head>
+<body>
+
+<header style="text-align: center; width: 100%">
+  <div id="logo">
+    <a target="_blank" href="http://github.com/agordillo/EuropeanaRS">
+      <img alt="EuropeanaRS logo" src="images/Europeanars_logo.png"/>
+    </a>
+    <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+    <p>App Users API: Sample Application</p>
+  </div>
+</header>
+
+<table>
+  <tr>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <th><button id="createUser">Create user</button></th>
+  </tr>
+  <tr>
+    <th><button id="updateUser">Update user</button></th>
+  </tr>
+  <tr>
+    <th><button id="deleteUser">Delete user</button></th>
+  </tr>
+</table>
+
+
+<script type="text/javascript">
+
+  var USER_PROFILE;
+  var USER_ID = "USER_ID";
+
+  $(document).ready(function(){
+
+    // 1. Init EuropeanaRS JS API.
+    // We should include the API_KEY and the endpoint with API_URL.
+    EuropeanaRS_API.init({debug: true, API_KEY: "7K49Wh6hJkWbDcNWWyT9", API_URL: "http://localhost:3000/api/"});
+
+    // 2. Build user profile and other params.
+    user_profile = {};
+    user_profile["language"] = "en";
+    var eveningExpressLo = {
+          title: "Evening express - 1908-02-25",
+          description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
+          language: "en",
+          year: 1908,
+          repository: "Europeana",
+          id_repository: "/9200385/BibliographicResource_3000117425315"
+    };
+    var liked_los = [eveningExpressLo];
+    user_profile["los"] = JSON.stringify(liked_los); //Items liked or visited by the user in the past
+    USER_PROFILE = user_profile;
+
+    // 3. Events
+    $("#createUser").click(function(){
+      var data = {};
+      data["user_id"] = USER_ID;
+      data["user_profile"] = USER_PROFILE;
+
+      EuropeanaRS_API.createUser(data,function(data){
+        console.log("EuropeanaRS API call: success");
+        console.log(data);
+      }, function(error){
+        console.log("EuropeanaRS API call: error");
+        console.log(error.toString());
+      });
+    });
+
+    $("#updateUser").click(function(){
+      var data = {};
+      data["user_id"] = USER_ID;
+      data["user_profile"] = USER_PROFILE;
+      data["feedback"] = []; //TODO
+
+      EuropeanaRS_API.updateUser(data,function(data){
+        console.log("EuropeanaRS API call: success");
+        console.log(data);
+      }, function(error){
+        console.log("EuropeanaRS API call: error");
+        console.log(error.toString());
+      });
+    });
+
+    $("#deleteUser").click(function(){
+      var data = {};
+      data["user_id"] = USER_ID;
+
+      EuropeanaRS_API.deleteUser(data,function(data){
+        console.log("EuropeanaRS API call: success");
+        console.log(data);
+      }, function(error){
+        console.log("EuropeanaRS API call: error");
+        console.log(error.toString());
+      });
+    });
+
+  });
+</script>
+
+</body>
+</html>

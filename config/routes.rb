@@ -25,6 +25,11 @@ Rails.application.routes.draw do
 
   match '/api', to: 'recommender_system#api', via: [:post]
   match '/los_api', to: 'los_api#api', via: [:get, :post]
+
+  #App users REST API
+  post '/api/app_users', to: 'recommender_system#create_app_user'
+  match '/api/app_users/:id', to: 'recommender_system#update_app_user', via: [:post, :put, :options]
+  delete '/api/app_users/:id', to: 'recommender_system#destroy_app_user', via: [:delete, :options]
   
   #Wildcard route (This rule should be placed the last)
   match "*not_found", :to => 'application#page_not_found', via: [:get]

@@ -33,10 +33,25 @@ EuropeanaRS_API = (function(){
     return EuropeanaRS_API.Core.callAPI(data,successCallback,failCallback);
   };
 
+  var createUser = function(data,successCallback,failCallback){
+    return EuropeanaRS_API.Core.createUser(data,successCallback,failCallback);
+  };
+
+  var updateUser = function(data,successCallback,failCallback){
+    return EuropeanaRS_API.Core.updateUser(data,successCallback,failCallback);
+  };
+
+  var deleteUser = function(data,successCallback,failCallback){
+    return EuropeanaRS_API.Core.deleteUser(data,successCallback,failCallback);
+  };
+
   return {
     init        : init,
     getSettings : getSettings,
-    callAPI     : callAPI
+    callAPI     : callAPI,
+    createUser  : createUser,
+    updateUser  : updateUser,
+    deleteUser  : deleteUser
   };
 
 })();
@@ -67,23 +82,68 @@ EuropeanaRS_API.Core = (function(API,undefined){
       return successCallback(EuropeanaRS_API.Mimic.getResponse(data));
     }
     
-    _callAPI(data,successCallback,failCallback);
+    _callAPI(API_URL,"POST",data,successCallback,failCallback);
   };
 
-  var _callAPI = function(data,successCallback,failCallback){
+  var createUser = function(data,successCallback,failCallback){
+    data = data || {};
+    if(typeof API_KEY != "undefined"){
+      data["api_key"] = API_KEY;
+    }
+    
+    if(API.getSettings().mimic === true){
+      return successCallback({"user_profile": data["user_profile"]});
+    }
+    
+    _callAPI((API_URL+"app_users"),"POST",data,successCallback,failCallback);
+  };
+
+  var updateUser = function(data,successCallback,failCallback){
+    data = data || {};
+    if(typeof API_KEY != "undefined"){
+      data["api_key"] = API_KEY;
+    }
+    
+    if(API.getSettings().mimic === true){
+      return successCallback({"user_profile": data["user_profile"]});
+    }
+    
+    _callAPI((API_URL+"app_users/"+data["user_id"]),"PUT",data,successCallback,failCallback);
+  };
+
+  var deleteUser = function(data,successCallback,failCallback){
+    data = data || {};
+    if(typeof API_KEY != "undefined"){
+      data["api_key"] = API_KEY;
+    }
+    
+    if(API.getSettings().mimic === true){
+      return successCallback({"status": "Done"});
+    }
+    
+    _callAPI((API_URL+"app_users/"+data["user_id"]),"DELETE",data,successCallback,failCallback);
+  };
+
+  var _callAPI = function(url,type,data,successCallback,failCallback){
     $.ajax({
-      type: "POST",
-      url: API_URL,
+      type: type,
+      url: url,
       data: data,
       dataType: "json",
       success: function(data){
+        if((typeof data != "undefined")&&(typeof data["errors"]=="string")){
+          if(typeof failCallback == "function"){
+            failCallback("Error connecting with EuropeanaRS API at: " + url + ". Error: " + data["errors"] + ".");
+          }
+          return;
+        }
         if(typeof successCallback == "function"){
           successCallback(data);
         }
       },
       error: function(error){
         if(typeof failCallback == "function"){
-          failCallback("Error connecting with EuropeanaRS API at: " + API_URL);
+          failCallback("Error connecting with EuropeanaRS API at: " + url);
         }
       }
     });
@@ -91,7 +151,10 @@ EuropeanaRS_API.Core = (function(API,undefined){
 
   return {
     init      : init,
-    callAPI  : callAPI
+    callAPI  : callAPI,
+    createUser  : createUser,
+    updateUser  : updateUser,
+    deleteUser  : deleteUser
   };
 
 }) (EuropeanaRS_API);

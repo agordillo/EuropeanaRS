@@ -44,6 +44,25 @@ class UserProfile < ActiveRecord::Base
     self.user_id.nil?
   end
 
+  def updateFromUserProfile(user_profile)
+    user_profile ||= {}
+
+    self.language = user_profile[:language]
+
+    if self.save
+      self.lo_profiles = []
+      unless user_profile[:los].blank?
+        user_profile[:los].each do |loProfile|
+          loProfileRecord = LoProfile.fromLoProfile(loProfile)
+          self.lo_profiles << loProfileRecord if loProfileRecord.persisted?
+        end
+      end
+      true
+    else
+      false
+    end
+  end
+
   #################
   # Class Methods
   #################
