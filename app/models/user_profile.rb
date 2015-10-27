@@ -63,6 +63,25 @@ class UserProfile < ActiveRecord::Base
     end
   end
 
+  def updateFromFeedback(feedback)
+    begin
+      feedback.each do |feedback|
+        loProfile = LoProfile.fromLoProfile(feedback[:lo_profile])
+        if loProfile.persisted?
+          unless feedback[:action] == "Rejected"
+            #feedback[:action]=Accepted (default)
+            self.lo_profiles << loProfile unless self.lo_profiles.include? loProfile
+          else
+            self.lo_profiles.delete(loProfile)
+          end
+        end
+      end
+      true
+    rescue
+      false
+    end
+  end
+
   #################
   # Class Methods
   #################

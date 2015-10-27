@@ -16,7 +16,7 @@ class RecommenderSystemController < ApplicationController
   # Authenticate applications
   before_filter :authenticate_app
   before_filter :authenticate_app_with_private_key, :only => [:create_app_user, :update_app_user, :destroy_app_user]
-  before_filter :parse_user_profile_los, :only => [:api, :create_app_user, :update_app_user]
+  before_filter :parse_json_fields, :only => [:api, :create_app_user, :update_app_user]
 
 
   def api
@@ -94,20 +94,25 @@ class RecommenderSystemController < ApplicationController
 
   def update_app_user
     #Sanitize params and parsing
+    params["feedback"] = JSON.parse(params["feedback"]) rescue [] unless params["feedback"].blank?
     permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository]
     permitedParamsUser = [:language, los: permitedParamsLo]
-    options = params.permit(user_profile: permitedParamsUser).to_hash.recursive_symbolize_keys rescue {}
+    permitedFeedback = [:action, lo_profile: permitedParamsLo]
+    options = params.permit(user_profile: permitedParamsUser, feedback: permitedFeedback).to_hash.recursive_symbolize_keys rescue {}
 
     response = {}
     userProfile = nil
 
-    if params[:id] and options[:user_profile] and current_app
+    if params[:id] and (options[:feedback] or options[:user_profile]) and current_app
       userProfile = UserProfile.where(app_id: current_app.id, id_app: params[:id]).first
       if userProfile.nil?
         response["errors"] = "User profile not exists"
       else
-        unless userProfile.updateFromUserProfile(options[:user_profile])
-          response["errors"] = "User couldn't be updated"
+        if options[:user_profile]
+          response["errors"] = "User couldn't be updated" unless userProfile.updateFromUserProfile(options[:user_profile])
+        end
+        if options[:feedback] and response["errors"].blank?
+          response["errors"] = "User couldn't be updated with feedback" unless userProfile.updateFromFeedback(options[:feedback])
         end
       end
     end
@@ -160,9 +165,11 @@ class RecommenderSystemController < ApplicationController
     end
   end
 
-  def parse_user_profile_los
-    unless params.blank? or params["user_profile"].blank? or params["user_profile"]["los"].blank?
-      params["user_profile"]["los"] = JSON.parse(params["user_profile"]["los"]).first(EuropeanaRS::Application::config.max_user_los) rescue []
+  def parse_json_fields
+    unless params.blank? 
+      unless params["user_profile"].blank? or params["user_profile"]["los"].blank?
+        params["user_profile"]["los"] = JSON.parse(params["user_profile"]["los"]).first(EuropeanaRS::Application::config.max_user_los) rescue []
+      end
     end
   end
 

@@ -21,7 +21,7 @@ class LosController < ApplicationController
       if like
         current_user.like(lo)
       else
-        current_user.unlike(lo)
+        current_user.dislike(lo)
       end
     end
 

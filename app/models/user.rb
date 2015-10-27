@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def unlike(lo)
+  def dislike(lo)
     if lo.is_a? Lo and self.like?(lo)
       self.saved_items.delete(lo)
       loProfile = LoProfile.fromLo(lo)
