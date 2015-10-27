@@ -15,6 +15,7 @@ class RecommenderSystemController < ApplicationController
 
   # Authenticate applications
   before_filter :authenticate_app
+  before_filter :authenticate_app_with_private_key, :only => [:create_app_user, :update_app_user, :destroy_app_user]
   before_filter :parse_user_profile_los, :only => [:api, :create_app_user, :update_app_user]
 
 
@@ -141,13 +142,21 @@ class RecommenderSystemController < ApplicationController
   private
 
   def authenticate_app
-    if EuropeanaRS::Application::config.api[:require_key]
-      begin
-       @current_app = App.find_by_app_key(params.require(:api_key))
-       raise Error.new('invalid api key') unless current_app.is_a? App
-      rescue
-        return render :json => ["Unauthorized"], :status => :unauthorized
-      end
+    begin
+      @current_app = App.find_by_app_key(params.require(:api_key))
+      raise Error.new('invalid api key') unless current_app.is_a? App
+    rescue
+      return unless EuropeanaRS::Application::config.api[:require_key]
+      return render :json => ["Unauthorized"], :status => :unauthorized
+    end
+  end
+
+  def authenticate_app_with_private_key
+    return unless EuropeanaRS::Application::config.api[:require_key]
+    begin
+      raise Error.new('invalid api key') if params.require(:private_key) != current_app.app_secret
+    rescue
+      return render :json => ["Unauthorized"], :status => :unauthorized
     end
   end
 
