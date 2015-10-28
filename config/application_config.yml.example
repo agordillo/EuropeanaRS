@@ -11,8 +11,6 @@ development:
   facebook: #Get Facebook credentials for your app from https://developers.facebook.com/
     app_id: ""
     app_secret: ""
-  europeanars_api:
-    require_key: "true" #if false, no app key would be required when using the EuropeanaRS API.
   mail:
     no_reply_mail: "no-reply@europeanars.com"
     main_mail: "no-reply@europeanars.com"
@@ -21,6 +19,14 @@ development:
     #   username: ""
     #   password: ""
   # my_europeana: "mimic" #To use a mimic of the MyEuropeana API instead of the real one. This should be used only for development.
+  database: #database used for generate the recommendations. Accepted values: "EuropeanaRS", "Europeana", "All"
+    default: "Europeana"
+    europeana:
+      max_preselection_size: 100
+      default_query:
+        type: "TEXT"
+  europeanars_api:
+    require_key: "true" #if false, no app key would be required when using the EuropeanaRS API.
   max_preselection_size: 1000  #Maximun number of Learning Objects retrieved by the search engine in the preselection phase of the recommendations. High values could lead to performance issues.
   max_text_length: 60 #Maximun length in characters of the texts that will be taking into account when measuring semantic distances. High values could lead to performance issues.
   max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.

@@ -31,6 +31,7 @@ class RecommenderSystem
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
     options = {:n => 10, :user_profile => {}, :lo_profile => {}, :settings => {}}.merge(options)
+    options[:settings] = {:database => EuropeanaRS::Application::config.database[:default]}.merge(options[:settings])
     options[:n] = options[:n].to_i
     options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].blank?
     options
@@ -40,19 +41,12 @@ class RecommenderSystem
   def self.getPreselection(options={})
     preSelection = []
 
-    # Search resources using the search engine
-    searchOptions = {};
-
-    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.max_preselection_size
-    searchOptions[:n] = [EuropeanaRS::Application::config.max_matches,searchOptions[:n]].min
-    searchOptions[:models] = [Lo]
-    searchOptions[:order] = "random"
-
     # Define some filters for the preselection
+    options[:preselection] = {}
     
     # A. Query
-    searchOptions[:query] = options[:settings][:query] unless options[:settings][:query].blank?
-    
+    options[:preselection][:query] = options[:settings][:query] unless options[:settings][:query].blank?
+
     # B. Language.
     unless options[:settings][:preselection_filter_languages] == false
       # B. Multilanguage approach.
@@ -69,7 +63,7 @@ class RecommenderSystem
       preselectionLanguages.uniq!
       preselectionLanguages = preselectionLanguages & Utils.getAllLanguages
 
-      searchOptions[:languages] = preselectionLanguages unless preselectionLanguages.blank?
+      options[:preselection][:languages] = preselectionLanguages unless preselectionLanguages.blank?
 
       # B. (Alternative). Single language approach.
       # preselectionLanguage = nil
@@ -78,45 +72,96 @@ class RecommenderSystem
       # elsif options[:user_profile][:language]
       #   preselectionLanguage = options[:user_profile][:language]
       # end
-      # searchOptions[:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
+      # preselectionLanguage = nil unless Utils.getAllLanguages.include? preselectionLanguage 
+      # options[:preselection][:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
     end
 
     #C. Repeated resources.
     if options[:lo_profile][:id_repository]
       case options[:lo_profile][:repository]
       when "Europeana"
-        searchOptions[:europeana_ids_to_avoid] = [options[:lo_profile][:id_repository]]
+        options[:preselection][:europeana_id_to_avoid] = options[:lo_profile][:id_repository]
       end
     end
+    
+    preSelection += getPreselectionFromSearchEngine(options) unless options[:settings][:database] == "Europeana"
+    preSelection += getPreselectionFromEuropeana(options) unless options[:settings][:database] == "EuropeanaRS"
+    preSelection
+  end
 
-    # First attempt for the preselection
+  def self.getPreselectionFromSearchEngine(options={})
+    # Search resources using the search engine
+    searchOptions = {}
+
+    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.max_preselection_size
+    searchOptions[:n] = [EuropeanaRS::Application::config.max_matches,searchOptions[:n]].min
+    searchOptions[:models] = [Lo]
+    searchOptions[:order] = "random"
+
+    # Define preselection filters
+    # A. Query
+    searchOptions[:query] = options[:preselection][:query] unless options[:preselection][:query].blank?
+    # B. Language.
+    searchOptions[:languages] = options[:preselection][:languages] unless options[:preselection][:languages].blank?
+    # C. Repeated resources.
+    searchOptions[:europeana_ids_to_avoid] = [options[:preselection][:europeana_id_to_avoid]] unless options[:preselection][:europeana_id_to_avoid].blank?
+
+    # Get preselectin from Search Engine
     preSelection = Search.search(searchOptions)
 
     if preSelection.blank?
-      #Try with other search options
-      searchFlag = false
+      #Try with other search options. Remove filters to try to get a non empty preselection.
 
       # Disable language filter
-      unless searchOptions[:languages].blank?
+      if !searchOptions[:languages].blank?
         searchOptions.delete(:languages)
         preSelection = Search.search(searchOptions)
-        searchFlag = true
       end
 
       # Disable query filter
-      if !searchFlag or preSelection.blank?
-        unless searchOptions[:query].blank?
-          searchOptions.delete(:query)
-          preSelection = Search.search(searchOptions)
-          searchFlag = true
-        end
+      if preSelection.blank? and !searchOptions[:query].blank?
+        searchOptions.delete(:query)
+        preSelection = Search.search(searchOptions)
       end
     end
 
-    #Convert LOs to profile LOs
-    preSelection = preSelection.map{|lo| lo.profile({:external => options[:external]})}
+    #Convert LOs to LO profiles
+    return preSelection.map{|lo| lo.profile({:external => options[:external]})}
+  end
 
-    return preSelection
+  def self.getPreselectionFromEuropeana(options={})
+    # Search resources in real time using the Europeana Search API
+    europeanaConfig = EuropeanaRS::Application::config.database[:europeana]
+    options[:settings][:europeana] ||= {}
+    options[:settings][:europeana][:query] ||= {}
+    options[:settings][:europeana][:query] = europeanaConfig[:default_query].merge(options[:settings][:europeana][:query]).merge({:rows => 100, :profile => "rich", :language => options[:preselection][:languages]})
+
+    n = options[:settings][:europeana][:preselection_size] || europeanaConfig[:max_preselection_size]
+    n = [europeanaConfig[:max_preselection_size],n].min
+
+    require 'rest-client'
+    europeanaItems = []
+    nRequests = (n/100.to_f).ceil
+
+    nRequests.times do |i|
+      #Change query with start param
+      if i==0
+        options[:settings][:europeana][:query][:start] = 1
+      else
+        options[:settings][:europeana][:query][:start] += 100
+      end
+      query = EuropeanaSearch.buildQuery(options[:settings][:europeana][:query])
+      response = (JSON.parse(RestClient.get query)) rescue nil #nil => error connecting to Europeana
+      europeanaItems += response["items"] unless response.nil?
+    end
+
+    #Convert Europeana items to LO profiles
+    loProfiles = europeanaItems.map{|item| Europeana.createVirtualLoProfileFromItem(item,{:external => options[:external]})}
+
+    # Prevent repeated resources
+    loProfiles = loProfiles.reject{|loProfile| loProfile[:id_repository] == options[:preselection][:europeana_id_to_avoid]} unless options[:preselection][:europeana_id_to_avoid].blank?
+
+    return loProfiles
   end
 
   #Step 2: Scoring

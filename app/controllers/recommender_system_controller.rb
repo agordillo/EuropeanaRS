@@ -65,6 +65,11 @@ class RecommenderSystemController < ApplicationController
     end
   end
 
+
+  ##################
+  # App users REST API
+  ##################
+
   def create_app_user
     #Sanitize params and parsing
     permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository]
@@ -149,7 +154,7 @@ class RecommenderSystemController < ApplicationController
   def authenticate_app
     begin
       @current_app = App.find_by_app_key(params.require(:api_key))
-      raise Error.new('invalid api key') unless current_app.is_a? App
+      raise Error.new('Invalid API key') unless current_app.is_a? App
     rescue
       return unless EuropeanaRS::Application::config.api[:require_key]
       return render :json => ["Unauthorized"], :status => :unauthorized
@@ -159,7 +164,7 @@ class RecommenderSystemController < ApplicationController
   def authenticate_app_with_private_key
     return unless EuropeanaRS::Application::config.api[:require_key]
     begin
-      raise Error.new('invalid api key') if params.require(:private_key) != current_app.app_secret
+      raise Error.new('Invalid API key') if params.require(:private_key) != current_app.app_secret
     rescue
       return render :json => ["Unauthorized"], :status => :unauthorized
     end

@@ -1,7 +1,30 @@
 # Set up Recommender System settings
+# Store some variables in configuration to speed things up
 # Config accesible in EuropeanaRS::Application::config
 
 Rails.application.configure do
+  
+  # Default database to be used by the RS
+  config.database = {}
+  config.database[:default] = "EuropeanaRS"
+  config.database[:europeana] = {}
+
+  if config.APP_CONFIG["database"]
+    config.database[:default] = config.APP_CONFIG["database"]["default"] if config.APP_CONFIG["database"]["default"]
+    config.database[:europeana] = config.APP_CONFIG["database"]["europeana"].recursive_symbolize_keys if config.APP_CONFIG["database"]["europeana"].is_a? Hash
+  end
+  config.database[:europeana] = {:max_preselection_size => 100, :default_query => {}}.merge(config.database[:europeana])
+
+  #EuropeanaRS API
+  config.api = {}
+  config.api[:require_key] = true
+
+  if config.APP_CONFIG["europeanars_api"]
+    if config.APP_CONFIG["europeanars_api"]["require_key"]
+      config.api[:require_key] = (config.APP_CONFIG["europeanars_api"]["require_key"]!="false")
+    end
+  end
+
   #Default weights
   weights = {}
   weights[:default_rs] = {}
@@ -42,22 +65,17 @@ Rails.application.configure do
 
   config.filters = filters
 
-
-  #EuropeanaRS API
-  config.api = {}
-  config.api[:require_key] = true
-
-  if config.APP_CONFIG["europeanars_api"]
-    if config.APP_CONFIG["europeanars_api"]["require_key"]
-      config.api[:require_key] = (config.APP_CONFIG["europeanars_api"]["require_key"]!="false")
-    end
-  end
-
-  #Store some variables in configuration to speed things up
+  
+  #Search Engine
   config.max_matches = ThinkingSphinx::Configuration.instance.settings["max_matches"] || 10000
   config.max_preselection_size = (config.APP_CONFIG["max_preselection_size"].is_a?(Numeric) ? config.APP_CONFIG["max_preselection_size"] : 1000)
-  config.max_text_length = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
+  config.max_preselection_size = [config.max_matches,config.max_preselection_size].min
+
+  #RS: internal settings
   config.max_user_los = (config.APP_CONFIG["max_user_los"].is_a?(Numeric) ? config.APP_CONFIG["max_user_los"] : 5)
+  
+  #Settings for speed up TF-IDF calculations
+  config.max_text_length = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
   config.repository_total_entries = Lo.count
   
   #Keep words in the configuration

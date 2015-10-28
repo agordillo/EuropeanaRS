@@ -17,6 +17,37 @@ class Europeana
     lo
   end
 
+  def self.createLoProfileFromItem(europeanaItem)
+    LoProfile.fromLoProfile(Europeana.createVirtualLoProfileFromItem(europeanaItem))
+  end
+
+  def self.createVirtualLoProfileFromItem(europeanaItem,options={})
+    lo_profile = {}
+
+    lo_profile[:repository] = "Europeana"
+    lo_profile[:id_repository] = europeanaItem["id"]
+
+    lo_profile[:title] = europeanaItem["title"].first unless europeanaItem["title"].nil?
+    lo_profile[:description] = europeanaItem["dcDescription"].first unless europeanaItem["dcDescription"].nil?
+    if !europeanaItem["dcLanguage"].nil?
+      lo_profile[:language] = europeanaItem["dcLanguage"].first
+    elsif !europeanaItem["language"].nil?
+      lo_profile[:language] = europeanaItem["language"].first
+    end
+    lo_profile[:year] = europeanaItem["year"].first.to_i unless europeanaItem["year"].nil?
+    lo_profile[:quality] = europeanaItem["europeanaCompleteness"]
+    lo_profile[:popularity] = 0
+
+    lo_profile[:url] = europeanaItem["guid"]
+    lo_profile[:thumbnail_url] = europeanaItem["edmPreview"].first unless europeanaItem["edmPreview"].nil?
+
+    unless options[:external]
+      lo_profile[:external] = true
+    end
+
+    lo_profile
+  end
+
   def self.createLoProfileFromMyEuropeanaItem(europeanaItem)
     lo_profile = {}
 
