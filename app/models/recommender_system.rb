@@ -136,6 +136,13 @@ class RecommenderSystem
     options[:settings][:europeana][:query] ||= {}
     options[:settings][:europeana][:query] = europeanaConfig[:default_query].merge(options[:settings][:europeana][:query]).merge({:rows => 100, :profile => "rich", :language => options[:preselection][:languages]})
 
+    #Extra filters (Years, only if configured)
+    if options[:settings][:europeana][:query][:year_range] and options[:lo_profile] and options[:lo_profile][:year]
+      options[:settings][:europeana][:query][:year_min] = options[:lo_profile][:year]-options[:settings][:europeana][:query][:year_range]
+      options[:settings][:europeana][:query][:year_max] = options[:lo_profile][:year]+options[:settings][:europeana][:query][:year_range]
+      # options[:settings][:europeana][:query].delete(:year_range)
+    end
+
     n = options[:settings][:europeana][:preselection_size] || europeanaConfig[:max_preselection_size]
     n = [europeanaConfig[:max_preselection_size],n].min
 

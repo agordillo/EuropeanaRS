@@ -99,9 +99,11 @@ div.lo_box div {
   text-align: center;
 }
 
-div.lo_box a {
+div.lo_box a, div.los_carousel a {
   color: inherit !important;
   text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
 }
 
 div.lo_box p {
