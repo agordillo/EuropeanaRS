@@ -262,6 +262,11 @@ div.step_section p.copyright_notice {
   direction: rtl;
 }
 
+#settings table tr.settings_subtitle th {
+  font-style: italic;
+  font-weight: normal;
+}
+
 #settings table select.select_setting {
   padding: 2px 3px;
   width: 125px;

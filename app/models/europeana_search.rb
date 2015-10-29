@@ -11,6 +11,8 @@ class EuropeanaSearch
     #http://www.europeana.eu/api/v2/search.json?wskey=XXXX&query=skos_concept:%22http://vocab.getty.edu/aat/300026656%22&qf=TYPE:TEXT&profile=standard&rows=100&qf=YEAR:[1824+TO+1827]&qf=LANGUAGE:fr&qf=COUNTRY:france
     query = "http://www.europeana.eu/api/v2/search.json?wskey="+EuropeanaRS::Application::config.APP_CONFIG["europeana"]["api_key"]+"&query="
     
+    params.delete_if{|k,v| v.blank?} #Delete empty params
+
     if params[:query].is_a? String
       query += params[:query]
     else
@@ -33,7 +35,7 @@ class EuropeanaSearch
     query += "&profile=" + profile
 
     #Facets
-    if params[:type].is_a? String
+    if params[:type].is_a? String and ["TEXT","VIDEO","SOUND","IMAGE","3D"].include?(params[:type])
       query += "&qf=TYPE:" + params[:type]
     end
 

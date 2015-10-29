@@ -134,32 +134,47 @@ class RecommenderSystem
     europeanaConfig = EuropeanaRS::Application::config.database[:europeana]
     options[:settings][:europeana] ||= {}
     options[:settings][:europeana][:query] ||= {}
-    options[:settings][:europeana][:query] = europeanaConfig[:default_query].merge(options[:settings][:europeana][:query]).merge({:rows => 100, :profile => "rich", :language => options[:preselection][:languages]})
+    options[:settings][:europeana][:query] = europeanaConfig[:default_query].merge(options[:settings][:europeana][:query]).merge({:start => 1, :rows => 100, :profile => "rich", :language => options[:preselection][:languages]})
 
     #Extra filters (Years, only if configured)
     if options[:settings][:europeana][:query][:year_range] and options[:lo_profile] and options[:lo_profile][:year]
       options[:settings][:europeana][:query][:year_min] = options[:lo_profile][:year]-options[:settings][:europeana][:query][:year_range]
       options[:settings][:europeana][:query][:year_max] = options[:lo_profile][:year]+options[:settings][:europeana][:query][:year_range]
-      # options[:settings][:europeana][:query].delete(:year_range)
     end
 
     n = options[:settings][:europeana][:preselection_size] || europeanaConfig[:max_preselection_size]
     n = [europeanaConfig[:max_preselection_size],n].min
 
     require 'rest-client'
-    europeanaItems = []
     nRequests = (n/100.to_f).ceil
+    europeanaItems = []
+    europeanaQueryIndexes = [1] #First request page 1
+    currentQueryIndex = 0
 
     nRequests.times do |i|
-      #Change query with start param
-      if i==0
-        options[:settings][:europeana][:query][:start] = 1
-      else
-        options[:settings][:europeana][:query][:start] += 100
-      end
+      break if europeanaQueryIndexes[currentQueryIndex].nil?
+      options[:settings][:europeana][:query][:start] = europeanaQueryIndexes[currentQueryIndex]
       query = EuropeanaSearch.buildQuery(options[:settings][:europeana][:query])
       response = (JSON.parse(RestClient::Request.execute(:method => :get, :url => query, :timeout => 5, :open_timeout => 5))) rescue nil #nil => error connecting to Europeana
-      europeanaItems += response["items"] unless response.nil?
+      unless response.nil?
+        europeanaItems += response["items"]
+        if currentQueryIndex==0
+          #Define random indexes for subsequent requests
+          remainingRequests = nRequests-1
+          break if (remainingRequests<1)
+          remainingResults = response["totalResults"]-100
+          break if (remainingResults<1)
+          segmentSize = remainingResults/remainingRequests
+          if segmentSize < 100
+            remainingRequests = (remainingResults/100.to_f).ceil
+            segmentSize = 100
+          end
+          remainingRequests.times do |i|
+            europeanaQueryIndexes << (100 + i*segmentSize + rand(segmentSize-100)).floor
+          end
+        end
+        currentQueryIndex += 1
+      end
     end
 
     #Convert Europeana items to LO profiles

@@ -236,6 +236,24 @@ APP = (function(){
       }
     });
 
+    $("#database").click(function(e){
+      switch($(this).val()){
+        case "EuropeanaRS":
+          $("tr[database='europeanars']").show();
+          $("tr[database='europeana']").hide();
+          break;
+        case "Europeana":
+          $("tr[database='europeanars']").hide();
+          $("tr[database='europeana']").show();
+          break;
+        default:
+          $("tr[database='europeanars']").show();
+          $("tr[database='europeana']").show();
+          break;
+      }
+    });
+    $("#database").trigger("click");
+
     $("#submit").click(function(e){
       e.preventDefault();
       e.stopPropagation();
@@ -478,8 +496,8 @@ APP = (function(){
       data["settings"]["europeana"] = {};
       data["settings"]["europeana"]["preselection_size"] = $("#europeana_preselection_size").val();
       data["settings"]["europeana"]["query"] = {};
-      data["settings"]["europeana"]["query"]["skos_concept"] = "http://vocab.getty.edu/aat/300026656";
-      data["settings"]["europeana"]["query"]["type"] = "TEXT";
+      data["settings"]["europeana"]["query"]["type"] = $("#europeana_resource_type").val();
+      data["settings"]["europeana"]["query"]["skos_concept"] = $("#europeana_skos_concept").val();
     }
     
     //Weights and Filters

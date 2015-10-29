@@ -147,13 +147,27 @@
             <th><span>Filter by languages on preselection:</span></th>
             <th><input id="preselection_filter_languages" class="checkbox_setting" type="checkbox" checked="checked"/></th>
           </tr>
-          <tr>
-            <th><span>Preselection size (EuropeanaRS):</span></th>
+          <tr class="settings_subtitle" database="europeanars">
+            <th colspan="2">Settings for EuropeanaRS database</span></th>
+          </tr>
+          <tr database="europeanars">
+            <th><span>Preselection size:</span></th>
             <th><input id="preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
           </tr>
-          <tr>
-            <th><span>Preselection size for Europeana:</span></th>
+          <tr class="settings_subtitle" database="europeana">
+            <th colspan="2">Settings for Europeana database</span></th>
+          </tr>
+          <tr database="europeana">
+            <th><span>Preselection size:</span></th>
             <th><input id="europeana_preselection_size" class="number_setting" type="number" min="0" max="500" step="100" value="200"/></th>
+          </tr>
+          <tr database="europeana">
+            <th database="europeana"><span>[Query] Resource type:</span></th>
+            <th><input id="europeana_resource_type" class="text_setting" type="text" value="TEXT"/></th>
+          </tr>
+          <tr database="europeana">
+            <th><span>[Query] Skos_concept:</span></th>
+            <th><input id="europeana_skos_concept" class="text_setting" type="text" value="http://vocab.getty.edu/aat/300026656"/></th>
           </tr>
         </table>
         <br/>
