@@ -255,11 +255,16 @@ div.step_section p.copyright_notice {
   padding: 7px 7px;
 }
 
-#settings table tr:not(.settings_title) input{
+#settings table tr:not(.settings_title) input {
   text-align: right;
   padding: 2px 3px;
-  width: 60px;
+  width: 115px;
   direction: rtl;
+}
+
+#settings table select.select_setting {
+  padding: 2px 3px;
+  width: 125px;
 }
 
 input.weight_sum {

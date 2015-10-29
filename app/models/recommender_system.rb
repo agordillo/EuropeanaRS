@@ -83,7 +83,7 @@ class RecommenderSystem
         options[:preselection][:europeana_id_to_avoid] = options[:lo_profile][:id_repository]
       end
     end
-    
+
     preSelection += getPreselectionFromSearchEngine(options) unless options[:settings][:database] == "Europeana"
     preSelection += getPreselectionFromEuropeana(options) unless options[:settings][:database] == "EuropeanaRS"
     preSelection
@@ -158,7 +158,7 @@ class RecommenderSystem
         options[:settings][:europeana][:query][:start] += 100
       end
       query = EuropeanaSearch.buildQuery(options[:settings][:europeana][:query])
-      response = (JSON.parse(RestClient.get query)) rescue nil #nil => error connecting to Europeana
+      response = (JSON.parse(RestClient::Request.execute(:method => :get, :url => query, :timeout => 5, :open_timeout => 5))) rescue nil #nil => error connecting to Europeana
       europeanaItems += response["items"] unless response.nil?
     end
 

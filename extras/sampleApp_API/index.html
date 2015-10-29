@@ -134,12 +134,26 @@
             <th><input id="n" class="number_setting" type="number" min="1" max="100" step="1" value="20"/></th>
           </tr>
           <tr>
-            <th><span>Preselection size:</span></th>
-            <th><input id="preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
+            <th><span>Database:</span></th>
+            <th>
+              <select id="database" class="select_setting" value="EuropeanaRS">
+                <option value="EuropeanaRS">EuropeanaRS</option>
+                <option value="Europeana">Europeana</option>
+                <option value="All">All</option>
+              </select>
+            </th>
           </tr>
           <tr>
             <th><span>Filter by languages on preselection:</span></th>
             <th><input id="preselection_filter_languages" class="checkbox_setting" type="checkbox" checked="checked"/></th>
+          </tr>
+          <tr>
+            <th><span>Preselection size (EuropeanaRS):</span></th>
+            <th><input id="preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
+          </tr>
+          <tr>
+            <th><span>Preselection size for Europeana:</span></th>
+            <th><input id="europeana_preselection_size" class="number_setting" type="number" min="0" max="500" step="100" value="200"/></th>
           </tr>
         </table>
         <br/>

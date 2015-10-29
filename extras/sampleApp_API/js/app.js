@@ -471,9 +471,17 @@ APP = (function(){
     data["settings"] = {};
 
     //General settings
+    data["settings"]["database"] = $("#database").val();
     data["settings"]["preselection_size"] = $("#preselection_size").val();
     data["settings"]["preselection_filter_languages"] = $("#preselection_filter_languages").is(":checked");
-
+    if(data["settings"]["database"]!="EuropeanaRS"){
+      data["settings"]["europeana"] = {};
+      data["settings"]["europeana"]["preselection_size"] = $("#europeana_preselection_size").val();
+      data["settings"]["europeana"]["query"] = {};
+      data["settings"]["europeana"]["query"]["skos_concept"] = "http://vocab.getty.edu/aat/300026656";
+      data["settings"]["europeana"]["query"]["type"] = "TEXT";
+    }
+    
     //Weights and Filters
     data["settings"]["rs_weights"] = {};
     data["settings"]["rs_weights"]["los_score"] = parseInt($('input[weightfamily="general"][weight="los"]').val())/100

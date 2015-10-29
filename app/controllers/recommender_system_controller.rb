@@ -21,21 +21,8 @@ class RecommenderSystemController < ApplicationController
 
   def api
     #1. Sanitize params and parsing
-    permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository]
-    permitedParamsUser = [:language, los: permitedParamsLo]
-    permitedParamsUserFields = permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}
-    permitedParamsGeneralWeights = [:los_score, :us_score, :quality_score, :popularity_score]
-    permitedParamsSettings = [:preselection_size, :preselection_filter_languages, rs_weights: permitedParamsGeneralWeights , los_weights: permitedParamsLo, us_weights: permitedParamsUserFields, rs_filters: permitedParamsGeneralWeights, los_filters: permitedParamsLo, us_filters: permitedParamsUserFields]
-    queryOptions = params.permit(:n, :query, lo_profile: permitedParamsLo, user_profile: permitedParamsUser, settings: permitedParamsSettings) rescue {}
-    options = {:external => true}.merge(queryOptions.to_hash.recursive_symbolize_keys)
-
-    unless options[:settings].blank?
-      options[:settings].each{ |k1,v1|
-        v1.each{ |k2,v2| options[:settings][k1][k2] = v2.to_f } if v1.is_a? Hash
-      }
-      options[:settings][:preselection_size] = options[:settings][:preselection_size].to_i if options[:settings][:preselection_size].present?
-      options[:settings][:preselection_filter_languages] = (options[:settings][:preselection_filter_languages]=="true") if options[:settings][:preselection_filter_languages].present?
-    end
+    queryOptions = params.permit(EuropeanaRS::Application::config.api[:permitedParams]) rescue {}
+    options = {:external => true}.merge(queryOptions.to_hash.recursive_symbolize_keys.parse_for_rs)
 
     #If user_id is provided for this app, retrieve user profile from database.
     if params["user_id"] and current_app
@@ -72,9 +59,7 @@ class RecommenderSystemController < ApplicationController
 
   def create_app_user
     #Sanitize params and parsing
-    permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository]
-    permitedParamsUser = [:language, los: permitedParamsLo]
-    options = params.permit(:user_id, user_profile: permitedParamsUser).to_hash.recursive_symbolize_keys rescue {}
+    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.recursive_symbolize_keys rescue {}
 
     response = {}
     userProfile = nil
@@ -100,10 +85,7 @@ class RecommenderSystemController < ApplicationController
   def update_app_user
     #Sanitize params and parsing
     params["feedback"] = JSON.parse(params["feedback"]) rescue [] unless params["feedback"].blank?
-    permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository]
-    permitedParamsUser = [:language, los: permitedParamsLo]
-    permitedFeedback = [:action, lo_profile: permitedParamsLo]
-    options = params.permit(user_profile: permitedParamsUser, feedback: permitedFeedback).to_hash.recursive_symbolize_keys rescue {}
+    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.recursive_symbolize_keys rescue {}
 
     response = {}
     userProfile = nil

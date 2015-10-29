@@ -73,7 +73,19 @@ Rails.application.configure do
 
   #RS: internal settings
   config.max_user_los = (config.APP_CONFIG["max_user_los"].is_a?(Numeric) ? config.APP_CONFIG["max_user_los"] : 5)
-  
+
+  #Permited params for the EuropeanaRS API
+  permitedParamsLo = [:title, :description, :language, :year, :repository, :id_repository, :url, :thumbnail_url]
+  permitedParamsUser = [:language, los: permitedParamsLo]
+  permitedParamsUserFields = permitedParamsUser.map{|k| k.is_a?(Hash) ? k.keys.first : k}
+  permitedParamsGeneralWeights = [:los_score, :us_score, :quality_score, :popularity_score]
+  permitedParamsEuropeana = [:preselection_size, query: [:skos_concept, :type, :year_range]]
+  permitedParamsSettings = [:database, :preselection_size, :preselection_filter_languages, europeana: permitedParamsEuropeana, rs_weights: permitedParamsGeneralWeights , los_weights: permitedParamsLo, us_weights: permitedParamsUserFields, rs_filters: permitedParamsGeneralWeights, los_filters: permitedParamsLo, us_filters: permitedParamsUserFields]
+  config.api[:permitedParams] = [:api_key, :private_key, :n, :query, lo_profile: permitedParamsLo, user_profile: permitedParamsUser, settings: permitedParamsSettings]
+  permitedParamsFeedback = [:action, lo_profile: permitedParamsLo]
+  config.api[:permitedParamsUsers] = [:user_id, user_profile: permitedParamsUser, feedback: permitedParamsFeedback]
+  config.api[:permitedParamsLos] = [:id_europeana, lo_profile: permitedParamsLo]
+
   #Settings for speed up TF-IDF calculations
   config.max_text_length = (config.APP_CONFIG["max_text_length"].is_a?(Numeric) ? config.APP_CONFIG["max_text_length"] : 60)
   config.repository_total_entries = Lo.count

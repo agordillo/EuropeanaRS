@@ -14,7 +14,7 @@ class LosApiController < ApplicationController
 
   def api
     #1. Sanitize params and parsing
-    options = params.permit(:id_europeana, lo_profile: [:title, :description, :language, :year, :repository, :id_repository, :url, :thumbnail_url])
+    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsLos])
     options = {:external => true}.merge(options.to_hash.recursive_symbolize_keys)
 
     if options[:id_europeana] and options[:lo_profile].blank?
