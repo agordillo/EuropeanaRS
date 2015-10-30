@@ -81,6 +81,15 @@ p.section_title {
   border-bottom: 2px solid #333;
 }
 
+div.los_carousel_wrapper p.carousel_empty_message {
+  font-size: 1.4rem;
+  font-weight: normal;
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
 
 /* LO box style */
 

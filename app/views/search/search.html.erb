@@ -90,6 +90,7 @@
       <div class="rnumber">
         <% totalEntries = [@results.total_pages * @results.per_page, @results.total_entries].min %>
         <% firstResultShown = (@results.current_page-1)*@results.per_page+1 %>
+        <% firstResultShown = [firstResultShown, totalEntries].min %>
         <% lastResultShown = ((@results.current_page-1)*@results.per_page+@results.per_page) %>
         <% lastResultShown = [lastResultShown, totalEntries].min %>
         <p><%=t("search.tools.results")%> <%=firstResultShown%>-<%=lastResultShown%> of <%=totalEntries%></p>

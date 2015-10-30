@@ -113,6 +113,8 @@ en:
       messages:
         success: "User profile updated succesfully."
         fail: "User profile couldn't be updated for the following reason: %{reason}."
+    saved_resources:
+      empty: "You have no saved resources."
     settings:
       description: "In this section you can change the settings of the Recommender System for your user.<br/> Concretely, you can change the general weights of the recommender, and the weights applied to measure similarities between items.<br/> You can also set filters, both general and similarity, setting thresholds for the different criteria."
       notifications:
@@ -149,6 +151,7 @@ en:
       favorites: "Saved Resources"
       api_keys: "API Keys"
   recommendations:
+    empty: "There are no resources to recommend."
     suggested_resources: "Suggested resources"
   search:
     filters:

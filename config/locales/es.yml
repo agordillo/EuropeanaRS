@@ -113,6 +113,8 @@ es:
       messages:
         success: "El perfil de usuario se actualizó satisfactoriamente."
         fail: "El perfil de usuario no pudo ser actualizado por el siguiente motivo: %{reason}."
+    saved_resources:
+      empty: "No tienes recursos salvados."
     settings:
       description: "En esta sección puedes cambiar los ajustes del Sistema de Recomendación para tu usuario.<br/> Concretamente, puedes cambiar los pesos generales del recomendador y los pesos aplicados para calcular las similaridades entre elementos.<br/> También puedes establecer filtros, tanto generales como de similaridad, fijando valores umbrales para los diferentes criterios."
       notifications:
@@ -149,6 +151,7 @@ es:
       favorites: "Recursos salvados"
       api_keys: "API Keys"
   recommendations:
+    empty: "No hay recursos para recomendar."
     suggested_resources: "Recursos sugeridos"
   search:
     filters:

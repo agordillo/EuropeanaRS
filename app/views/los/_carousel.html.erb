@@ -1,30 +1,41 @@
-<% id ||= "carousel" %>
-<% title ||= nil %>
-<% slidesToShow ||= 5 %>
-<% extraClasses ||= [] %>
-<% loProfiles ||= false %>
-<% loPartialName = (loProfiles ? "lo_profile_box" : "lo_box") %>
+<% emptyMessage ||= nil %>
+<% displayCarrousel = (!los.blank? or !emptyMessage.blank?) %>
 
-<div class="los_carousel_wrapper <%=extraClasses.join(" ")%>">
-  <% unless title.blank? %>
-    <p class="section_title"><%=title%></p>
-  <% end %>
-  <div id="<%=id%>" class="los_carousel">
-    <% los.each do |lo| %>
-      <div>
-        <%= render "los/" + loPartialName, lo: lo %>
+<% if displayCarrousel %>
+
+  <% id ||= "carousel" %>
+  <% title ||= nil %>
+  <% slidesToShow ||= 5 %>
+  <% extraClasses ||= [] %>
+  <% loProfiles ||= false %>
+  <% loPartialName = (loProfiles ? "lo_profile_box" : "lo_box") %>
+
+  <div class="los_carousel_wrapper <%=extraClasses.join(" ")%>">
+    <% unless title.blank? %>
+      <p class="section_title"><%=title%></p>
+    <% end %>
+    <% if !los.blank? %>
+      <div id="<%=id%>" class="los_carousel">
+        <% los.each do |lo| %>
+          <div>
+            <%= render "los/" + loPartialName, lo: lo %>
+          </div>
+        <% end %>
       </div>
+    <% elsif !emptyMessage.blank? %>
+      <p class="carousel_empty_message"><%=emptyMessage%></p>
     <% end %>
   </div>
-</div>
 
-<script>
-  $(document).ready(function(){
-    $("#<%=id%>").slick({
-      infinite: true,
-      slidesToShow: parseInt("<%=slidesToShow%>"),
-      slidesToScroll: 1,
-      dots: true
+  <script>
+    $(document).ready(function(){
+      $("#<%=id%>").slick({
+        infinite: true,
+        slidesToShow: parseInt("<%=slidesToShow%>"),
+        slidesToScroll: 1,
+        dots: true
+      });
     });
-  });
-</script>
+  </script>
+
+<% end %>
