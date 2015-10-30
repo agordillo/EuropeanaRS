@@ -29,7 +29,7 @@
       <% end %>
       <% unless @loProfile[:year].nil? %>
         <p class="field_title"><%=t("los.year")%></p>
-        <p class="field_content"><%= @loProfile[:year] %></p>
+        <p class="field_content"><%= @loProfile[:year].to_i %></p>
       <% end %>
     </div>
   </div>

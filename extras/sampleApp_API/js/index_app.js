@@ -109,7 +109,7 @@ APP = (function(){
 
   var init = function(options){
     // EuropeanaRS_API.init({debug: true, mimic: true});
-    EuropeanaRS_API.init({debug: true, API_KEY: "7K49Wh6hJkWbDcNWWyT9", API_URL: "http://localhost:3000/api/"});
+    EuropeanaRS_API.init({debug: true, API_KEY: "demonstration", API_URL: "http://localhost:3000/api/"});
     _initUI();
 
     //Select random LO

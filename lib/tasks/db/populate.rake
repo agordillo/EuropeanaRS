@@ -64,7 +64,7 @@ namespace :db do
         end
       end
 
-      query = EuropeanaSearch.buildQuery(queryParams)
+      query = Europeana::Search.buildQuery(queryParams)
 
       require 'rest-client'
       response = (RestClient.get query) rescue nil
@@ -82,7 +82,7 @@ namespace :db do
 
       for i in 1..iterations
         # puts "Value of nInteration is #{i}"
-        query = EuropeanaSearch.buildQuery(queryParams)
+        query = Europeana::Search.buildQuery(queryParams)
         querySuccess = perform_search_query(query)
         unless querySuccess
           puts "Error connecting to Europeana. Database population canceled. Query: " + query
@@ -93,7 +93,6 @@ namespace :db do
         queryParams[:start] += queryParams[:rows]
         sleep 2
       end
-
     end
 
     def perform_search_query(query,nAttempt=0)
@@ -142,7 +141,7 @@ namespace :db do
 
     # How to use:
     # bundle exec rake db:populate:popularityFields
-    task :popularityFields, [:start] => :environment do |t, args|
+    task :popularityFields => :environment do |t, args|
       puts "Populating popularity fields with random values"
 
       ActiveRecord::Base.uncached do
@@ -156,6 +155,49 @@ namespace :db do
 
       puts "Popularity fields population: Task finished"
     end
+
+    # How to use:
+    # bundle exec rake db:populate:install
+    task :install => :environment do |t, args|
+      puts "Populating database with initial values"
+
+      #LOs and Words are keeping.
+      #They are intended to be loaded from a dump file or generated via other population tasks (see populate:start).
+
+      #Remove all records
+      User.destroy_all
+      UserProfile.destroy_all
+      App.destroy_all
+      LoProfile.destroy_all
+      Session.destroy_all
+      Europeana::UserAuth.destroy_all
+
+      #Populate Users
+      user = User.new
+      user.email = "demo@europeanars.com"
+      user.password = "demonstration"
+      user.name = "Demo"
+      user.ui_language = I18n.default_locale
+      user.save!
+      puts "User '" + user.name + "' created with email '" + user.email + "' and password 'demonstration'"
+
+      #LOs liked by demo
+      Lo.limit(3).order("RANDOM()").map{ |lo|
+        user.like(lo)
+      }
+
+      #Populate Apps
+      app = App.new
+      app.user_id = User.find_by_email("demo@europeanars.com").id
+      app.name = "EuropeanaRS"
+      app.app_key = "demonstration"
+      app.app_secret = app.app_key
+      app.save!
+      puts "App '" + app.name + "' created with app_key '" + app.app_key + "' and private key '" + app.app_secret + "'"
+
+      puts "Installation completed"
+    end
+
   end
 
 end

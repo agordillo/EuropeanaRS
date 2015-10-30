@@ -11,13 +11,12 @@ module EuropeanaRS
 
     #Automatically connect to the database when a rails console is started
     console do
-        ActiveRecord::Base.connection
+      ActiveRecord::Base.connection
     end
 
     #Load EuropeanaRS configuration
     #Accesible here: EuropeanaRS::Application::config.APP_CONFIG
-    config.APP_CONFIG = YAML.load_file("config/application_config.yml")[ENV["RAILS_ENV"] || "development"]
-
+    config.APP_CONFIG = YAML.load_file("config/application_config.yml")[Rails.env]
     config.domain = (config.APP_CONFIG["domain"] || "localhost:3000")
 
     #Tags

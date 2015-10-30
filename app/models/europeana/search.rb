@@ -4,7 +4,7 @@
 # Class for using the Europeana Search API
 ###############
 
-class EuropeanaSearch
+class Europeana::Search < Europeana
 
   def self.buildQuery(params={})
     #Query example using the Europeana Search API
@@ -74,6 +74,10 @@ class EuropeanaSearch
     end
 
     query
+  end
+
+  def search
+  	#TODO
   end
 
 end

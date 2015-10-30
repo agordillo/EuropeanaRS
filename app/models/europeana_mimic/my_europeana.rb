@@ -1,34 +1,26 @@
 # encoding: utf-8
 
 ###############
-# Class with utils for handling metadata records from Europeana
+# Module to mimic MyEuropeana API
 ###############
 
-class MyEuropeanaMimic
+class EuropeanaMimic::MyEuropeana < EuropeanaMimic
 
   def self.callAPIMethod(methodname,username,password,authMethod=nil,nAttempt=1)
     return { :errors => "API Method Name is missing", :code => 500 } if methodname.blank?
     return { :errors => "Credentials can't be blank", :code => 500 } if username.blank? or password.blank?
 
-    fakeData = {
-      :apiKey => username,
-      :firstName => Faker::Name.first_name,
-      :lastName => Faker::Name.last_name,
-      :company => Faker::Company.name,
-      :country => Utils.getAllLanguages.map{|lanCode| Utils.getCountryFromLanguage(lanCode)}.sample(1).first #Faker::Address.country
-    }
-    fakeData[:username] = fakeData[:firstName]
-    fakeData[:email] = Faker::Internet.free_email(fakeData[:firstName])
-
+    fakeData = EuropeanaMimic.generateFakeData({:apiKey => username})
+    
     case methodname
     when "profile"
-      return MyEuropeanaMimic.profile(fakeData)
+      return EuropeanaMimic::MyEuropeana.profile(fakeData)
     when "items"
-      return MyEuropeanaMimic.items(fakeData)
+      return EuropeanaMimic::MyEuropeana.items(fakeData)
     when "tags"
-      return MyEuropeanaMimic.tags(fakeData)
+      return EuropeanaMimic::MyEuropeana.tags(fakeData)
     when "searches"
-      return MyEuropeanaMimic.searches(fakeData)
+      return EuropeanaMimic::MyEuropeana.searches(fakeData)
     else
       return { :errors => "Europeana Method not supported or unknown", :code => 500 }
     end

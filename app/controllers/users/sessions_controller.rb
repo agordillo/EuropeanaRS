@@ -15,7 +15,7 @@ class Users::SessionsController < Devise::SessionsController
       return redirect_to "/users/sign_in/europeana"
     end
 
-    eUserAuth = EuropeanaUserAuth.where(public_key: params[:public_key], private_key: params[:private_key]).first_or_create! do |userAuth|
+    eUserAuth = Europeana::UserAuth.where(public_key: params[:public_key], private_key: params[:private_key]).first_or_create! do |userAuth|
       userAuth.public_key = params[:public_key]
       userAuth.private_key = params[:private_key]
     end
@@ -24,9 +24,9 @@ class Users::SessionsController < Devise::SessionsController
 
     if @user.nil?
       #Create user
-      @user = Europeana.createUserWithCredentials(eUserAuth.public_key,eUserAuth.private_key)
+      @user = Europeana::MyEuropeana.createUserWithCredentials(eUserAuth.public_key,eUserAuth.private_key)
 
-      if Europeana.isErrorResponse(@user)
+      if Europeana::MyEuropeana.isErrorResponse(@user)
         #On error
         flash[:alert] = I18n.t("devise.omniauth_callbacks.failure", :kind => "Europeana", :reason => @user[:errors])
         return redirect_to "/users/sign_in/europeana"

@@ -165,7 +165,7 @@ class RecommenderSystem
     nRequests.times do |i|
       break if europeanaQueryIndexes[currentQueryIndex].nil?
       options[:settings][:europeana_database][:query][:start] = europeanaQueryIndexes[currentQueryIndex]
-      query = EuropeanaSearch.buildQuery(options[:settings][:europeana_database][:query])
+      query = Europeana::Search.buildQuery(options[:settings][:europeana_database][:query])
       response = (JSON.parse(RestClient::Request.execute(:method => :get, :url => query, :timeout => 5, :open_timeout => 5))) rescue nil #nil => error connecting to Europeana
       unless response.nil?
         europeanaItems += response["items"]
