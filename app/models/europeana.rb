@@ -205,7 +205,7 @@ class Europeana
   end
 
   def self.callAPIMethod(methodname,username,password,authMethod=nil,nAttempt=1)
-    return MyEuropeanaMimic.callAPIMethod(methodname,username,password,authMethod,nAttempt) if EuropeanaRS::Application::config.europeana["my_europeana"]=="mimic"
+    return MyEuropeanaMimic.callAPIMethod(methodname,username,password,authMethod,nAttempt) if EuropeanaRS::Application::config.europeana[:my_europeana]=="mimic"
     return { :errors => "API Method Name is missing", :code => 500 } if methodname.blank?
     return { :errors => "Credentials can't be blank", :code => 500 } if username.blank? or password.blank?
 
