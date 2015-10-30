@@ -201,6 +201,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
   //Constants
   var _LOs = [
     {
+      resource_type: "TEXT",
       title: "Beogradske novine - 1917-11-09",
       description: "god. III, br. 308",
       language: "sr",
@@ -210,6 +211,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200367/BibliographicResource_3000113569955"
     },
     {
+      resource_type: "TEXT",
       title: "Drywa - 1911-02-16",
       language: "lv",
       year: 1911,
@@ -218,6 +220,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200303/BibliographicResource_3000059908745"
     },
     {
+      resource_type: "TEXT",
       title: "Le Figaro - 1912-10-25",
       description: "1912/10/25 (Numéro 299).",
       language: "fr",
@@ -227,6 +230,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200408/BibliographicResource_3000113908719"
     },
     {
+      resource_type: "TEXT",
       title: "La Presse - 1905-12-12",
       description: "1905/12/12 (Numéro 4944).",
       language: "fr",
@@ -236,6 +240,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200408/BibliographicResource_3000113885753"
     },
     {
+      resource_type: "TEXT",
       title: "Monitor Polski - 1921-03-24",
       language: "pl",
       year: 1921,
@@ -244,6 +249,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200357/BibliographicResource_3000095237568"
     },
     {
+      resource_type: "TEXT",
       title: "South Wales daily news - 1895-07-30",
       description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
       language: "en",
@@ -253,6 +259,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200385/BibliographicResource_3000117394576"
     },
     {
+      resource_type: "TEXT",
       title: "Opregte Haarlemsche Courant - 1862-07-14",
       language: "nl",
       year: 1862,
@@ -261,6 +268,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200359/BibliographicResource_3000115644637"
     },
     {
+      resource_type: "TEXT",
       title: "Luxemburger Wort - 1923-03-19",
       description: "Luxemburger Wort 1923-03-19",
       language: "lb",
@@ -270,6 +278,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200360/BibliographicResource_3000100145488"
     },
     {
+      resource_type: "TEXT",
       title: "Päevaleht - 1931-11-02",
       language: "et",
       year: 1931,
@@ -278,6 +287,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200356/BibliographicResource_3000117744644"
     },
     {
+      resource_type: "TEXT",
       title: "La Correspondencia de España - 1860-02-26",
       description: "Es el primer periódico que inicia el periodismo de empresa en España y como diario vespertino de carácter nacional estrictamente informativo e independiente de los partidos políticos, alejado, por tanto, del doctrinarismo, y ser a la vez el primero en también alcanzar las mayores tiradas nunca conocidas antes en la prensa española. Es heredera de Carta autógrafa que, desde octubre de 1848, empezó a redactar el sevillano Manuel María de Santa Ana (1820-1894) en hojas manuscritas y después litografiadas, como un servicio confidencial de noticias que recababa directamente en los centros e instituciones oficiales y otras entidades para distribuirlas fundamentalmente a los propios periódicos y otros abonados. En 1851 había cambiado su título a La correspondencia autógrafa para ser ya impresa y diaria para, en octubre de 1859, adoptar su título definitivo, cuando Santa Ana lo tenía arrendado al futuro propietario de La época (1849-1936), Ignacio José Escobar (1823-1897), quien la había puesto al servicio de la Unión Liberal del general Leopoldo O’Donnell (1809-1867), regresando a manos de su fundador en abril del año siguiente. La colección de la Biblioteca Nacional de España comienza el dos enero de 1860, con las indicaciones Segunda época, año XII, número 487, pues continúa la secuencia de La correspondencia autógrafa.",
       language: "es",
@@ -287,6 +297,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200302/BibliographicResource_2000092066231"
     },
     {
+      resource_type: "TEXT",
       title: "Berliner Tageblatt - 1887-01-16",
       language: "de",
       year: 1887,
@@ -295,6 +306,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200355/BibliographicResource_3000097233590"
     },
     {
+      resource_type: "TEXT",
       title: "Evening express - 1908-02-25",
       description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
       language: "en",
@@ -304,6 +316,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200385/BibliographicResource_3000117425315"
     },
     {
+      resource_type: "TEXT",
       title: "Allgemeine Österreichische Gerichtszeitung - 1891-04-14",
       language: "de",
       year: 1891,
@@ -312,6 +325,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200384/BibliographicResource_3000116408021"
     },
     {
+      resource_type: "TEXT",
       title: "Илюстрация светлина: XLI, No 6/7 (1933)",
       language: "bg",
       year: 1933,
@@ -320,6 +334,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200374/BibliographicResource_3000116155035"
     },
     {
+      resource_type: "TEXT",
       title: "Сегодня - 1937-06-05",
       language: "ru",
       year: 1937,
@@ -328,6 +343,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200303/BibliographicResource_3000059920859"
     },
     {
+      resource_type: "TEXT",
       title: "Kaja - 1920-03-12",
       language: "et",
       year: 1920,
@@ -336,6 +352,7 @@ EuropeanaRS_API.Mimic = (function(API,undefined){
       id_europeana: "/9200356/BibliographicResource_3000117822431"
     },
     {
+      resource_type: "TEXT",
       title: "La Época (Madrid. 1849) - 1864-10-13",
       description: "Diario vespertino fundado por Diego Coello y Quesada (182-1897) el uno de abril de 1849, a principios del siglo veinte será ya el decano de la prensa diaria política madrileña, extinguiéndose su vida a escasos días del golpe de Estado de julio de 1936.",
       language: "es",

@@ -53,10 +53,8 @@ class Search
        :title => 50,
        :description => 1
     }
-
-    if n > 9999
-      opts[:max_matches] = 9999
-    end
+    
+    opts[:max_matches] = EuropeanaRS::Application::config.max_matches if n > EuropeanaRS::Application::config.max_matches
 
     unless options[:page].nil?
       opts[:page] = options[:page].to_i rescue 1
@@ -75,10 +73,20 @@ class Search
     opts[:with] = {}
     opts[:with_all] = {}
 
+    #Filter by resource type
+    unless options[:resource_types].blank?
+      if options[:resource_types].is_a? String
+        options[:resource_types] = options[:resource_types].split(",")
+      end
+      if options[:resource_types].is_a? Array and !options[:resource_types].blank?
+        opts[:with][:resource_type] = options[:resource_types].map{|type| type.to_s.to_crc32}
+      end
+    end
+
     #Filter by language
     unless options[:languages].blank?
       if options[:languages].is_a? String
-        options[:languages] = options[:languages].split(",");
+        options[:languages] = options[:languages].split(",")
       end
       if options[:languages].is_a? Array and !options[:languages].blank?
         opts[:with][:language] = options[:languages].map{|language| language.to_s.to_crc32}

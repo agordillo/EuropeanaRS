@@ -1,5 +1,3 @@
-#Copy this file to application_config.yml
-
 development:
   secret_token: ""     # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
   europeana:
@@ -8,6 +6,7 @@ development:
     oauth2_client_id: ""
     oauth2_client_key: ""
     oai_pmh_key: ""    #Request an access key for the OAI-PMH service here: http://labs.europeana.eu/api/oai-pmh-access-key
+    # my_europeana: "mimic" #To use a mimic of the MyEuropeana API instead of the real one. This should be used only for development.
   facebook: #Get Facebook credentials for your app from https://developers.facebook.com/
     app_id: ""
     app_secret: ""
@@ -18,18 +17,27 @@ development:
     # gmail_credentials:
     #   username: ""
     #   password: ""
-  # my_europeana: "mimic" #To use a mimic of the MyEuropeana API instead of the real one. This should be used only for development.
-  database: #database used for generate the recommendations. Accepted values: "EuropeanaRS", "Europeana", "All"
-    default: "Europeana"
-    europeana:
-      max_preselection_size: 100
-      default_query:
+  settings: #settings for the Recommender System
+    max_text_length: 50 #Maximun length in characters of the texts that will be taking into account when measuring semantic distances. High values could lead to performance issues.
+    max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.
+    europeanars_database:
+      max_preselection_size: 500 #Maximun number of Learning Objects retrieved by the search engine in the preselection phase of the recommendations. High values could lead to performance issues.
+    europeana_database:
+      max_preselection_size: 500 #Maximun number of Learning Objects retrieved from Europeana in the preselection phase. High values could lead to performance issues.
+  default_settings: #Default settings for the Recommender System
+    database: "All" #database used for generate the recommendations. Accepted values: "EuropeanaRS", "Europeana", "All"
+    query: ""
+    preselection_filter_resource_type: "true"
+    preselection_filter_languages: "true"
+    europeanars_database:
+      preselection_size: 500
+    europeana_database:
+      preselection_size: 500
+      query:
+        skos_concept: "http://vocab.getty.edu/aat/300026656"
         type: "TEXT"
   europeanars_api:
     require_key: "true" #if false, no app key would be required when using the EuropeanaRS API.
-  max_preselection_size: 1000  #Maximun number of Learning Objects retrieved by the search engine in the preselection phase of the recommendations. High values could lead to performance issues.
-  max_text_length: 60 #Maximun length in characters of the texts that will be taking into account when measuring semantic distances. High values could lead to performance issues.
-  max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.
   weights:
     default_rs:
       los_score: 0.4

@@ -5,6 +5,7 @@ class LoProfile < ActiveRecord::Base
   validates :repository, :presence => true
   validates :id_repository, uniqueness: { scope: :repository }, :presence => true
   validates :title, :presence => true
+  validates :resource_type, :presence => true
 
 
   #################
@@ -38,6 +39,7 @@ class LoProfile < ActiveRecord::Base
       loProfile.repository = "Europeana"
       loProfile.id_repository = lo.id_europeana
 
+      loProfile.resource_type = lo.resource_type
       loProfile.title = lo.title
       loProfile.description = lo.description
       loProfile.language = lo.language
@@ -56,6 +58,7 @@ class LoProfile < ActiveRecord::Base
       loProfileRecord.repository = loProfile[:repository]
       loProfileRecord.id_repository = loProfile[:id_repository]
 
+      loProfileRecord.resource_type = loProfile[:resource_type]
       loProfileRecord.title = loProfile[:title]
       loProfileRecord.description = loProfile[:description]
       loProfileRecord.language = loProfile[:language]
@@ -77,6 +80,7 @@ class LoProfile < ActiveRecord::Base
     lo_profile[:id_repository] = record.respond_to?("id_europeana") ? record.id_europeana : record.id_repository
 
     #Fields used to get similarity
+    lo_profile[:resource_type] = record.resource_type
     lo_profile[:title] = record.title
     lo_profile[:description] = record.description
     lo_profile[:language] = record.language

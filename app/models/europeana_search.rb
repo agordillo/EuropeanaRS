@@ -9,9 +9,14 @@ class EuropeanaSearch
   def self.buildQuery(params={})
     #Query example using the Europeana Search API
     #http://www.europeana.eu/api/v2/search.json?wskey=XXXX&query=skos_concept:%22http://vocab.getty.edu/aat/300026656%22&qf=TYPE:TEXT&profile=standard&rows=100&qf=YEAR:[1824+TO+1827]&qf=LANGUAGE:fr&qf=COUNTRY:france
-    query = "http://www.europeana.eu/api/v2/search.json?wskey="+EuropeanaRS::Application::config.APP_CONFIG["europeana"]["api_key"]+"&query="
+    query = "http://www.europeana.eu/api/v2/search.json?wskey="+EuropeanaRS::Application::config.europeana[:api_key]+"&query="
     
     params.delete_if{|k,v| v.blank?} #Delete empty params
+
+    #Convert arrays with one element into strings (prevent errors on Europeana API)
+    params.each{ |k,v|
+      params[k] = v.first if v.is_a? Array and v.length===1
+    }
 
     if params[:query].is_a? String
       query += params[:query]
@@ -35,8 +40,15 @@ class EuropeanaSearch
     query += "&profile=" + profile
 
     #Facets
-    if params[:type].is_a? String and ["TEXT","VIDEO","SOUND","IMAGE","3D"].include?(params[:type])
+    if params[:type].is_a? String and Utils.getResourceTypes.include?(params[:type])
       query += "&qf=TYPE:" + params[:type]
+    elsif params[:type].is_a? Array
+      params[:type] = (params[:type] & Utils.getResourceTypes)
+      if params[:type].length > 1
+        query += "&qf=TYPE:(" + params[:type].join("+OR+") + ")"
+      elsif params[:type].length == 1
+        query += "&qf=TYPE:" + params[:type].first
+      end
     end
 
     if params[:year].is_a? Integer

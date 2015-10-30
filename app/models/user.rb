@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   #################
 
   def parsedSettings
-    (JSON.parse(self.settings)).recursive_symbolize_keys rescue User.defaultSettings
+    (JSON.parse(self.settings)).parse_for_rs rescue User.defaultSettings
   end
 
   def pastLos(n=nil)
@@ -194,7 +194,7 @@ class User < ActiveRecord::Base
   end
 
   def fillSettings
-    self.settings = (User.defaultSettings.merge(self.parsedSettings)).to_json
+    self.settings = (User.defaultSettings.recursive_merge(self.parsedSettings)).to_json
     true
   end
 

@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20151027093519) do
     t.text     "description"
     t.string   "language"
     t.integer  "year"
+    t.string   "resource_type"
     t.integer  "quality",       default: 0
     t.integer  "popularity",    default: 0
     t.text     "url"

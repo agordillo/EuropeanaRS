@@ -22,7 +22,7 @@ class RecommenderSystemController < ApplicationController
   def api
     #1. Sanitize params and parsing
     queryOptions = params.permit(EuropeanaRS::Application::config.api[:permitedParams]) rescue {}
-    options = {:external => true}.merge(queryOptions.to_hash.recursive_symbolize_keys.parse_for_rs)
+    options = {:external => true}.merge(queryOptions.to_hash.parse_for_rs)
 
     #If user_id is provided for this app, retrieve user profile from database.
     if params["user_id"] and current_app
@@ -59,7 +59,7 @@ class RecommenderSystemController < ApplicationController
 
   def create_app_user
     #Sanitize params and parsing
-    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.recursive_symbolize_keys rescue {}
+    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.parse_for_rs rescue {}
 
     response = {}
     userProfile = nil
@@ -85,7 +85,7 @@ class RecommenderSystemController < ApplicationController
   def update_app_user
     #Sanitize params and parsing
     params["feedback"] = JSON.parse(params["feedback"]) rescue [] unless params["feedback"].blank?
-    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.recursive_symbolize_keys rescue {}
+    options = params.permit(EuropeanaRS::Application::config.api[:permitedParamsUsers]).to_hash.parse_for_rs rescue {}
 
     response = {}
     userProfile = nil

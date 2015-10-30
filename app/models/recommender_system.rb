@@ -30,9 +30,7 @@ class RecommenderSystem
 
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
-    options = {:n => 10, :user_profile => {}, :lo_profile => {}, :settings => {}}.merge(options)
-    options[:settings] = {:database => EuropeanaRS::Application::config.database[:default]}.merge(options[:settings])
-    options[:n] = options[:n].to_i
+    options = {:n => 10, :user_profile => {}, :lo_profile => {}, :settings => EuropeanaRS::Application::config.default_settings}.recursive_merge(options)
     options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].blank?
     options
   end
@@ -44,12 +42,19 @@ class RecommenderSystem
     # Define some filters for the preselection
     options[:preselection] = {}
     
-    # A. Query
+    # A. Query.
     options[:preselection][:query] = options[:settings][:query] unless options[:settings][:query].blank?
 
-    # B. Language.
+    # B. Resource type.
+    unless options[:settings][:preselection_filter_resource_type] == false
+      if Utils.getResourceTypes.include?(options[:lo_profile][:resource_type])
+        options[:preselection][:resource_types] = options[:lo_profile][:resource_type]
+      end
+    end
+
+    # C. Language.
     unless options[:settings][:preselection_filter_languages] == false
-      # B. Multilanguage approach.
+      # C. Multilanguage approach.
       preselectionLanguages = []
       if options[:lo_profile][:language]
         preselectionLanguages << options[:lo_profile][:language]
@@ -65,7 +70,7 @@ class RecommenderSystem
 
       options[:preselection][:languages] = preselectionLanguages unless preselectionLanguages.blank?
 
-      # B. (Alternative). Single language approach.
+      # C. (Alternative). Single language approach.
       # preselectionLanguage = nil
       # if options[:lo_profile][:language]
       #   preselectionLanguage = options[:lo_profile][:language]
@@ -76,7 +81,7 @@ class RecommenderSystem
       # options[:preselection][:languages] = [preselectionLanguage] unless preselectionLanguage.nil?
     end
 
-    #C. Repeated resources.
+    # D. Repeated resources.
     if options[:lo_profile][:id_repository]
       case options[:lo_profile][:repository]
       when "Europeana"
@@ -93,17 +98,18 @@ class RecommenderSystem
     # Search resources using the search engine
     searchOptions = {}
 
-    searchOptions[:n] = options[:settings][:preselection_size] || EuropeanaRS::Application::config.max_preselection_size
-    searchOptions[:n] = [EuropeanaRS::Application::config.max_matches,searchOptions[:n]].min
+    searchOptions[:n] = [options[:settings][:europeanars_database][:preselection_size],EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size]].min
     searchOptions[:models] = [Lo]
     searchOptions[:order] = "random"
 
     # Define preselection filters
     # A. Query
     searchOptions[:query] = options[:preselection][:query] unless options[:preselection][:query].blank?
-    # B. Language.
+    # B. Resource type
+    searchOptions[:resource_types] = options[:preselection][:resource_types] unless options[:preselection][:resource_types].blank?
+    # C. Language.
     searchOptions[:languages] = options[:preselection][:languages] unless options[:preselection][:languages].blank?
-    # C. Repeated resources.
+    # D. Repeated resources.
     searchOptions[:europeana_ids_to_avoid] = [options[:preselection][:europeana_id_to_avoid]] unless options[:preselection][:europeana_id_to_avoid].blank?
 
     # Get preselectin from Search Engine
@@ -131,19 +137,24 @@ class RecommenderSystem
 
   def self.getPreselectionFromEuropeana(options={})
     # Search resources in real time using the Europeana Search API
-    europeanaConfig = EuropeanaRS::Application::config.database[:europeana]
-    options[:settings][:europeana] ||= {}
-    options[:settings][:europeana][:query] ||= {}
-    options[:settings][:europeana][:query] = europeanaConfig[:default_query].merge(options[:settings][:europeana][:query]).merge({:start => 1, :rows => 100, :profile => "rich", :language => options[:preselection][:languages]})
+    options[:settings][:europeana_database][:query] = options[:settings][:europeana_database][:query].merge({:start => 1, :rows => 100, :profile => "rich"})
+
+    # A. Query.
+    options[:settings][:europeana_database][:query][:query] = options[:preselection][:query] unless options[:preselection][:query].blank?
+    # B. Resource type.
+    options[:settings][:europeana_database][:query][:type] = options[:preselection][:resource_types] unless options[:preselection][:resource_types].blank?
+    # C. Language.
+    options[:settings][:europeana_database][:query][:language] = options[:preselection][:languages] unless options[:preselection][:languages].blank?
+    # D. Repeated resources.
+    # Applied after retrieve results
 
     #Extra filters (Years, only if configured)
-    if options[:settings][:europeana][:query][:year_range] and options[:lo_profile] and options[:lo_profile][:year]
-      options[:settings][:europeana][:query][:year_min] = options[:lo_profile][:year]-options[:settings][:europeana][:query][:year_range]
-      options[:settings][:europeana][:query][:year_max] = options[:lo_profile][:year]+options[:settings][:europeana][:query][:year_range]
+    if options[:settings][:europeana_database][:query][:year_range] and options[:lo_profile] and options[:lo_profile][:year]
+      options[:settings][:europeana_database][:query][:year_min] = options[:lo_profile][:year]-options[:settings][:europeana_database][:query][:year_range]
+      options[:settings][:europeana_database][:query][:year_max] = options[:lo_profile][:year]+options[:settings][:europeana_database][:query][:year_range]
     end
 
-    n = options[:settings][:europeana][:preselection_size] || europeanaConfig[:max_preselection_size]
-    n = [europeanaConfig[:max_preselection_size],n].min
+    n = [options[:settings][:europeana_database][:preselection_size],EuropeanaRS::Application::config.settings[:europeana_database][:max_preselection_size]].min
 
     require 'rest-client'
     nRequests = (n/100.to_f).ceil
@@ -153,8 +164,8 @@ class RecommenderSystem
 
     nRequests.times do |i|
       break if europeanaQueryIndexes[currentQueryIndex].nil?
-      options[:settings][:europeana][:query][:start] = europeanaQueryIndexes[currentQueryIndex]
-      query = EuropeanaSearch.buildQuery(options[:settings][:europeana][:query])
+      options[:settings][:europeana_database][:query][:start] = europeanaQueryIndexes[currentQueryIndex]
+      query = EuropeanaSearch.buildQuery(options[:settings][:europeana_database][:query])
       response = (JSON.parse(RestClient::Request.execute(:method => :get, :url => query, :timeout => 5, :open_timeout => 5))) rescue nil #nil => error connecting to Europeana
       unless response.nil?
         europeanaItems += response["items"]
@@ -177,10 +188,10 @@ class RecommenderSystem
       end
     end
 
-    #Convert Europeana items to LO profiles
+    # Convert Europeana items to LO profiles
     loProfiles = europeanaItems.map{|item| Europeana.createVirtualLoProfileFromItem(item,{:external => options[:external]})}
 
-    # Prevent repeated resources
+    # D. Repeated resources.
     loProfiles = loProfiles.reject{|loProfile| loProfile[:id_repository] == options[:preselection][:europeana_id_to_avoid]} unless options[:preselection][:europeana_id_to_avoid].blank?
 
     return loProfiles
@@ -479,7 +490,7 @@ class RecommenderSystem
       userSettings = europeanaRSConfig[defaultKey] unless europeanaRSConfig.nil?
     end
 
-    userSettings.merge(explicitSettings)
+    userSettings.recursive_merge(explicitSettings)
   end
 
   # Default weights for the Recommender System provided by EuropeanaRS

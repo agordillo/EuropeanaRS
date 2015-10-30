@@ -9,6 +9,7 @@ class Lo < ActiveRecord::Base
   validates :id_europeana, :presence => true, :uniqueness => true
   validates :europeana_metadata, :presence => true
   validates :url, :presence => true, :uniqueness => true
+  validates :resource_type, :presence => true
   validates :title, :presence => true
 
 

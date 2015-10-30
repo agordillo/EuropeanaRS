@@ -27,6 +27,7 @@ class Europeana
     lo_profile[:repository] = "Europeana"
     lo_profile[:id_repository] = europeanaItem["id"]
 
+    lo_profile[:resource_type] = europeanaItem["type"]
     lo_profile[:title] = europeanaItem["title"].first unless europeanaItem["title"].nil?
     lo_profile[:description] = europeanaItem["dcDescription"].first unless europeanaItem["dcDescription"].nil?
     if !europeanaItem["dcLanguage"].nil?
@@ -54,6 +55,7 @@ class Europeana
     lo_profile[:repository] = "Europeana"
     lo_profile[:id_repository] = europeanaItem["europeanaId"]
 
+    lo_profile[:resource_type] = europeanaItem["type"]
     lo_profile[:title] = europeanaItem["title"]
     lo_profile[:description] = europeanaItem["description"]
     lo_profile[:language] = europeanaItem["language"]
@@ -203,7 +205,7 @@ class Europeana
   end
 
   def self.callAPIMethod(methodname,username,password,authMethod=nil,nAttempt=1)
-    return MyEuropeanaMimic.callAPIMethod(methodname,username,password,authMethod,nAttempt) if EuropeanaRS::Application::config.APP_CONFIG["my_europeana"]=="mimic"
+    return MyEuropeanaMimic.callAPIMethod(methodname,username,password,authMethod,nAttempt) if EuropeanaRS::Application::config.europeana["my_europeana"]=="mimic"
     return { :errors => "API Method Name is missing", :code => 500 } if methodname.blank?
     return { :errors => "Credentials can't be blank", :code => 500 } if username.blank? or password.blank?
 

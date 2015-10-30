@@ -16,6 +16,7 @@ APP = (function(){
       avatar: "images/avatars/1.jpg",
       los: [
         {
+          resource_type: "TEXT",
           title: "La Época (Madrid. 1849) - 1864-10-13",
           description: "Diario vespertino fundado por Diego Coello y Quesada (182-1897) el uno de abril de 1849, a principios del siglo veinte será ya el decano de la prensa diaria política madrileña, extinguiéndose su vida a escasos días del golpe de Estado de julio de 1936.",
           language: "es",
@@ -31,6 +32,7 @@ APP = (function(){
       avatar: "images/avatars/2.jpg",
       los: [
         {
+          resource_type: "TEXT",
           title: "South Wales daily news - 1895-07-30",
           description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
           language: "en",
@@ -39,6 +41,7 @@ APP = (function(){
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         },
         {
+          resource_type: "TEXT",
           title: "Evening express - 1908-02-25",
           description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
           language: "en",
@@ -66,6 +69,7 @@ APP = (function(){
       avatar: "images/avatars/5.jpg",
       los: [
         {
+          resource_type: "TEXT",
           title: "Le Figaro - 1912-10-25",
           description: "1912/10/25 (Numéro 299).",
           language: "fr",
@@ -81,6 +85,7 @@ APP = (function(){
       avatar: "images/avatars/6.jpg",
       los: [
         {
+          resource_type: "TEXT",
           title: "South Wales daily news - 1895-07-30",
           description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
           language: "en",
@@ -89,6 +94,7 @@ APP = (function(){
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         },
         {
+          resource_type: "TEXT",
           title: "Evening express - 1908-02-25",
           description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
           language: "en",
@@ -468,6 +474,7 @@ APP = (function(){
       var loTable = $("#lo_selection table");
 
       data["lo_profile"] = {};
+      data["lo_profile"]["resource_type"] = selected_lo.resource_type;
       data["lo_profile"]["title"] = $(loTable).find("input[name='lo_title']").val();
       data["lo_profile"]["description"] = $(loTable).find("input[name='lo_description']").val();
       data["lo_profile"]["language"] = $(loTable).find("input[name='lo_language']").val();
@@ -490,14 +497,18 @@ APP = (function(){
 
     //General settings
     data["settings"]["database"] = $("#database").val();
-    data["settings"]["preselection_size"] = $("#preselection_size").val();
+    data["settings"]["preselection_filter_resource_type"] = $("#preselection_filter_resource_type").is(":checked");
     data["settings"]["preselection_filter_languages"] = $("#preselection_filter_languages").is(":checked");
+    if(data["settings"]["database"]!="Europeana"){
+      data["settings"]["europeanars_database"] = {};
+      data["settings"]["europeanars_database"]["preselection_size"] = $("#europeanars_preselection_size").val();
+    }
     if(data["settings"]["database"]!="EuropeanaRS"){
-      data["settings"]["europeana"] = {};
-      data["settings"]["europeana"]["preselection_size"] = $("#europeana_preselection_size").val();
-      data["settings"]["europeana"]["query"] = {};
-      data["settings"]["europeana"]["query"]["type"] = $("#europeana_resource_type").val();
-      data["settings"]["europeana"]["query"]["skos_concept"] = $("#europeana_skos_concept").val();
+      data["settings"]["europeana_database"] = {};
+      data["settings"]["europeana_database"]["preselection_size"] = $("#europeana_preselection_size").val();
+      data["settings"]["europeana_database"]["query"] = {};
+      data["settings"]["europeana_database"]["query"]["type"] = $("#europeana_resource_type").val();
+      data["settings"]["europeana_database"]["query"]["skos_concept"] = $("#europeana_skos_concept").val();
     }
     
     //Weights and Filters

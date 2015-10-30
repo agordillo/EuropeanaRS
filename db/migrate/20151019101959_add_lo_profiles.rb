@@ -6,6 +6,7 @@ class AddLoProfiles < ActiveRecord::Migration
       t.string :repository
       t.text :id_repository
 
+      t.string :resource_type
       t.text :title
       t.text :description
       t.string :language

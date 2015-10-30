@@ -26,6 +26,7 @@
       var data = {};
       //Provide the profile of the Learning Object to show
       data["lo_profile"] = {};
+      data["lo_profile"]["resource_type"] = "TEXT";
       data["lo_profile"]["title"] = "South Wales daily news - 1895-07-30";
       data["lo_profile"]["description"] = "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).";
       data["lo_profile"]["language"] = "en";
@@ -50,6 +51,7 @@
 
       // Call API via html form. This way it redirects automatically to the new page.
       var form = $('<form method="POST" action="http://localhost:3000/los_api/" style="display: none;"></form>');
+      $(form).append('<input type="hidden" name="lo_profile[resource_type]" value="' + data["lo_profile"]["resource_type]"] + '"/>');
       $(form).append('<input type="hidden" name="lo_profile[title]" value="' + data["lo_profile"]["title"] + '"/>');
       $(form).append('<input type="hidden" name="lo_profile[description]" value="' + data["lo_profile"]["description"] + '"/>');
       $(form).append('<input type="hidden" name="lo_profile[language]" value="' + data["lo_profile"]["language"] + '"/>');

@@ -63,4 +63,8 @@ class Utils
     return I18n.default_locale.to_s
   end
 
+  def self.getResourceTypes
+    ["TEXT","VIDEO","SOUND","IMAGE","3D"]
+  end
+
 end

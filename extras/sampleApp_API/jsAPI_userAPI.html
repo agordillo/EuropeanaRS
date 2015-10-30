@@ -52,12 +52,13 @@
     user_profile = {};
     user_profile["language"] = "en";
     var eveningExpressLo = {
-          title: "Evening express - 1908-02-25",
-          description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
-          language: "en",
-          year: 1908,
-          repository: "Europeana",
-          id_repository: "/9200385/BibliographicResource_3000117425315"
+      resource_type: "TEXT",
+      title: "Evening express - 1908-02-25",
+      description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
+      language: "en",
+      year: 1908,
+      repository: "Europeana",
+      id_repository: "/9200385/BibliographicResource_3000117425315"
     };
     var liked_los = [eveningExpressLo];
     user_profile["los"] = JSON.stringify(liked_los); //Items liked or visited by the user in the past
@@ -99,6 +100,7 @@
         {
           action: "Accepted",
           lo_profile: {
+            resource_type: "TEXT",
             title: "South Wales daily news - 1895-07-30",
             description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
             language: "en",
@@ -109,6 +111,7 @@
         },{
           action: "Rejected",
           lo_profile: {
+            resource_type: "TEXT",
             title: "Luxemburger Wort - 1923-03-19",
             description: "Luxemburger Wort 1923-03-19",
             language: "lb",

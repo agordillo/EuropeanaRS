@@ -7,12 +7,12 @@
   <script src="js/jquery-ui.min.js"></script>
   <script src="js/slick.js"></script>
   <script src="js/europeanars.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/index_app.js"></script>
   <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
   <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css"/>
   <link rel="stylesheet" type="text/css" href="css/slick.css"/>
   <link rel="stylesheet" type="text/css" href="css/slick-theme.css"/>
-  <link rel="stylesheet" type="text/css" href="css/app.css"/>
+  <link rel="stylesheet" type="text/css" href="css/index_app.css"/>
 </head>
 <body>
 
@@ -144,6 +144,10 @@
             </th>
           </tr>
           <tr>
+            <th><span>Filter by resource type on preselection:</span></th>
+            <th><input id="preselection_filter_resource_type" class="checkbox_setting" type="checkbox" checked="checked"/></th>
+          </tr>
+          <tr>
             <th><span>Filter by languages on preselection:</span></th>
             <th><input id="preselection_filter_languages" class="checkbox_setting" type="checkbox" checked="checked"/></th>
           </tr>
@@ -152,7 +156,7 @@
           </tr>
           <tr database="europeanars">
             <th><span>Preselection size:</span></th>
-            <th><input id="preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
+            <th><input id="europeanars_preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
           </tr>
           <tr class="settings_subtitle" database="europeana">
             <th colspan="2">Settings for Europeana database</span></th>
