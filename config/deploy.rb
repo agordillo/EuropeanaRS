@@ -57,38 +57,32 @@ namespace(:deploy) do
   end
 
   task :fix_file_permissions do
-    puts "1 FIX FILE PERMISSIONS"
     # LOG
     run "#{try_sudo} touch #{release_path}/log/production.log"
     run "#{try_sudo} /bin/chmod 666 #{release_path}/log/production.log"
   end
 
   task :link_files do
-    puts "2 LINK FILES"
     run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
     run "ln -s #{shared_path}/application_config.yml #{release_path}/config/application_config.yml"
   end
 
   task :precompile_europeanars_assets do
-    puts "3 PRECOMPILE ASSETS"
     run "cd #{release_path} && bundle exec \"rake assets:precompile --trace RAILS_ENV=production\""
   end
 
   task :static_assets do
-    puts "4 STATIC ASSETS"
     # run "cd #{release_path} && bundle exec \"rake assets:precompile --trace RAILS_ENV=production\""
     run "cp -r #{release_path}/app/assets/images/* #{release_path}/public/assets/"
     run "cp -r #{release_path}/app/assets/fonts/* #{release_path}/public/assets/"
   end
 
   task :start_sphinx do
-    puts "6 START SPHINX"
     run "cd #{current_path} && kill -9 `cat log/searchd.production.pid` || true"
     run "cd #{release_path} && bundle exec \"rake ts:rebuild RAILS_ENV=production\""
   end
 
   task :fix_sphinx_file_permissions do
-    puts "6 SPHINX FILES"
     run "/bin/chmod g+rw #{release_path}/log/searchd*"
     sudo "/bin/chgrp www-data #{release_path}/log/searchd*"
   end
