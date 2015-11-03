@@ -161,16 +161,7 @@ namespace :db do
     task :install => :environment do |t, args|
       puts "Populating database with initial values"
 
-      #LOs and Words are keeping.
-      #They are intended to be loaded from a dump file or generated via other population tasks (see populate:start).
-
-      #Remove all records
-      User.destroy_all
-      UserProfile.destroy_all
-      App.destroy_all
-      LoProfile.destroy_all
-      Session.destroy_all
-      Europeana::UserAuth.destroy_all
+      Rake::Task["db:populate:clean"].invoke
 
       #Populate Users
       user = User.new
@@ -196,6 +187,29 @@ namespace :db do
       puts "App '" + app.name + "' created with app_key '" + app.app_key + "' and private key '" + app.app_secret + "'"
 
       puts "Installation completed"
+    end
+
+    # How to use:
+    # bundle exec rake db:populate:install_production RAILS_ENV=production
+    task :install_production => :environment do |t, args|
+      puts "Starting installation"
+      Rake::Task["db:populate:clean"].invoke
+      puts "Installation completed"
+    end
+
+    # How to use:
+    # bundle exec rake db:populate:clean
+    task :clean => :environment do |t, args|
+      puts "Removing all records from database (except LOs)"
+      #Remove all records
+      #LOs and Words are keeping.
+      #They are intended to be loaded from a dump file or generated via other population tasks (see populate:start).
+      User.destroy_all
+      UserProfile.destroy_all
+      App.destroy_all
+      LoProfile.destroy_all
+      Session.destroy_all
+      Europeana::UserAuth.destroy_all
     end
 
   end
