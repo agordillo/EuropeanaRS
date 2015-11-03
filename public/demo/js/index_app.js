@@ -13,7 +13,7 @@ APP = (function(){
     {
       name: "Alejandro Olivárez",
       language: "es",
-      avatar: "images/avatars/1.jpg",
+      avatar: "/demo/images/avatars/1.jpg",
       los: [
         {
           resource_type: "TEXT",
@@ -21,7 +21,7 @@ APP = (function(){
           description: "Diario vespertino fundado por Diego Coello y Quesada (182-1897) el uno de abril de 1849, a principios del siglo veinte será ya el decano de la prensa diaria política madrileña, extinguiéndose su vida a escasos días del golpe de Estado de julio de 1936.",
           language: "es",
           year: 1864,
-          url: "http://localhost:3000/los/147835",
+          url: "http://europeanars.global.dit.upm.es/los/147835",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fhemerotecadigital.bne.es%2Fimages%2Fitems%2F0000192072%2Flow.jpg&size=LARGE&type=TEXT"
         }
       ]
@@ -29,7 +29,7 @@ APP = (function(){
     {
       name: "Clark DuBuque",
       language: "en",
-      avatar: "images/avatars/2.jpg",
+      avatar: "/demo/images/avatars/2.jpg",
       los: [
         {
           resource_type: "TEXT",
@@ -37,7 +37,7 @@ APP = (function(){
           description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
           language: "en",
           year: 1895,
-          url: "http://localhost:3000/los/170304",
+          url: "http://europeanars.global.dit.upm.es/los/170304",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         },
         {
@@ -46,7 +46,7 @@ APP = (function(){
           description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
           language: "en",
           year: 1908,
-          url: "http://localhost:3000/los/177283",
+          url: "http://europeanars.global.dit.upm.es/los/177283",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F4186537%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         }
       ]
@@ -54,19 +54,19 @@ APP = (function(){
     {
       name: "Lucas van Schouten",
       language: "nl",
-      avatar: "images/avatars/3.jpg",
+      avatar: "/demo/images/avatars/3.jpg",
       los: []
     },
     {
       name: "Lenia Böhm",
       language: "de",
-      avatar: "images/avatars/4.jpg",
+      avatar: "/demo/images/avatars/4.jpg",
       los: []
     },
     {
       name: "Julie Marchal",
       language: "fr",
-      avatar: "images/avatars/5.jpg",
+      avatar: "/demo/images/avatars/5.jpg",
       los: [
         {
           resource_type: "TEXT",
@@ -74,7 +74,7 @@ APP = (function(){
           description: "1912/10/25 (Numéro 299).",
           language: "fr",
           year: 1912,
-          url: "http://localhost:3000/los/64391",
+          url: "http://europeanars.global.dit.upm.es/los/64391",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fgallica.bnf.fr%2Fark%3A%2F12148%2Fbpt6k289746m%2Ff1.thumbnail&size=LARGE&type=TEXT"
         }
       ]
@@ -82,7 +82,7 @@ APP = (function(){
     {
       name: "Aletha Wiegand",
       language: "pl",
-      avatar: "images/avatars/6.jpg",
+      avatar: "/demo/images/avatars/6.jpg",
       los: [
         {
           resource_type: "TEXT",
@@ -90,7 +90,7 @@ APP = (function(){
           description: "Began with issue for: No. 1 (7 Feb. 1872). Ended with issue for: No. 14283 (2 Apr. 1918).",
           language: "en",
           year: 1895,
-          url: "http://localhost:3000/los/170304",
+          url: "http://europeanars.global.dit.upm.es/los/170304",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F3735010%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         },
         {
@@ -99,7 +99,7 @@ APP = (function(){
           description: "Began with issue for: No. 1 (8 Apr. 1887). Ended with issue for: No. 4671 (23 June 1902).",
           language: "en",
           year: 1908,
-          url: "http://localhost:3000/los/177283",
+          url: "http://europeanars.global.dit.upm.es/los/177283",
           thumbnail_url: "http://europeanastatic.eu/api/image?uri=http%3A%2F%2Fdams.llgc.org.uk%2Fiiif%2Fimage%2F4186537%2Ffull%2F%2C300%2F0%2Fnative.jpg&size=LARGE&type=TEXT"
         }
       ]
@@ -111,7 +111,7 @@ APP = (function(){
     //Get API_KEY and API_URL from url params
     var params = _getUrlParmams();
     var API_KEY = (params["API_KEY"] || "demonstration");
-    var API_URL = (params["API_URL"] || "localhost:3000");
+    var API_URL = (params["API_URL"] || "europeanars.global.dit.upm.es");
     API_URL = "http://" + API_URL + "/api/";
 
     // EuropeanaRS_API.init({debug: true, mimic: true});

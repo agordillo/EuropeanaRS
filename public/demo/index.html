@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EuropeanaRS API: Sample Application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script src="/demo/js/jquery-2.1.4.min.js"></script>
+  <script src="/demo/js/jquery-ui.min.js"></script>
+  <script src="/demo/js/slick.js"></script>
+  <script src="/demo/js/europeanars.js"></script>
+  <script src="/demo/js/index_app.js"></script>
+  <link rel="stylesheet" type="text/css" href="/demo/css/jquery-ui.min.css"/>
+  <link rel="stylesheet" type="text/css" href="/demo/css/jquery-ui.theme.min.css"/>
+  <link rel="stylesheet" type="text/css" href="/demo/css/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="/demo/css/slick-theme.css"/>
+  <link rel="stylesheet" type="text/css" href="/demo/css/index_app.css"/>
+</head>
+<body>
+
+<header>
+  <div id="logo">
+    <a target="_blank" href="http://github.com/agordillo/EuropeanaRS">
+      <img alt="EuropeanaRS logo" src="/demo/images/Europeanars_logo.png"/>
+    </a>
+    <p>A Hybrid Learning Object Recommender System based on Europeana</p>
+    <p>Sample Application</p>
+  </div>
+</header>
+
+<div id="container">
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">1</div>
+      <div class="step_title">
+        <p>Choose a Learning Object</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="carousel_wrapper">
+        <div id="los_carousel" class="carousel"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">2</div>
+      <div class="step_title">
+        <p>Choose a User</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="carousel_wrapper">
+        <div id="users_carousel" class="carousel"></div>
+      </div>
+      <p class="copyright_notice">Copyright Notice: all user photos were taken from <a target="_blank" href="https://randomuser.me/photos">Random User Generator</a> and are copyrighted under a Creative Commons BY-NC-SA 2.0 license. These photos were hand picked from Greg Peverill-Conti's <a target="_blank" href="https://www.flickr.com/photos/gregpc/">1,000 faces project</a>.</p>
+    </div>
+  </div>
+
+  <div id="selections" class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">3</div>
+      <div class="step_title">
+        <p>Check and customize your selection</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div id="lo_selection">
+        <div class="header">Learning Object</div>
+        <div class="body">
+          <p class="no_selection">No Learning Object selected</p>
+          <table>
+            <tr>
+              <th>Title:</th>
+              <th><input name="lo_title" type="text" value=""/></th>
+            </tr>
+            <tr>
+              <th>Description:</th>
+              <th><input name="lo_description" type="text" value=""/></th>
+            </tr>
+            <tr>
+              <th>Language:</th>
+              <th><input name="lo_language" type="text" value=""/></th>
+            </tr>
+            <tr>
+              <th>Year:</th>
+              <th><input name="lo_year" type="text" value=""/></th>
+            </tr>
+            <tr>
+              <th>Url:</th>
+              <th name="lo_url"></th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="user_selection">
+        <div class="header">User</div>
+        <div class="body">
+          <p class="no_selection">No user selected</p>
+          <table>
+            <tr>
+              <th>Name:</th>
+              <th name="user_name"></th>
+            </tr>
+            <tr>
+              <th>Language:</th>
+              <th><input name="user_language" type="text" value=""/></th>
+            </tr>
+             <tr>
+              <th>Learning Objects:</th>
+              <th name="user_los"></th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="settings" class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">4</div>
+      <div class="step_title">
+        <p>Specify explicit settings for EuropeanaRS</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper">
+      <div class="settings_field">
+        <table class="expanded">
+          <tr class="settings_title">
+            <th colspan="2">General Settings <span class="expand_icon">-</span></th>
+          </tr>
+          <tr>
+            <th><span>Number of requested items:</span></th>
+            <th><input id="n" class="number_setting" type="number" min="1" max="100" step="1" value="20"/></th>
+          </tr>
+          <tr>
+            <th><span>Database:</span></th>
+            <th>
+              <select id="database" class="select_setting" value="EuropeanaRS">
+                <option value="EuropeanaRS">EuropeanaRS</option>
+                <option value="Europeana">Europeana</option>
+                <option value="All">All</option>
+              </select>
+            </th>
+          </tr>
+          <tr>
+            <th><span>Filter by resource type on preselection:</span></th>
+            <th><input id="preselection_filter_resource_type" class="checkbox_setting" type="checkbox" checked="checked"/></th>
+          </tr>
+          <tr>
+            <th><span>Filter by languages on preselection:</span></th>
+            <th><input id="preselection_filter_languages" class="checkbox_setting" type="checkbox" checked="checked"/></th>
+          </tr>
+          <tr class="settings_subtitle" database="europeanars">
+            <th colspan="2">Settings for EuropeanaRS database</span></th>
+          </tr>
+          <tr database="europeanars">
+            <th><span>Preselection size:</span></th>
+            <th><input id="europeanars_preselection_size" class="number_setting" type="number" min="0" max="100000" step="100" value="500"/></th>
+          </tr>
+          <tr class="settings_subtitle" database="europeana">
+            <th colspan="2">Settings for Europeana database</span></th>
+          </tr>
+          <tr database="europeana">
+            <th><span>Preselection size:</span></th>
+            <th><input id="europeana_preselection_size" class="number_setting" type="number" min="0" max="500" step="100" value="200"/></th>
+          </tr>
+          <tr database="europeana">
+            <th database="europeana"><span>[Query] Resource type:</span></th>
+            <th><input id="europeana_resource_type" class="text_setting" type="text" value="TEXT"/></th>
+          </tr>
+          <tr database="europeana">
+            <th><span>[Query] Skos_concept:</span></th>
+            <th><input id="europeana_skos_concept" class="text_setting" type="text" value="http://vocab.getty.edu/aat/300026656"/></th>
+          </tr>
+        </table>
+        <br/>
+        <table class="minified">
+          <tr class="settings_title">
+            <th colspan="2">General Weights <span class="expand_icon">+</span></th>
+          </tr>
+          <tr>
+            <th><span>Learning Object similarity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="los" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>User similarity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="us" type="number" value="40" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Quality:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="quality" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Popularity:</span></th>
+            <th><input class="weight_setting" weightfamily="general" weight="popularity" type="number" value="10" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="general" type="number" value="100" readonly/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">Learning Object Similarity Weights</th>
+          </tr>
+          <tr>
+            <th><span>Title:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="title" type="number" value="20" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Description:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="description" type="number" value="15" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="language" type="number" value="50" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Years:</span></th>
+            <th><input class="weight_setting" weightfamily="los" weight="year" type="number" value="15" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="los" type="number" value="100" readonly/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">User Profile Similarity Weights</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="weight_setting" weightfamily="users" weight="language" type="number" value="50" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Objects liked by the user:</span></th>
+            <th><input class="weight_setting" weightfamily="users" weight="los" type="number" value="50" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Total:</span></th>
+            <th><input class="weight_sum" weightfamily="users" type="number" value="100" readonly/>%</th>
+          </tr>
+        </table>
+        <br/>
+        <table class="minified">
+          <tr class="settings_title">
+            <th colspan="2">General Filters <span class="expand_icon">+</span></th>
+          </tr>
+          <tr>
+            <th><span>Learning Object similarity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="los" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>User similarity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="us" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Quality:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="quality" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Object Popularity:</span></th>
+            <th><input class="filter_setting" filterfamily="general" filter="popularity" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">Filters for Learning Object Similarity</th>
+          </tr>
+          <tr>
+            <th><span>Title:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="title" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Description:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="description" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="language" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Year:</span></th>
+            <th><input class="filter_setting" filterfamily="los" filter="year" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr class="settings_title">
+            <th colspan="2">Filters for User Profile Similarity</th>
+          </tr>
+          <tr>
+            <th><span>Language:</span></th>
+            <th><input class="filter_setting" filterfamily="us" filter="language" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+          <tr>
+            <th><span>Learning Objects liked by the user:</span></th>
+            <th><input class="filter_setting" filterfamily="us" filter="los" type="number" value="0" min="0" max="100" step="1"/>%</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="step_section">
+    <div class="step_title_wrapper">
+      <div class="step_section_number">5</div>
+      <div class="step_title">
+        <p>Request suggested resources to EuropeanaRS</p>
+      </div>
+    </div>
+    <div class="step_content_wrapper submit_wrapper">
+      <button id="submit" type="button"><img src="/demo/images/Europeana_icon.png"/><div>Request resources to EuropeanaRS</div></button>
+      <div id="noresults">
+        <p>EuropeanaRS was unable to provide recommendations with the specified options. Try with other settings.</p>
+      </div>
+      <div class="carousel_wrapper">
+        <div id="suggestions_carousel" class="carousel"></div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <p class="footer_note">EuropeanaRS source code and documentation is available at <a target="_blank" href="https://github.com/agordillo/EuropeanaRS">EuropeanaRS Github Project</a>.</p>
+
+</div>
+
+<footer>
+</footer>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    APP.init();
+  });
+</script>
+
+</body>
+</html>
