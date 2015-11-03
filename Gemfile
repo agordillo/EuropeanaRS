@@ -38,15 +38,6 @@ gem 'omniauth-facebook', '1.4.1'
 
 gem 'faker'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 #Thinking Sphinx
 #The included MySQL gems are required for connecting to Sphinx, so please include it even when you’re using PostgreSQL for your database.
 gem 'mysql2',          '0.3.18', :platform => :ruby
@@ -66,5 +57,7 @@ group :development do
   gem 'spring'
 
   gem 'pry-rails'
+
+  gem 'capistrano', '= 2.14.2'
 end
 
