@@ -83,8 +83,8 @@ namespace(:deploy) do
   end
 
   task :fix_sphinx_file_permissions do
-    run "/bin/chmod g+rw #{release_path}/log/searchd*"
-    sudo "/bin/chgrp www-data #{release_path}/log/searchd*"
+    run "/bin/chmod g+rw #{release_path}/log/production.searchd*"
+    sudo "/bin/chgrp www-data #{release_path}/log/production.searchd*"
   end
 
 end
