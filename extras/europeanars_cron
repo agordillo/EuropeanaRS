@@ -1,0 +1,22 @@
+# Cron configuration file for environments with RVM
+# This file should be in /etc/cron.d/europeanars
+# Set the appropriate users and paths for your environment
+SHELL=/bin/bash
+
+# Every hour (at minute 5)
+5 * * * * www-data source /home/username/.rvm/scripts/rvm && cd /u/apps/europeanars/current && bundle exec rake --silent cron:hourly RAILS_ENV=production
+
+# Daily (at 4:15am)
+15 4 * * * www-data source /home/username/.rvm/scripts/rvm && cd /u/apps/europeanars/current && bundle exec rake --silent cron:daily RAILS_ENV=production
+
+# Weekly (Sundays at 4:15am)
+15 4 * * 0 www-data source /home/username/.rvm/scripts/rvm && cd /u/apps/europeanars/current && bundle exec rake --silent cron:weekly RAILS_ENV=production
+
+# Monthly
+@monthly www-data source /home/username/.rvm/scripts/rvm && cd /u/apps/europeanars/current && bundle exec rake --silent cron:monthly RAILS_ENV=production
+
+#Check daemons script (execute as sudo, schedule in sudo crontab -e)
+#This script is provided in extras/check_daemon.sh
+*/10 * * * * export CAP_USER=europeanars && /../scriptsFolder/check_daemon.sh
+
+# Visit https://help.ubuntu.com/community/CronHowto for more information about cron
