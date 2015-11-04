@@ -72,13 +72,12 @@ namespace(:deploy) do
   end
 
   task :static_assets do
-    # run "cd #{release_path} && bundle exec \"rake assets:precompile --trace RAILS_ENV=production\""
     run "cp -r #{release_path}/app/assets/images/* #{release_path}/public/assets/"
     run "cp -r #{release_path}/app/assets/fonts/* #{release_path}/public/assets/"
   end
 
   task :start_sphinx do
-    run "cd #{current_path} && kill -9 `cat log/searchd.production.pid` || true"
+    run "cd #{current_path} && kill -9 `cat log/production.sphinx.pid` || true"
     run "cd #{release_path} && bundle exec \"rake ts:rebuild RAILS_ENV=production\""
   end
 
