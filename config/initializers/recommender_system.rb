@@ -11,7 +11,8 @@ Rails.application.configure do
   #EuropeanaRS fixed settings
   config.settings = {}
   config.settings = config.APP_CONFIG["settings"].parse_for_rs unless config.APP_CONFIG["settings"].blank?
-  config.settings = {:max_text_length => 50, :max_user_los => 5, :europeanars_database => {:max_preselection_size => 500}, :europeana_database => {:preselection_size => 500}}.recursive_merge(config.settings)
+  config.settings = {:resource_types => Utils.getAllResourceTypes, :max_text_length => 50, :max_user_los => 5, :europeanars_database => {:max_preselection_size => 500}, :europeana_database => {:preselection_size => 500}}.recursive_merge(config.settings)
+  config.settings[:resource_types] = config.settings[:resource_types] & Utils.getAllResourceTypes
 
   #Default settings to use in EuropeanaRS
   config.default_settings = {}

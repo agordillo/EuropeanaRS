@@ -153,10 +153,18 @@ en:
   recommendations:
     empty: "There are no resources to recommend."
     suggested_resources: "Suggested resources"
+  resource_types:
+    3d: "3D Objects"
+    image: "Picture"
+    sound: "Audio"
+    text: "Text"
+    video: "Video"
   search:
     filters:
       language:
         title: "Filter by <b>language</b>"
+      resource_type:
+        title: "Filter by <b>type</b>"
       year:
         range: "Year range"
         title: "Filter by <b>year</b>"

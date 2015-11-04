@@ -18,6 +18,7 @@ development:
     #   username: ""
     #   password: ""
   settings: #settings for the Recommender System
+    resource_types: ["TEXT","VIDEO","SOUND","IMAGE","3D"]
     max_text_length: 50 #Maximun length in characters of the texts that will be taking into account when measuring semantic distances. High values could lead to performance issues.
     max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.
     europeanars_database:

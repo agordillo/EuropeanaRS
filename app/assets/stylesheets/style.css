@@ -332,8 +332,8 @@ div.search_filter {
 
 div.search_filter ul {
   padding-left: 30px;
-  height: 150px;
-  overflow-y: scroll;
+  max-height: 150px;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 

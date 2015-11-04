@@ -153,10 +153,18 @@ es:
   recommendations:
     empty: "No hay recursos para recomendar."
     suggested_resources: "Recursos sugeridos"
+  resource_types:
+    3d: "Objecto 3D"
+    image: "Imágen"
+    sound: "Audio"
+    text: "Texto"
+    video: "Vídeo"
   search:
     filters:
       language:
         title: "Filtrar por <b>idioma</b>"
+      resource_type:
+        title: "Filtrar por <b>tipo</b>"
       year:
         range: "Periodo"
         title: "Filtrar por <b>año</b>"

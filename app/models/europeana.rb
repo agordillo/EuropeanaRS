@@ -76,4 +76,8 @@ class Europeana
     country
   end
 
+  def self.getResourceTypes
+    ["TEXT","VIDEO","SOUND","IMAGE","3D"]
+  end
+
 end

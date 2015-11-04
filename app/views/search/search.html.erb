@@ -43,6 +43,20 @@
     </div>
     <div class="search_filters">
       <p class="title"><%=t("search.refine_results")%>:</p>
+      <% if Utils.getResourceTypes.length > 1 %>
+        <div class="search_filter" name="resource_type" type="nonexclusive">
+          <button href="#" status="minimize" class="btn-filter">-</button>
+          <span class="search_filter_title"><%=t("search.filters.resource_type.title").html_safe%>:</span>
+          <hr class="separator">
+          <div class="search_filter_content">
+            <ul class="options_for_filter">
+              <% Utils.getResourceTypes.each do |resourceType| %>
+                <li value="<%=resourceType%>"><%=Utils.getReadableResourceType(resourceType)%></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
       <div class="search_filter" name="language" type="nonexclusive">
         <button href="#" status="minimize" class="btn-filter">-</button>
         <span class="search_filter_title"><%=t("search.filters.language.title").html_safe%>:</span>
@@ -277,17 +291,25 @@
 
       //Filters
 
-      // 1. Language
+      // 1. Resource types
+      if(CURRENT_QUERY.resource_types != ""){
+        var resource_types = CURRENT_QUERY.resource_types.split(",");
+        var resourceTypesDOM = $("div.search_filter[name='resource_type'] ul");
+        for(var i=0; i<resource_types.length; i++){
+          $(resourceTypesDOM).find("li[value='"+ resource_types[i] +"']").addClass("selected");
+        }
+      }
+
+      // 2. Languages
       if(CURRENT_QUERY.languages != ""){
         var languages = CURRENT_QUERY.languages.split(",");
         var languagesDOM = $("div.search_filter[name='language'] ul");
         for(var i=0; i<languages.length; i++){
-          var language = languages[i];
-          $(languagesDOM).find("li[value='"+ language +"']").addClass("selected");
+          $(languagesDOM).find("li[value='"+ languages[i] +"']").addClass("selected");
         }
       }
 
-      // 2. Years
+      // 3. Years
       // These are already updated since are drawed with the slider
     };
 
@@ -297,12 +319,13 @@
 
     var currentQuery = function(){
       this.query = ("<%= params[:query].blank? ? "" : params[:query] %>");
-      this.resultsPerPage = parseInt("<%=@results.per_page%>");
-      this.currentPageNumber = parseInt("<%=@results.current_page%>");
-      this.sortBy =  ("<%= params[:sort_by].blank? ? (params[:query].blank? ? 'random' : 'relevance') : params[:sort_by]%>");
-      this.languages = ("<%= params[:languages].blank? ? "" : params[:languages]%>");
-      this.yearMin = parseInt("<%= params[:yearMin].blank? ? 1600 : params[:yearMin]%>");
-      this.yearMax = parseInt("<%= params[:yearMax].blank? ? 2015 : params[:yearMax]%>");
+      this.resultsPerPage = parseInt("<%= @results.per_page %>");
+      this.currentPageNumber = parseInt("<%= @results.current_page %>");
+      this.sortBy =  ("<%= params[:sort_by].blank? ? (params[:query].blank? ? 'random' : 'relevance') : params[:sort_by] %>");
+      this.resource_types = ("<%= params[:resource_types].blank? ? "" : params[:resource_types] %>");
+      this.languages = ("<%= params[:languages].blank? ? "" : params[:languages] %>");
+      this.yearMin = parseInt("<%= params[:yearMin].blank? ? 1600 : params[:yearMin] %>");
+      this.yearMax = parseInt("<%= params[:yearMax].blank? ? 2015 : params[:yearMax] %>");
     };
 
     var performSearchQuery = function(){
@@ -346,7 +369,23 @@
       //Filters
       var filtersQuery = "";
 
-      //1. Language
+      //1. Resource type
+      var resource_types = [];
+      $("div.search_filter[name='resource_type'] ul li.selected").each(function(index,value){
+        resource_types.push($(value).attr("value"));
+      });
+      if(resource_types.length > 0){
+        resource_types = resource_types.join(",");
+        filtersQuery += "&resource_types=" + resource_types;
+      } else {
+        resource_types = "";
+      }
+      if(resource_types != CURRENT_QUERY.resource_types){
+        //Clean page.
+        page = 1;
+      }
+
+      //2. Language
       var languages = [];
       $("div.search_filter[name='language'] ul li.selected").each(function(index,value){
         languages.push($(value).attr("value"));
@@ -362,7 +401,7 @@
         page = 1;
       }
       
-      //2. Year
+      //3. Year
       var yearMin = parseInt($("#year_slider").slider("values",0));
       var yearMax = parseInt($("#year_slider").slider("values",1));
       if((yearMin != 1600)||(yearMax != 2015)){

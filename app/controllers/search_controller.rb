@@ -27,7 +27,7 @@ class SearchController < ApplicationController
 
     models = [Lo]
 
-    @results = Search.search({:query => params[:query], :n => n, :page => page, :order => order, :models => models, :ids_to_avoid => params[:ids_to_avoid], :languages => params[:languages], :year_min => params[:yearMin], :year_max => params[:yearMax] })
+    @results = Search.search({:query => params[:query], :n => n, :page => page, :order => order, :models => models, :ids_to_avoid => params[:ids_to_avoid], :resource_types => params[:resource_types], :languages => params[:languages], :year_min => params[:yearMin], :year_max => params[:yearMax] })
   end
   
 end

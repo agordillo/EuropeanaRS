@@ -14,7 +14,7 @@ class Utils
 
   #Translate ISO 639-1 codes to readable language names
   def self.getReadableLanguage(lanCode="")
-    I18n.t("languages." + lanCode, :default => lanCode);
+    I18n.t("languages." + lanCode, :default => lanCode)
   end
 
   def self.getCountryFromLanguage(lanCode="")
@@ -64,7 +64,15 @@ class Utils
   end
 
   def self.getResourceTypes
+    EuropeanaRS::Application::config.settings[:resource_types]
+  end
+
+  def self.getAllResourceTypes
     ["TEXT","VIDEO","SOUND","IMAGE","3D"]
+  end
+
+  def self.getReadableResourceType(type="")
+    I18n.t("resource_types." + type.downcase, :default => type)
   end
 
 end

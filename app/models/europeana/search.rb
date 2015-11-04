@@ -40,10 +40,10 @@ class Europeana::Search < Europeana
     query += "&profile=" + profile
 
     #Facets
-    if params[:type].is_a? String and Utils.getResourceTypes.include?(params[:type])
+    if params[:type].is_a? String and Europeana.getResourceTypes.include?(params[:type])
       query += "&qf=TYPE:" + params[:type]
     elsif params[:type].is_a? Array
-      params[:type] = (params[:type] & Utils.getResourceTypes)
+      params[:type] = (params[:type] & Europeana.getResourceTypes)
       if params[:type].length > 1
         query += "&qf=TYPE:(" + params[:type].join("+OR+") + ")"
       elsif params[:type].length == 1
