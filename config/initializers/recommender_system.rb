@@ -11,7 +11,7 @@ Rails.application.configure do
   #EuropeanaRS fixed settings
   config.settings = {}
   config.settings = config.APP_CONFIG["settings"].parse_for_rs unless config.APP_CONFIG["settings"].blank?
-  config.settings = {:resource_types => Utils.getAllResourceTypes, :max_text_length => 50, :max_user_los => 5, :europeanars_database => {:max_preselection_size => 500}, :europeana_database => {:preselection_size => 500}}.recursive_merge(config.settings)
+  config.settings = {:resource_types => Utils.getAllResourceTypes, :max_text_length => 50, :max_user_los => 2, :europeanars_database => {:max_preselection_size => 500}, :europeana_database => {:preselection_size => 500}}.recursive_merge(config.settings)
   config.settings[:resource_types] = config.settings[:resource_types] & Utils.getAllResourceTypes
 
   #Default settings to use in EuropeanaRS
@@ -61,7 +61,7 @@ Rails.application.configure do
   config.settings[:europeanars_database][:max_preselection_size] = [config.max_matches,config.settings[:europeanars_database][:max_preselection_size]].min
 
   #RS: internal settings
-  config.max_user_los = (config.settings[:max_user_los].is_a?(Numeric) ? config.settings[:max_user_los] : 5)
+  config.max_user_los = (config.settings[:max_user_los].is_a?(Numeric) ? config.settings[:max_user_los] : 2)
 
   #Permited params for the EuropeanaRS API
   permitedParamsLo = [:resource_type, :title, :description, :language, :year, :repository, :id_repository, :url, :thumbnail_url]

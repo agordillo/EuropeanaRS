@@ -26,7 +26,7 @@ development:
     europeana_database:
       max_preselection_size: 500 #Maximun number of Learning Objects retrieved from Europeana in the preselection phase. High values could lead to performance issues.
   default_settings: #Default settings for the Recommender System
-    database: "All" #database used for generate the recommendations. Accepted values: "EuropeanaRS", "Europeana", "All"
+    database: "EuropeanaRS" #database used for generate the recommendations. Accepted values: "EuropeanaRS", "Europeana", "All"
     query: ""
     preselection_filter_resource_type: "true"
     preselection_filter_languages: "true"
