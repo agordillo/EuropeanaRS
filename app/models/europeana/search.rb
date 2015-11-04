@@ -6,6 +6,12 @@
 
 class Europeana::Search < Europeana
 
+  def self.search(queryParams={})
+    require 'rest-client'
+    response = (JSON.parse(RestClient::Request.execute(:method => :get, :url => buildQuery(queryParams), :timeout => 5, :open_timeout => 5))) rescue nil #nil => error connecting to Europeana
+    response unless response.nil?
+  end
+
   def self.buildQuery(params={})
     #Query example using the Europeana Search API
     #http://www.europeana.eu/api/v2/search.json?wskey=XXXX&query=skos_concept:%22http://vocab.getty.edu/aat/300026656%22&qf=TYPE:TEXT&profile=standard&rows=100&qf=YEAR:[1824+TO+1827]&qf=LANGUAGE:fr&qf=COUNTRY:france
@@ -74,10 +80,6 @@ class Europeana::Search < Europeana
     end
 
     query
-  end
-
-  def search
-  	#TODO
   end
 
 end

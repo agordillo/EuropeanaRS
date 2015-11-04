@@ -19,13 +19,16 @@ class EuropeanaMimic
   end
 
   def self.generateFakeData(data={})
+    language = Utils.getAllLanguages.sample(1).first
   	fakeData = {
       :apiKey => Faker::Number.number(9).to_s,
       :firstName => Faker::Name.first_name,
       :lastName => Faker::Name.last_name,
       :company => Faker::Company.name,
-      :country => Utils.getAllLanguages.map{|lanCode| Utils.getCountryFromLanguage(lanCode)}.sample(1).first #Faker::Address.country
+      :language => language,
+      :country => Utils.getCountryFromLanguage(language) #Faker::Address.country
     }
+    fakeData[:fullName] = fakeData[:firstName] + " " + fakeData[:lastName]
     fakeData[:username] = fakeData[:firstName]
     fakeData[:email] = Faker::Internet.free_email(fakeData[:firstName])
     fakeData.recursive_merge(data)

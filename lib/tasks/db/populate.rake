@@ -119,6 +119,8 @@ namespace :db do
 
     task :OAI_PMH => :environment do
       puts "Populating database using the Europeana OAI-PMH service"
+      #Currently, the Europeana OAI-PMH Service is in beta (http://labs.europeana.eu/api/oai-pmh-introduction).
+      #Future work feature.
       puts "Not implemented yet"
     end
 
