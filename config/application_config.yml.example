@@ -1,4 +1,5 @@
 development:
+  domain: "localhost:3000"
   secret_token: ""     # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
   europeana:
     api_key: ""        #Request an API key here: http://labs.europeana.eu/api/introduction
