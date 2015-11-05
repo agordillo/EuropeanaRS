@@ -3,6 +3,48 @@ EuropeanaRS is an open source Hybrid Learning Object Recommender System based on
 
 The last release can be seen [here](https://github.com/agordillo/EuropeanaRS/releases).
 
+# Features and components
+  
+* Hybrid Recommender System based on:
+  * Learning Object Profile Similarity
+  * User Profile Similarity
+  * Quality
+  * Popularity
+* Implementations to calculate similarities:
+  * Text semantic similarities calculated using [cosine similarity distance](https://en.wikipedia.org/wiki/Cosine_similarity) based on the [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).  
+  * Numeric similarities calculated as arithmetic distance in a specific scale.  
+  * Categorial fields (and booleans) calculated as equality functions.  
+* Filtering recommendations based on Learning Object similarity, User Profile similarity, quality or popularity.
+* Filtering recommendations based o specific fields. For instance, filter Learning Objects when title similarity is less than 0.5.
+* Customizable weights: 
+  * General (Learning Object similarity, User Profile similarity, quality or popularity).
+  * Field specific.
+* Customizable tresholds for filters.
+  * General (Learning Object similarity, User Profile similarity, quality or popularity).
+  * Field specific.
+* Search Engine based on sphinx.
+* Management of Learning Objects, Learning Object Profiles, Users, User Profiles and Applications.
+* EuropeanaRS API for delivering recommendations for third-party web client applications.
+* JavaScript library for web applications that want to use the EuropeanaRS API.
+* Fully customizable settings for the system.
+  * At application level (system default settings)
+  * At user level (user settings)
+  * At EuropeanaRS API level (third-party web app settings)
+* Basic UI
+* Login with:
+  * Registration in EuropeanaRS  
+  * Facebook (OAuth2)
+  * Europeana (OAuth2)
+  * Europeana (UserAuthentication API)
+* Internacionalization support. Supported languages: English, Spanish.
+* Europeana implementations for:
+  * Use Europeana Search API
+  * Use MyEuropeana API including the Europeana UserAuthentication service
+  * OAI-PMH Europeana service (in beta)
+  * A Europeana Mimic component to be used for developing purposes
+* Demos for using the EuropeanaRS API. [Live demo](http://europeanars.global.dit.upm.es/demo/index.html).
+* Dump with a dataset of more than 10.000 Learning Objects retrieved from Europeana for developing purposes.
+
 
 # Requirements:  
 
