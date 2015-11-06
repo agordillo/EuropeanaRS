@@ -30,6 +30,7 @@ The last release can be seen [here](https://github.com/agordillo/EuropeanaRS/rel
   * At application level (system default settings)
   * At user level (user settings)
   * At EuropeanaRS API level (third-party web app settings)
+* Special setting for generating recommendations using directly the Europeana repository without using internal database.
 * Basic UI
 * Login with:
   * Registration in EuropeanaRS  
