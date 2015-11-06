@@ -1,6 +1,13 @@
 development:
   domain: "localhost:3000"
   secret_token: ""     # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
+  mail:
+    no_reply_mail: "no-reply@europeanars.com"
+    main_mail: "no-reply@europeanars.com"
+    type: "SMTP" #Type can be "SENDMAIL" or "SMTP" (default)
+    # gmail_credentials:
+    #   username: ""
+    #   password: ""
   europeana:
     api_key: ""        #Request an API key here: http://labs.europeana.eu/api/introduction
     private_key: ""
@@ -11,16 +18,9 @@ development:
   facebook: #Get Facebook credentials for your app from https://developers.facebook.com/
     app_id: ""
     app_secret: ""
-  mail:
-    no_reply_mail: "no-reply@europeanars.com"
-    main_mail: "no-reply@europeanars.com"
-    type: "SMTP" #Type can be "SENDMAIL" or "SMTP" (default)
-    # gmail_credentials:
-    #   username: ""
-    #   password: ""
   settings: #settings for the Recommender System
     resource_types: ["TEXT","VIDEO","SOUND","IMAGE","3D"]
-    max_text_length: 50 #Maximun length in characters of the texts that will be taking into account when measuring semantic distances. High values could lead to performance issues.
+    max_text_length: 50 #Maximun length in characters of the text that will be taking into account when measuring semantic distances. High values could lead to performance issues.
     max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.
     europeanars_database:
       max_preselection_size: 500 #Maximun number of Learning Objects retrieved by the search engine in the preselection phase of the recommendations. High values could lead to performance issues.
