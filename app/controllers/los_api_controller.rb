@@ -7,6 +7,9 @@ class LosApiController < ApplicationController
 
   # Disable default protect_from_forgery policy
   protect_from_forgery with: :exception, :except => [:api]
+  
+  #Disable 'X-Frame-Options' (Allow iframes)
+  before_filter :allow_iframe_requests
 
   # Enable CORS
   before_filter :cors_preflight_check
