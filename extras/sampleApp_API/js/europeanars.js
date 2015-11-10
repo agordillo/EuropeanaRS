@@ -1,7 +1,7 @@
 /*
  * EuropeanaRS API
  * Version 1.0
- * Documentation at https://github.com/agordillo/EuropeanaRS
+ * Documentation at https://github.com/agordillo/EuropeanaRS/wiki/EuropeanaRS-API-JavaScript-library
  */
 
 EuropeanaRS_API = (function(){
