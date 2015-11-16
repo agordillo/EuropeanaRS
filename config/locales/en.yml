@@ -32,6 +32,7 @@ en:
       unspecified: "has to be specified"
     language: "Language"
     password: "Password"
+    relevance: "Relevance"
     remove: "Remove"
     save: "Save"
     search: "Search"

@@ -1,0 +1,16 @@
+<div class="evaluation_lo">
+  <div class="column1">
+    <%= link_to(lo[:url], :title => lo[:title], :target => "_blank") do %>
+      <div class="lo_box"%>
+        <p><%= lo[:title] %></p>
+        <% unless lo[:thumbnail_url].blank? %>
+          <img title="<%=lo[:title]%>" src="<%=lo[:thumbnail_url]%>"/>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="column2">
+    <p><%=t("dictionary.relevance")%>:</p>
+    <div class="rating"></div>
+  </div>
+</div>

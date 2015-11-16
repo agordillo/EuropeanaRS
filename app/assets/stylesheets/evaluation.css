@@ -1,0 +1,71 @@
+div.evaluation_wrapper p.title {
+  font-size: 2.1rem;
+  font-weight: bold;
+}
+
+div.progressbar {
+  border: 2px solid #3C3C3C;
+}
+
+div.progressbar .ui-widget-header {
+  background: #337ab7;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+div.progressbar.ui-progressbar .ui-progressbar-value {
+  margin: 0px;
+}
+
+div.evaluation_wrapper div.evaluation_description {
+  margin-top: 45px;
+  margin-bottom: 35px;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+div.evaluation_lo {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #9A9898;
+  padding: 1px 0px 2px 0px;
+}
+
+div.evaluation_lo a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+div.evaluation_lo div.column1 {
+  float: left;
+  width: 265px;
+  margin-right: 20px;
+}
+
+div.evaluation_lo div.column2 {
+  float: left;
+  margin-top: 11px;
+  font-size: 1.4rem;
+  background: white;
+  border-radius: 5px;
+  padding: 15px 15px 20px 15px;
+  min-width: 20%;
+  display: inline-block;
+}
+
+div.evaluation_lo div.column2 div.rating {
+  margin-top: -8px;
+}
+
+div.evaluation_wrapper button.europeanars_button {
+  margin-top: 12px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 100%;
+  padding: 10px;
+}

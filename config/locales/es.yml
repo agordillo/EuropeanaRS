@@ -32,6 +32,7 @@ es:
       unspecified: "tiene que ser especificado"
     language: "Idioma"
     password: "Contraseña"
+    relevance: "Relevancia"
     remove: "Borrar"
     save: "Salvar"
     search: "Buscar"

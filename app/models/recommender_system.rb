@@ -31,7 +31,13 @@ class RecommenderSystem
   # Step 0: Initialize all variables
   def self.prepareOptions(options={})
     options = {:n => 10, :user_profile => {}, :lo_profile => {}, :settings => EuropeanaRS::Application::config.default_settings}.recursive_merge(options)
-    options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los) unless options[:user_profile][:los].blank?
+    unless options[:user_profile][:los].blank?
+      if options[:max_user_los].blank?
+        options[:user_profile][:los] = options[:user_profile][:los].first(EuropeanaRS::Application::config.max_user_los)
+      else
+        options[:user_profile][:los] = options[:user_profile][:los].first(options[:max_user_los])
+      end
+    end
     options
   end
 

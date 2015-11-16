@@ -1,0 +1,38 @@
+<div id="logo">
+  <img alt="EuropeanaRS logo" src="/assets/Europeanars_logo.png"/>
+  <p><%=t("home.europeana_rs_description")%></p>
+</div>
+
+<p id="logo_search_separator"></p>
+
+<div class="evaluation_wrapper">
+  <p class="title">Evaluation: Step 3 of 3.</p>
+  <div id="progressbar" class="progressbar"></div>
+  <div class="evaluation_description">
+    Description of Step 3.
+  </div>
+  <button id="step3" class="europeanars_button">Finish</button>
+  <form id="step3form" style="display:none" action="/evaluation/step3" method="POST">
+    <input type="hidden" name="data">
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#progressbar").progressbar({
+      value: 100
+    });
+    $("#step3").click(function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      var data = {};
+      var form = $("#step3form");
+      $(form).find("input[name='data']").attr("value",JSON.stringify(data));
+      $(form).submit();
+    });
+  });
+</script>
+
+
+

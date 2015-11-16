@@ -42,10 +42,10 @@ class User < ActiveRecord::Base
     pastLos.map{|loProfile| loProfile.profile}
   end
 
-  def profile
+  def profile(options={})
     user_profile = {}
     user_profile[:language] = self.language
-    user_profile[:los] = self.pastLos
+    user_profile[:los] = self.pastLos(options[:n])
     user_profile
   end
 
