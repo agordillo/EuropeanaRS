@@ -2,7 +2,11 @@
   <li><a href="/"><%=t("header.home")%></a></li>
   <li><a href="/search"><%=t("header.explore")%></a></li>
   <li><a href="/profile"%><%=t("header.account")%></a></li>
-  <li><a target="_blank" href="https://github.com/agordillo/EuropeanaRS"><%=t("header.about")%></a></li>
+  <% if EuropeanaRS::Application::config.evaluation %>
+    <li><a href="/evaluation"><%=t("header.evaluation")%></a></li>
+  <% else %>
+    <li><a target="_blank" href="https://github.com/agordillo/EuropeanaRS"><%=t("header.about")%></a></li>
+  <% end %>
   <li class="language">
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle dropdown-menu-right" type="button" data-toggle="dropdown">

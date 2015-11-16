@@ -47,6 +47,7 @@ es:
   header:
     account: "Mi Perfil"
     home: "Inicio"
+    evaluation: "Evaluación"
     explore: "Explorar"
     language: "Idioma"
     about: "Acerca de EuropeanaRS"

@@ -47,6 +47,7 @@ en:
   header:
     account: "My Profile"
     home: "Home"
+    evaluation: "Evaluation"
     explore: "Explore"
     language: "Language"
     about: "About"

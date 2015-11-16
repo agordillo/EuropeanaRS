@@ -18,6 +18,7 @@ module EuropeanaRS
     #Accesible here: EuropeanaRS::Application::config.APP_CONFIG
     config.APP_CONFIG = YAML.load_file("config/application_config.yml")[Rails.env]
     config.domain = (config.APP_CONFIG["domain"] || "localhost:3000")
+    config.evaluation = config.APP_CONFIG["evaluation"].blank? ? false : (config.APP_CONFIG["evaluation"]=="true")
 
     #Tags
     config.tags = (config.APP_CONFIG["tags"] || {})

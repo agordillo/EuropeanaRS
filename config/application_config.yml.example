@@ -1,5 +1,6 @@
 development:
   domain: "localhost:3000"
+  evaluation: "false" #set to "true" to enable 'Evaluation mode'.
   secret_token: ""     # Execute 'bundle exec rake secret' to generate a new secret_token and copy it here
   mail:
     no_reply_mail: "no-reply@europeanars.com"

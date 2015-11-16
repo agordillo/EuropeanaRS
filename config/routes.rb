@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   match '/search', to: 'search#search', via: [:get, :post]
   match '/change_locale', to: 'locales#change_locale', via: [:get]
+  match '/evaluation', to: 'evaluation#start', via: [:get]
 
   match '/api', to: 'recommender_system#api', via: [:post]
   match '/los_api', to: 'los_api#api', via: [:get, :post]

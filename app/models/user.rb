@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :saved_items, :class_name => "Lo"
   has_and_belongs_to_many :saved_lo_profiles, :class_name => "LoProfile"
   has_many :apps
+  has_one :evaluation
 
   acts_as_taggable
 

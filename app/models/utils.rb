@@ -63,6 +63,7 @@ class Utils
     return I18n.default_locale.to_s
   end
 
+
   def self.getResourceTypes
     EuropeanaRS::Application::config.settings[:resource_types]
   end
@@ -75,4 +76,18 @@ class Utils
     I18n.t("resource_types." + type.downcase, :default => type)
   end
 
+  def self.getRandom(options={})
+    options[:n] = 20 unless options[:n].is_a? Integer
+
+    # Search random resources using the search engine
+    searchOptions = {}
+    searchOptions[:n] = [options[:n],EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size]].min
+    searchOptions[:models] = [Lo]
+    searchOptions[:order] = "random"
+
+    los = Search.search(searchOptions)
+
+    #Convert LOs to LO profiles
+    return los.map{|lo| lo.profile}
+  end
 end
