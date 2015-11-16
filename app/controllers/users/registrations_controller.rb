@@ -5,8 +5,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.has_attribute?(:ui_language)
-      resource.ui_language = I18n.locale.to_s
-      resource.language = resource.ui_language
+      resource.ui_language = Utils.valid_locale?(resource.language) ? resource.language : I18n.locale.to_s
+      resource.language = resource.ui_language if resource.language.blank?
     end
 
     resource_saved = resource.save

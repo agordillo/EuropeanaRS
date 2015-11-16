@@ -17,6 +17,11 @@
     </div>
 
     <div class="field">
+      <p><%=t("dictionary.language")%></p>
+      <%= f.select :language, options_for_select(options_for_select_all_languages, I18n.locale.to_s), {}, { :class => 'account_language' } %>
+    </div>
+
+    <div class="field">
       <p><%=t("dictionary.password")%></p>
       <%= f.password_field :password, autocomplete: "off" %>
     </div>
