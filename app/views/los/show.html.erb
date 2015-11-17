@@ -23,7 +23,7 @@
       <% end %>
       <% unless @lo.description.nil? %>
         <p class="field_title"><%=t("los.description")%></p>
-        <p class="field_content"><%= @lo.description %></p>
+        <p class="field_content"><%= truncate(@lo.description, :length => 2500) %></p>
       <% end %>
       <% unless @lo.resource_type.nil? %>
         <p class="field_title"><%=t("los.resource_type")%></p>
@@ -33,9 +33,9 @@
         <p class="field_title"><%=t("los.europeana_collection_name")%></p>
         <p class="field_content"><%= @lo.europeana_collection_name %></p>
       <% end %>
-      <% unless @lo.language.nil? %>
+      <% unless @lo.language.nil? or @lo.readable_language.nil? %>
         <p class="field_title"><%=t("los.language")%></p>
-        <p class="field_content"><%= @lo.language %></p>
+        <p class="field_content"><%= @lo.readable_language %></p>
       <% end %>
       <% unless @lo.country.nil? %>
         <p class="field_title"><%=t("los.country")%></p>

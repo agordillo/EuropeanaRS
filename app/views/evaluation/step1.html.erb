@@ -6,21 +6,11 @@
 <p id="logo_search_separator"></p>
 
 <div class="evaluation_wrapper">
-  <p class="title">Evaluation: Step 1 of 3.</p>
+  <p class="title"><%=t("evaluation.steptitle", :step => "1").html_safe%></p>
   <div id="progressbar" class="progressbar"></div>
-  <div class="evaluation_description">
-    The following list shows 12 historic newspapers randomly ordered.<br/>
-    Put yourself in the situation where this list of newspapers has been recommended for you in the home page of the EuropeanaRS platform (or in any other repository of historic newspapers) taking into account your user profile.<br/>
-    Please, indicate, for each of the newspapers, the relevance or interest that it has for you using a 5 points scale, with 1 being 'not at all relevant to me' and 5 being 'very relevant to me'.<br/>
-    Once you have indicated the relevance for each newspaper, click on next to advance to the following step.<br/>
-  </div>
-  <div class="evaluation_los">
-    <% @itemsS1.each do |loProfile| %>
-      <%= render "/evaluation/lo_profile_box", :lo => loProfile %>
-    <% end %>
-  </div>
-  <button id="step1" class="europeanars_button">Next</button>
-  <form id="step1form" style="display:none" action="/evaluation/step1" method="POST">
+  <div class="evaluation_description"><%=t("evaluation.step1.description").html_safe%></div>
+  <button id="step" class="europeanars_button"><%=t("dictionary.next")%></button>
+  <form id="stepform" style="display:none" action="/evaluation/step1" method="POST">
     <input type="hidden" name="data">
     <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
   </form>
@@ -31,36 +21,11 @@
     $("#progressbar").progressbar({
       value: 33
     });
-    $('div.rating').raty({
-      path: '/assets',
-      hints: ['1 (Not at all relevant to me)', '2', '3', '4', '5 (Very relevant to me)']
-    });
-    $("#step1").click(function(event){
+    $("#step").click(function(event){
       event.preventDefault();
       event.stopPropagation();
-
-      var scores = $("div.rating").raty('score');
-      var validScores = [];
-      for(var i=0; i<scores.length; i++){
-        if(typeof scores[i] == "number"){
-          validScores.push(scores[i]);
-        }
-      }
-      if(validScores.length < parseInt('<%=@itemsS1.length%>')){
-        return alert("You have to indicate the relevance for all newspapers. There is at least one newspaper without relevance.");
-      }
-
-      //Send data to the server using a web form
       var data = {};
-      data["recommendationsS1"] = JSON.parse('<%=raw(escape_javascript @recommendationsS1.to_json)%>');
-      data["randomS1"] = JSON.parse('<%=raw(escape_javascript @randomS1.to_json)%>');
-      data["relevances"] = {};
-      
-      $("div.rating").each(function(index,value){
-        data["relevances"][$(value).attr('loid')] = $(value).raty('score');
-      });
-
-      var form = $("#step1form");
+      var form = $("#stepform");
       $(form).find("input[name='data']").attr("value",JSON.stringify(data));
       $(form).submit();
     });

@@ -30,7 +30,9 @@ es:
       reserved_word: "es una palabra reservada"
       too_short: "es demasiado corto"
       unspecified: "tiene que ser especificado"
+    finish: "Terminar"
     language: "Idioma"
+    next: "Siguiente"
     password: "Contraseña"
     relevance: "Relevancia"
     remove: "Borrar"
@@ -40,6 +42,25 @@ es:
     untitled: "Sin título"
     update: "Actualizar"
     username: "Nombre de usuario"
+  evaluation:
+    messages:
+      disabled: "El modo Evaluación no está habilitado en esta instancia de EuropeanaRS."
+      duplicated: "La evaluación ya ha sido enviada. ¡Muchas gracias por tu colaboración!"
+      norelevance: "Debes indicar la relevancia para todos los periódicos. Hay al menos un periódico sin relevancia."
+      resources: "Debes salvar en tu perfil de usuario un mínimo de 4 recursos para realizar la evaluación de la plataforma."
+      success: "Evaluación finalizada. ¡Muchas gracias por su colaboración!"
+    stars:
+      one: "No relevante para mí en absoluto"
+      five: "Muy relevante para mí"
+    step1: 
+      description: "TODO"
+    step2:
+      description: "La siguiente lista muestra 12 periódicos históricos ordenados de forma aleatoria.<br/>Póngase en la situación de que esta lista de periódicos ha sido recomendada para usted en la página principal (o página de inicio) de la plataforma EuropeanaRS (o en cualquier otro repositorio de periódicos históricos) teniendo en cuenta su perfil de usuario.<br/>Por favor, indique, para cada uno de los periódicos, la relevancia o interés que tiene para usted empleando una escala de 5 puntos, siendo 1 \'no relevante para mí en absoluto\' y siendo 5 \'muy relevante para mí\'.<br/>Una vez haya indicando la relevancia para cada periódico, haga clic en siguiente para avanzar al siguiente paso.<br/>"
+    step3:
+      descriptiona: "Esta página muestra una nueva lista que contiene otros 12 periódicos históricos ordenados de forma aleatoria.</br>En esta ocasión, póngase en la situación de que está navegando y explorando periódicos  en la plataforma EuropeanaRS (o en cualquier otro repositorio de periódicos históricos) y que usted finalmente encuentra un periódico en el cuál está interesado. Después hace clic en un enlace que le lleva a una nueva página donde puede ver los detalles de este periódico.</br>Concretamente, el periódico cuyos detalles está viendo es el siguiente:</br>"
+      descriptionb: "Ahora, dada la situación descrita anteriormente, suponga que la siguiente lista de periódicos ha sido recomendada para usted <b>en la misma página en la que está viendo los detalles del periódico seleccionado</b>.</br>Por favor, indique, para cada uno de los periódicos de la lista, la relevancia o interés que tiene para usted empleando una escala de 5 puntos, siendo 1 \'no relevante para mí en absoluto\' y siendo 5 \'muy relevante para mí\'.<br/>Una vez haya indicando la relevancia para cada periódico, haga clic en terminar para enviar la evaluación.</br>"
+    steptitle: "Evaluación: Paso %{step} de 3."
+    surveyurl: "https://docs.google.com/forms/d/1AKxC390ozeKG_U1t5PHDQld8pBlyDCaVA-GZHCcwqB0/viewform"
   footer:
     europeana_website: "Portal web de Europeana"
     europeana_tou: "Términos de uso de Europeana"

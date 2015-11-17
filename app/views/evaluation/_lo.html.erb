@@ -1,0 +1,41 @@
+<div id="lo_wrapper">
+  <div id="lo_metadata">
+    <div class="column1">
+      <% unless @lo.thumbnail_url.nil? %>
+        <img src="<%=@lo.thumbnail_url%>"/>
+      <% end %>
+      <p class="europeana_link"><a target="_blank" href="<%=@lo.url%>"><%=t("los.view_at_europeana")%> <span class="glyphicon glyphicon-new-window"></span></a></p>
+    </div>
+    <div class="column2">
+      <% unless @lo.title.nil? %>
+        <p class="title"><%= @lo.title %></p>
+      <% else %>
+        <p class="title"><%=t("dictionary.untitled")%></p>
+      <% end %>
+      <% unless @lo.description.nil? %>
+        <p class="field_title"><%=t("los.description")%></p>
+        <p class="field_content"><%= truncate(@lo.description, :length => 350) %></p>
+      <% end %>
+      <% unless @lo.resource_type.nil? %>
+        <p class="field_title"><%=t("los.resource_type")%></p>
+        <p class="field_content"><%= @lo.resource_type %></p>
+      <% end %>
+      <% unless @lo.europeana_collection_name.nil? %>
+        <p class="field_title"><%=t("los.europeana_collection_name")%></p>
+        <p class="field_content"><%= @lo.europeana_collection_name %></p>
+      <% end %>
+      <% unless @lo.language.nil? %>
+        <p class="field_title"><%=t("los.language")%></p>
+        <p class="field_content"><%= @lo.readable_language %></p>
+      <% end %>
+      <% unless @lo.year.nil? %>
+        <p class="field_title"><%=t("los.year")%></p>
+        <p class="field_content"><%= @lo.year %></p>
+      <% end %>
+      <% unless @lo.tag_list.blank? %>
+        <p class="field_title"><%=t("los.tags")%></p>
+        <p class="field_content"><%= @lo.tag_list.join(",") %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

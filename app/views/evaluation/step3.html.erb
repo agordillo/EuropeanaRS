@@ -6,13 +6,18 @@
 <p id="logo_search_separator"></p>
 
 <div class="evaluation_wrapper">
-  <p class="title">Evaluation: Step 3 of 3.</p>
+  <p class="title"><%=t("evaluation.steptitle", :step => "3").html_safe%></p>
   <div id="progressbar" class="progressbar"></div>
-  <div class="evaluation_description">
-    Description of Step 3.
+  <div class="evaluation_description"><%=t("evaluation.step3.descriptiona").html_safe%></div>
+  <%= render "/evaluation/lo" %>
+  <div class="evaluation_description" style="margin-top: 10px; margin-bottom: 35px;"><%=t("evaluation.step3.descriptionb").html_safe%></div>
+  <div class="evaluation_los">
+    <% @itemsB.each do |loProfile| %>
+      <%= render "/evaluation/lo_profile_box", :lo => loProfile %>
+    <% end %>
   </div>
-  <button id="step3" class="europeanars_button">Finish</button>
-  <form id="step3form" style="display:none" action="/evaluation/step3" method="POST">
+  <button id="step" class="europeanars_button"><%=t("dictionary.finish")%></button>
+  <form id="stepform" style="display:none" action="/evaluation/step3" method="POST">
     <input type="hidden" name="data">
     <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
   </form>
@@ -23,16 +28,38 @@
     $("#progressbar").progressbar({
       value: 100
     });
-    $("#step3").click(function(event){
+    $('div.rating').raty({
+      path: '/assets',
+      hints: ['1 (<%=t("evaluation.stars.one")%>)', '2', '3', '4', '5 (<%=t("evaluation.stars.five")%>)']
+    });
+    $("#step").click(function(event){
       event.preventDefault();
       event.stopPropagation();
+
+      var scores = $("div.rating").raty('score');
+      var validScores = [];
+      for(var i=0; i<scores.length; i++){
+        if(typeof scores[i] == "number"){
+          validScores.push(scores[i]);
+        }
+      }
+      if(validScores.length < parseInt('<%=@itemsB.length%>')){
+        return alert('<%=t("evaluation.messages.norelevance")%>');
+      }
+
+      //Send data to the server using a web form
       var data = {};
-      var form = $("#step3form");
+      data["recommendationsB"] = JSON.parse('<%=raw(escape_javascript @recommendationsB.to_json)%>');
+      data["randomB"] = JSON.parse('<%=raw(escape_javascript @randomB.to_json)%>');
+      data["relevances"] = {};
+      
+      $("div.rating").each(function(index,value){
+        data["relevances"][$(value).attr('loid')] = $(value).raty('score');
+      });
+
+      var form = $("#stepform");
       $(form).find("input[name='data']").attr("value",JSON.stringify(data));
       $(form).submit();
     });
   });
 </script>
-
-
-
