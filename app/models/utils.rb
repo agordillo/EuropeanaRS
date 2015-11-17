@@ -84,6 +84,8 @@ class Utils
     searchOptions[:n] = [options[:n],EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size]].min
     searchOptions[:models] = [Lo]
     searchOptions[:order] = "random"
+    searchOptions[:ids_to_avoid] = options[:ids_to_avoid] unless options[:ids_to_avoid].blank?
+    searchOptions[:europeana_ids_to_avoid] = options[:europeana_ids_to_avoid] unless options[:europeana_ids_to_avoid].blank?
 
     los = Search.search(searchOptions)
 

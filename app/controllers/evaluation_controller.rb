@@ -14,15 +14,15 @@ class EvaluationController < ApplicationController
     when "0"
       #Data for step1
       @recommendationsS1 = RecommenderSystem.suggestions({:n => 6, :user_profile => current_user.profile({:n => 5}), :user_settings => nil, :max_user_los => 5})
-      @randomS1 = Utils.getRandom({:n => 6})
-      @itemsS1 = (@recommendationsS1 + @randomS1).shuffle.first(2) #TODO REMOVE
+      @randomS1 = Utils.getRandom({:n => 6, :europeana_ids_to_avoid => @recommendationsS1.map{|loProfile| loProfile[:id_repository]}})
+      @itemsS1 = (@recommendationsS1 + @randomS1).shuffle
       render :step1
     when "1"
       #Data for step2
       @lo = getStep2Lo
-      recommendationsS2 = RecommenderSystem.suggestions({:n => 6, :user_profile => nil, :user_settings => nil, :lo_profile => @lo.profile})
-      randomS2 = Utils.getRandom({:n => 6})
-      @itemsS2 = (recommendationsS2 + randomS2).shuffle.first(2) #TODO REMOVE
+      @recommendationsS2 = RecommenderSystem.suggestions({:n => 6, :user_profile => nil, :user_settings => nil, :lo_profile => @lo.profile})
+      @randomS2 = Utils.getRandom({:n => 6, :europeana_ids_to_avoid => @recommendationsS2.map{|loProfile| loProfile[:id_repository]}})
+      @itemsS2 = (@recommendationsS2 + @randomS2).shuffle.first(2) #TODO REMOVE
       render :step2
     when "2"
       #No data needed for step3
@@ -35,7 +35,16 @@ class EvaluationController < ApplicationController
   #Save step1
   def step1
     dataStep1 = JSON.parse(params["data"]) rescue {}
-    #TODO. Data validation.
+    #Data validation.
+    errors = []
+    errors << "Missing data" if dataStep1["recommendationsS1"].blank? or dataStep1["randomS1"].blank? or dataStep1["relevances"].blank?
+    errors << "Incorrect number of items" if dataStep1["recommendationsS1"].length!=6 or dataStep1["randomS1"].length!=6
+    errors << "Missing relevances" if dataStep1["relevances"].compact.length!=(dataStep1["recommendationsS1"].length+dataStep1["randomS1"].length)
+    errors << "Incorrect relevances" unless dataStep1["recommendationsS1"].map{|h| dataStep1["relevances"][h["id_repository"]]}.select{|r| r.nil?}.blank? and dataStep1["randomS1"].map{|h| dataStep1["relevances"][h["id_repository"]]}.select{|r| r.nil?}.blank?
+
+    unless errors.blank?
+      return redirect_to("/evaluation", :alert => errors.first)
+    end
 
     data = {}
     data["step1"] = dataStep1

@@ -31,13 +31,14 @@
     $("#progressbar").progressbar({
       value: 33
     });
-    $('div.rating').raty({ 
+    $('div.rating').raty({
       path: '/assets',
       hints: ['1 (Not at all relevant to me)', '2', '3', '4', '5 (Very relevant to me)']
     });
     $("#step1").click(function(event){
       event.preventDefault();
       event.stopPropagation();
+
       var scores = $("div.rating").raty('score');
       var validScores = [];
       for(var i=0; i<scores.length; i++){
@@ -48,9 +49,18 @@
       if(validScores.length < parseInt('<%=@itemsS1.length%>')){
         return alert("You have to indicate the relevance for all newspapers. There is at least one newspaper without relevance.");
       }
+
       //Send data to the server using a web form
       var data = {};
-      var form = $("#step1form")
+      data["recommendationsS1"] = JSON.parse('<%=raw(escape_javascript @recommendationsS1.to_json)%>');
+      data["randomS1"] = JSON.parse('<%=raw(escape_javascript @randomS1.to_json)%>');
+      data["relevances"] = {};
+      
+      $("div.rating").each(function(index,value){
+        data["relevances"][$(value).attr('loid')] = $(value).raty('score');
+      });
+
+      var form = $("#step1form");
       $(form).find("input[name='data']").attr("value",JSON.stringify(data));
       $(form).submit();
     });
