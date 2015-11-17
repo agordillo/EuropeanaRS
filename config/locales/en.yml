@@ -53,7 +53,7 @@ en:
       one: "Not at all relevant to me"
       five: "Very relevant to me"
     step1:
-      description: "Welcome to the EuropeanaRS evaluation tool.<br/>"
+      description: "Welcome to the EuropeanaRS evaluation tool.<br/><br/>At this point you already have completed the initial tasks described at the EuropeanaRS evaluation guide and you already have saved at least 4 newspapers that match your interests. If not, you should download the EuropeanaRS evaluation guide from <a href='#''>here</a> and follow the instructions.<br/><br/>Before continuing with the next steps, please <b>fill in the EuropeanaRS Questionnaire</b>. You can fill in directly in this web page or you can access the questionnaire at the following <a target='_blank' href='https://docs.google.com/forms/d/1I03uDYz2Ple6_scH2EQdG82cUt8qSd4oAkJhELWDzYY/viewform'>link</a>.<br/><b>Once you finish and submit the questionnaire</b>, click on the 'Next' button at the bottom of the page (below the questionnaire) to continue with the evaluation.<br/>"
     step2:
       description: "The following list shows 12 historic newspapers randomly ordered.<br/>Put yourself in the situation where this list of newspapers has been recommended for you in the home page of the EuropeanaRS platform (or in any other repository of historic newspapers) taking into account your user profile.<br/>Please, indicate, for each of the newspapers, the relevance or interest that it has for you using a 5 points scale, with 1 being \'not at all relevant to me\' and 5 being \'very relevant to me\'.<br/>Once you have indicated the relevance for each newspaper, click on next to advance to the following step.<br/>"
     step3:

@@ -9,6 +9,7 @@
   <p class="title"><%=t("evaluation.steptitle", :step => "1").html_safe%></p>
   <div id="progressbar" class="progressbar"></div>
   <div class="evaluation_description"><%=t("evaluation.step1.description").html_safe%></div>
+  <iframe src='<%=t("evaluation.surveyurl")%>' style="width: 100%; height: 550px; margin-bottom: 20px;"></iframe>
   <button id="step" class="europeanars_button"><%=t("dictionary.next")%></button>
   <form id="stepform" style="display:none" action="/evaluation/step1" method="POST">
     <input type="hidden" name="data">
