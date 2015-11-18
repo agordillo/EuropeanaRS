@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Utils
 
   #################
@@ -77,7 +79,18 @@ class Utils
   end
 
   def self.getNewspaperFromTitle(title)
+    #Some generic patterns
     title = title.gsub(/ - [0-9]{4}-[0-9]{2}-[0-9]{2}/, '')
+
+    #Specific newspapers
+    newspapers = ["Илюстрация светлина","Българска иллюстрация : Иллюстрован домашен вестник","Viaţa românească","Светлина : Месечно илюстровано списание","Светлина : Журнал за наука, изкуство и индустрия","Gazeta de Transilvania","Journal de la ville et du Grand-Duché de Luxembourg","La Clef du cabinet des princes de l'Europe","Beogradske novine","Le Moment","Gazeta săteanului","Calendarul ziarului","Огнище","Luxemburger Illustrierte","Luxemburger Wochenblatt"]
+    newspapers.each do |newspaper|
+      if title.downcase.include?(newspaper.downcase)
+        title = newspaper
+        break
+      end
+    end
+
     title
   end
 

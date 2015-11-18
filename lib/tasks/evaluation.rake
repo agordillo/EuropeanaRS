@@ -89,8 +89,7 @@ namespace :evaluation do
     rsSettings = {:preselection_filter_languages => true, :europeanars_database => {:preselection_size => 1000}, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
 
     #N values
-    ns = [1,3,5,10,20,500]
-
+    ns = [1,5,10,20,500]
     results = {}
 
     ns.each do |n|
@@ -98,13 +97,18 @@ namespace :evaluation do
       users.each do |user|
         los = user.saved_items
         los.each do |lo|
-          #Leave lo out and see if it appears on the n recommendations
-          userProfile = user.profile({:n => los.length})
-          userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
-          recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => los.length})
-          success = recommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0
-          results[n.to_s][:attempts] += 1
-          results[n.to_s][:successes] += 1 if success
+          2.times do
+            #Leave lo out and see if it appears on the n recommendations
+            userProfile = user.profile({:n => los.length})
+            userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
+            recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => los.length})
+            # success = recommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0 # Success as same issue entity
+            loNewspaper = Utils.getNewspaperFromTitle(lo.title)
+            # success = recommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper and (loProfile[:year]-lo.year).abs <= 2}.length > 0 # Success as issue of the same newspaper in the same period
+            success = recommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper}.length > 0 # Success as issue of the same newspaper
+            results[n.to_s][:attempts] += 1
+            results[n.to_s][:successes] += 1 if success
+          end
         end
       end
       results[n.to_s][:accuracy] = (results[n.to_s][:successes]/results[n.to_s][:attempts].to_f * 100).round(1)
