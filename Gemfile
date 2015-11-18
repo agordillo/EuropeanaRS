@@ -37,6 +37,8 @@ gem 'omniauth-oauth2', '1.1.2'
 gem 'omniauth-facebook', '1.4.1'
 
 gem 'faker', '1.5.0'
+gem 'descriptive_statistics', '2.4.0'
+gem 'axlsx', '2.0.1'
 
 #Thinking Sphinx
 #The included MySQL gems are required for connecting to Sphinx, so please include it even when you’re using PostgreSQL for your database.

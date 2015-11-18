@@ -26,3 +26,5 @@ config/application_config.yml
 dumps/*
 config/deploy/*
 !config/deploy/example.yml
+evaluations/*
+!evaluations/.keep
