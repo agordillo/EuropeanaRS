@@ -9,7 +9,7 @@ namespace :evaluation do
     require 'descriptive_statistics'
 
     usersData = []
-    breezeSettings = {:alpha => 1.5, :d => 1}
+    breezeSettings = {:alpha => 3.5, :d => 1}
 
     Evaluation.all.each do |e|
       userData = {}
@@ -76,6 +76,62 @@ namespace :evaluation do
     puts("Task Finished. Results generated at evaluations/utility.xlsx")
   end
 
+  # Usage
+  # bundle exec rake evaluation:accuracy
+  # Leave-one-out method: measure how often the left-out entity appeared in the top N recommendations
+  task :accuracy => :environment do
+    printTitle("Calculating Accuracy using leave-one-out")
+
+    #Get users with more than 3 saved resources
+    users = User.joins(:saved_items).group("users.id").having("count(los.id) > ?",3)
+
+    #Recommender System settings
+    rsSettings = {:preselection_filter_languages => true, :europeanars_database => {:preselection_size => 1000}, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
+
+    #N values
+    ns = [1,3,5,10,20,500]
+
+    results = {}
+
+    ns.each do |n|
+      results[n.to_s] = {:attempts => 0, :successes => 0, :accuracy => 0}
+      users.each do |user|
+        los = user.saved_items
+        los.each do |lo|
+          #Leave lo out and see if it appears on the n recommendations
+          userProfile = user.profile({:n => los.length})
+          userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
+          recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => los.length})
+          success = recommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0
+          results[n.to_s][:attempts] += 1
+          results[n.to_s][:successes] += 1 if success
+        end
+      end
+      results[n.to_s][:accuracy] = (results[n.to_s][:successes]/results[n.to_s][:attempts].to_f * 100).round(1)
+    end
+
+    #Generate excel file with results
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Recommender System Accuracy") do |sheet|
+        rows = []
+        rows << ["Recommender System Accuracy"]
+        rows << []
+        rows << ["n","accuracy","attempts","succcesses"]
+        
+        rows += Array.new(ns.length).map{|e| []}
+        ns.each do |n|
+          rows << [n,results[n.to_s][:accuracy],results[n.to_s][:attempts],results[n.to_s][:successes]]
+        end
+
+        rows.each do |row|
+          sheet.add_row row
+        end
+      end
+      p.serialize('evaluations/accuracy.xlsx')
+    end
+
+    puts("Task Finished. Results generated at evaluations/accuracy.xlsx")
+  end
 
   private
 

@@ -76,6 +76,11 @@ class Utils
     I18n.t("resource_types." + type.downcase, :default => type)
   end
 
+  def self.getNewspaperFromTitle(title)
+    title = title.gsub(/ - [0-9]{4}-[0-9]{2}-[0-9]{2}/, '')
+    title
+  end
+
   def self.getRandom(options={})
     options[:n] = 20 unless options[:n].is_a? Integer
 
