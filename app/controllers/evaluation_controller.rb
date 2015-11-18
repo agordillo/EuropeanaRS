@@ -27,7 +27,7 @@ class EvaluationController < ApplicationController
     when "2"
       #Data for step3
       rsSettingsB = rsSettings.recursive_merge({:preselection_filter_languages => false})
-      @lo = getBLo
+      @lo = getBLo({:settings => rsSettingsB})
       @recommendationsB = RecommenderSystem.suggestions({:n => 6, :settings => rsSettingsB, :user_profile => nil, :user_settings => {}, :lo_profile => @lo.profile})
       @randomB = Utils.getRandom({:n => 6, :europeana_ids_to_avoid => @recommendationsB.map{|loProfile| loProfile[:id_repository]}})
       @itemsB = (@recommendationsB + @randomB).shuffle
@@ -101,13 +101,13 @@ class EvaluationController < ApplicationController
 
   private
 
-  def getBLo
+  def getBLo(options={})
     userProfile = current_user.profile
     loProfiles = current_user.saved_items.map{|lo| lo.profile}
     similarity = []
 
     loProfiles.each do |loProfile|
-      similarity << RecommenderSystem.userProfileSimilarityScore(userProfile,loProfile)
+      similarity << RecommenderSystem.userProfileSimilarityScore(userProfile,loProfile,options)
     end
 
     return current_user.saved_items[similarity.find_index(similarity.max)]
