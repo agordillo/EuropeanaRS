@@ -11,7 +11,7 @@ class EvaluationController < ApplicationController
     return redirect_to(view_context.home_path, :alert => I18n.t("evaluation.messages.resources")) unless current_user.saved_items.length > 3
 
     #RS settings for the evaluation study
-    rsSettings = {:preselection_filter_languages => true, :europeanars_database => {:preselection_size => 600}, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
+    rsSettings = {:database => "EuropeanaRS", :europeanars_database => {:preselection_size => 600}, :preselection_filter_languages => true, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
 
     case evaluationStatus
     when "0"

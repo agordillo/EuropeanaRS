@@ -86,7 +86,7 @@ namespace :evaluation do
     users = User.joins(:saved_items).group("users.id").having("count(los.id) > ?",3)
 
     #Recommender System settings
-    rsSettings = {:preselection_filter_languages => true, :europeanars_database => {:preselection_size => 1000}, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
+    rsSettings = {:database => "EuropeanaRS", :europeanars_database => {:preselection_size => 1000}, :preselection_filter_languages => true, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
 
     #N values
     ns = [1,5,10,20,500]
@@ -135,6 +135,60 @@ namespace :evaluation do
     end
 
     puts("Task Finished. Results generated at evaluations/accuracy.xlsx")
+  end
+
+  # Usage
+  # bundle exec rake evaluation:performance
+  # Time taken by the recommender system to generate a set of recommendations
+  task :performance => :environment do
+    printTitle("Calculating Performance")
+
+    #Recommender System settings
+    rsSettings = {:database => "EuropeanaRS", :preselection_filter_resource_type => false, :preselection_filter_languages => false, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
+
+    #Values for the preselection size
+    ns = [1,2,50,100,500,1000,5000,10000]
+    iterationsPerN = 100
+    results = {}
+
+    userProfiles = []
+    loProfiles = []
+
+    iterationsPerN.times do |i|
+      userProfiles << User.limit(1).order("RANDOM()").first.profile
+      loProfiles << Lo.limit(1).order("RANDOM()").first.profile
+    end
+
+    ns.each do |n|
+      rsSettings = rsSettings.recursive_merge(:europeanars_database => {:preselection_size => n})
+      start = Time.now
+      iterationsPerN.times do |i|
+        RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => 1})
+      end
+      finish = Time.now
+      results[n.to_s] = {:time => ((finish - start)/iterationsPerN).round(3)}
+    end
+
+    #Generate excel file with results
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Recommender System Performance") do |sheet|
+        rows = []
+        rows << ["Recommender System Performance"]
+        rows << []
+        rows << ["n","Time"]
+        
+        ns.each do |n|
+          rows << [n,results[n.to_s][:time]]
+        end
+
+        rows.each do |row|
+          sheet.add_row row
+        end
+      end
+      p.serialize('evaluations/performance.xlsx')
+    end
+
+    puts("Task Finished. Results generated at evaluations/performance.xlsx")
   end
 
   private
