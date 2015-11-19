@@ -144,10 +144,10 @@ namespace :evaluation do
     printTitle("Calculating Performance")
 
     #Recommender System settings
-    rsSettings = {:database => "EuropeanaRS", :preselection_filter_resource_type => false, :preselection_filter_languages => false, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
+    rsSettings = {:database => "EuropeanaRS", :europeanars_database => {:preselection_size => 1}, :preselection_filter_resource_type => false, :preselection_filter_languages => false, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
 
     #Values for the preselection size
-    ns = [1,2,50,100,500,1000,5000,10000]
+    ns = [1,50,100,500,1000,5000,10000]
     iterationsPerN = 100
     results = {}
 
@@ -157,6 +157,8 @@ namespace :evaluation do
     iterationsPerN.times do |i|
       userProfiles << User.limit(1).order("RANDOM()").first.profile
       loProfiles << Lo.limit(1).order("RANDOM()").first.profile
+      #Perform some recommendations to get the recommender ready/'warm up'
+      RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => 1})
     end
 
     ns.each do |n|
@@ -167,6 +169,10 @@ namespace :evaluation do
       end
       finish = Time.now
       results[n.to_s] = {:time => ((finish - start)/iterationsPerN).round(3)}
+    end
+
+    ns.each do |n|
+      puts n.to_s + ":" + results[n.to_s][:time].to_s
     end
 
     #Generate excel file with results
