@@ -151,6 +151,9 @@ namespace :evaluation do
     iterationsPerN = 100
     results = {}
 
+    maxPreselectionSize = EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size]
+    EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size] = ns.max
+
     userProfiles = []
     loProfiles = []
 
@@ -170,6 +173,8 @@ namespace :evaluation do
       finish = Time.now
       results[n.to_s] = {:time => ((finish - start)/iterationsPerN).round(3)}
     end
+
+    EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size] = maxPreselectionSize
 
     ns.each do |n|
       puts n.to_s + ":" + results[n.to_s][:time].to_s
