@@ -65,6 +65,7 @@ namespace(:deploy) do
   task :link_files do
     run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
     run "ln -s #{shared_path}/application_config.yml #{release_path}/config/application_config.yml"
+    run "ln -s #{shared_path}/thinking_sphinx.yml #{release_path}/config/thinking_sphinx.yml"
   end
 
   task :precompile_europeanars_assets do

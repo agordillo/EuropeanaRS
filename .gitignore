@@ -18,10 +18,11 @@
 !/log/.keep
 /tmp
 
+public/assets
 config/database.yml
 db/sphinx/*
 config/*.sphinx.conf
-public/assets
+config/thinking_sphinx.yml
 config/application_config.yml
 dumps/*
 config/deploy/*
