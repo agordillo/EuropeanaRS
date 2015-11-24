@@ -146,10 +146,19 @@ namespace :evaluation do
     #Recommender System settings
     rsSettings = {:database => "EuropeanaRS", :europeanars_database => {:preselection_size => 1}, :preselection_filter_resource_type => false, :preselection_filter_languages => false, :rs_weights => {:los_score=>0.5, :us_score=>0.5, :quality_score=>0.0, :popularity_score=>0.0}, :los_weights => {:title=>0.2, :description=>0.15, :language=>0.5, :year=>0.15}, :us_weights => {:language=>0.2, :los=>0.8}, :rs_filters => {:los_score=>0, :us_score=>0, :quality_score=>0, :popularity_score=>0}, :us_filters => {:language=>0, :los=>0}}
 
+    #Configuration of the performance measurement task
     #Values for the preselection size
     ns = [1,50,100,500,1000,5000,10000]
-    iterationsPerN = 100
-    results = {}
+    loAveragingParameter = 10000 #Ideal should be close to LO.count
+    minIterationsPerNs = 10
+    maxUserLos = 1
+
+    iterationsPerN = {}
+    ns.each do |n|
+      iterationsPerN[n.to_s] = [minIterationsPerNs,(loAveragingParameter/n.to_f).ceil].max
+    end
+    minIterationsPerN = iterationsPerN.map{|k,v| v}.min
+    maxIterationsPerN = iterationsPerN.map{|k,v| v}.max
 
     maxPreselectionSize = EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size]
     EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size] = ns.max
@@ -157,28 +166,31 @@ namespace :evaluation do
     userProfiles = []
     loProfiles = []
 
-    iterationsPerN.times do |i|
+    minIterationsPerN.times do |i|
       userProfiles << User.limit(1).order("RANDOM()").first.profile
       loProfiles << Lo.limit(1).order("RANDOM()").first.profile
       #Perform some recommendations to get the recommender ready/'warm up'
-      RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => 1})
+      RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos})
     end
 
+    maxIterationsPerN.times do |i|
+      userProfiles[i] = userProfiles[i%minIterationsPerN]
+      loProfiles[i] = loProfiles[i%minIterationsPerN]
+    end
+
+    results = {}
     ns.each do |n|
       rsSettings = rsSettings.recursive_merge(:europeanars_database => {:preselection_size => n})
       start = Time.now
-      iterationsPerN.times do |i|
-        RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => 1})
+      iterationsPerN[n.to_s].times do |i|
+        RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos})
       end
       finish = Time.now
-      results[n.to_s] = {:time => ((finish - start)/iterationsPerN).round(3)}
+      results[n.to_s] = {:time => ((finish - start)/iterationsPerN[n.to_s]).round(3)}
+      puts n.to_s + ":" + results[n.to_s][:time].to_s + " (Elapsed time: " + (finish - start).to_s + ")"
     end
 
     EuropeanaRS::Application::config.settings[:europeanars_database][:max_preselection_size] = maxPreselectionSize
-
-    ns.each do |n|
-      puts n.to_s + ":" + results[n.to_s][:time].to_s
-    end
 
     #Generate excel file with results
     Axlsx::Package.new do |p|
