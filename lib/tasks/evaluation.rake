@@ -3,15 +3,16 @@
 namespace :evaluation do
 
   # Usage
-  # bundle exec rake evaluation:utility
-  task :utility => :environment do
+  # bundle exec rake evaluation:utility[3.5,1]
+  task :utility, [:alpha, :d] => :environment do |t, args|
     printTitle("Calculating Breeze's R-score utility metric")
     require 'descriptive_statistics'
 
     usersData = []
-    breezeSettings = {:alpha => 3.5, :d => 1}
+    breezeSettings = {:alpha => 3.5, :d => 1}.recursive_merge({:alpha=>args[:alpha], :d=>args[:d]}.parse_for_rs)
+    puts "Breeze settings: " + breezeSettings.to_s
 
-    Evaluation.all.each do |e|
+    Evaluation.where(:status => "Finished").each do |e|
       userData = {}
       data = JSON.parse(e.data)
 
