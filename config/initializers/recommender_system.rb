@@ -78,17 +78,14 @@ Rails.application.configure do
 
   #Settings for speed up TF-IDF calculations
   config.max_text_length = (config.settings[:max_text_length].is_a?(Numeric) ? config.settings[:max_text_length] : 50)
-  config.repository_total_entries = Lo.count
+  config.repository_total_entries = [Lo.count,1].max
   
   #Keep words in the configuration
   words = {}
-  Word.where("occurrences > ?",1).first(5000000).each do |word|
-    words[word.value] = word.occurrences
+  Word.where("occurrences > ?",5).first(5000000).each do |word|
+    words[word.value] = [word.occurrences,config.repository_total_entries-1].min
   end
   config.words = words
-
-  #Stop words (readed from the file stopwords.yml)
-  config.stopwords = File.read("config/stopwords.yml").split(",").map{|s| s.gsub("\n","").gsub("\"","") } rescue []
 end
 
 
