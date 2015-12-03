@@ -23,6 +23,7 @@ development:
     resource_types: ["TEXT","VIDEO","SOUND","IMAGE","3D"]
     max_text_length: 50 #Maximun length in characters of the text that will be taking into account when measuring semantic distances. High values could lead to performance issues.
     max_user_los: 2 #Maximum number of LOs of the users to be processed on the RS. High values could lead to performance issues.
+    max_user_pastlos: 4 #A maximum of 'max_user_los' LOs will be randomly retrieved from a maximum of 'max_user_pastlos' LOs of the user
     europeanars_database:
       max_preselection_size: 500 #Maximun number of Learning Objects retrieved by the search engine in the preselection phase of the recommendations. High values could lead to performance issues.
     europeana_database:

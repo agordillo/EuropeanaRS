@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   end
 
   def pastLos(n=nil)
-    n = EuropeanaRS::Application::config.max_user_los unless n.is_a? Numeric
+    n = EuropeanaRS::Application::config.max_user_pastlos unless n.is_a? Numeric
     all_lops = self.saved_lo_profiles
     pastLos = all_lops.where("lo_id is NOT null").last((n/2.to_f).round)
     nFill = (n-pastLos.length)

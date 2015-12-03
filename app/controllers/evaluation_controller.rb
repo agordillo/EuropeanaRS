@@ -20,7 +20,7 @@ class EvaluationController < ApplicationController
     when "1"
       #Data for step2
       rsSettingsA = rsSettings
-      @recommendationsA = RecommenderSystem.suggestions({:n => 6, :settings => rsSettingsA, :user_profile => current_user.profile({:n => 5}), :user_settings => {}, :max_user_los => 5})
+      @recommendationsA = RecommenderSystem.suggestions({:n => 6, :settings => rsSettingsA, :user_profile => current_user.profile({:n => 5}), :user_settings => {}, :max_user_los => 5, :max_user_pastlos => 5})
       @randomA = Utils.getRandom({:n => 6, :europeana_ids_to_avoid => @recommendationsA.map{|loProfile| loProfile[:id_repository]}})
       @itemsA = (@recommendationsA + @randomA).shuffle
       render :step2
@@ -102,7 +102,7 @@ class EvaluationController < ApplicationController
   private
 
   def getBLo(options={})
-    userProfile = current_user.profile
+    userProfile = current_user.profile({:n => 5})
     loProfiles = current_user.saved_items.map{|lo| lo.profile}
     similarity = []
 
