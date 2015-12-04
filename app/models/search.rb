@@ -16,10 +16,7 @@ class Search
       searchTerms = ""
     else
       browse = false
-
-      if options[:query].is_a? String    
-        searchTerms = options[:query].split(" ")
-      end
+      searchTerms = (options[:query].is_a?(String) ? options[:query].split(" ") : options[:query])
 
       #Sanitize search terms
       searchTerms = searchTerms.map{|st| Riddle::Query.escape(st) }
