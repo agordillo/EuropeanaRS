@@ -204,10 +204,11 @@ namespace :db do
     task :clean => :environment do |t, args|
       puts "Removing all records from database (except LOs)"
       #Remove all records
-      #LOs and Words are keeping.
+      #LOs and Words are kept.
       #They are intended to be loaded from a dump file or generated via other population tasks (see populate:start).
       User.destroy_all
       UserProfile.destroy_all
+      Evaluation.destroy_all
       App.destroy_all
       LoProfile.destroy_all
       Session.destroy_all
