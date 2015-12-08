@@ -103,7 +103,7 @@ namespace :evaluation do
             #Leave lo out and see if it appears on the n recommendations
             userProfile = user.profile({:n => los.length})
             userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
-            recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => los.length})
+            recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => 2, :max_user_pastlos => los.length})
             # success = recommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0 # Success as same issue entity
             loNewspaper = Utils.getNewspaperFromTitle(lo.title)
             # success = recommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper and (loProfile[:year]-lo.year).abs <= 2}.length > 0 # Success as issue of the same newspaper in the same period
@@ -172,7 +172,7 @@ namespace :evaluation do
       userProfiles << User.limit(1).order("RANDOM()").first.profile
       loProfiles << Lo.limit(1).order("RANDOM()").first.profile
       #Perform some recommendations to get the recommender ready/'warm up'
-      RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos})
+      RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos, :max_user_pastlos => maxUserLos})
     end
 
     maxIterationsPerN.times do |i|
@@ -185,7 +185,7 @@ namespace :evaluation do
       rsSettings = rsSettings.recursive_merge(:europeanars_database => {:preselection_size => n})
       start = Time.now
       iterationsPerN[n.to_s].times do |i|
-        RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos})
+        RecommenderSystem.suggestions({:n => 20, :settings => rsSettings, :lo_profile => loProfiles[i],:user_profile => userProfiles[i], :user_settings => {}, :max_user_los => maxUserLos, :max_user_pastlos => maxUserLos})
       end
       finish = Time.now
       results[n.to_s] = {:time => ((finish - start)/iterationsPerN[n.to_s]).round(3)}
