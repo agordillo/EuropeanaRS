@@ -91,32 +91,45 @@ namespace :evaluation do
 
     #N values
     ns = [1,5,10,20,500]
+    nMax = ns.max
     results = {}
 
     ns.each do |n|
-      results[n.to_s] = {:attempts => 0, :successesA => 0, :successesB => 0, :successesC => 0, :accuracyA => 0, :accuracyB => 0, :accuracyC => 0}
-      users.each do |user|
-        los = user.saved_items
-        los.each do |lo|
-          2.times do
-            #Leave lo out and see if it appears on the n recommendations
-            userProfile = user.profile({:n => los.length})
-            userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
-            recommendations = RecommenderSystem.suggestions({:n => n, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => 2, :max_user_pastlos => los.length})
-            loNewspaper = Utils.getNewspaperFromTitle(lo.title)
-            successA = recommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0 # Success as same issue entity
-            successB = recommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper and (loProfile[:year]-lo.year).abs <= 2}.length > 0 # Success as issue of the same newspaper in the same period
-            successC = recommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper}.length > 0 # Success as issue of the same newspaper
+      results[n.to_s] = {:attempts => 0, :successesA => 0, :successesB => 0, :successesC => 0, :successesD => 0, :accuracyA => 0, :accuracyB => 0, :accuracyC => 0, :accuracyD => 0}
+    end
+
+    users.each do |user|
+      los = user.saved_items
+      losLength = los.length
+
+      los.each do |lo|
+        #Leave lo out and see if it appears on the n recommendations
+        userProfile = user.profile({:n => losLength})
+        userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
+        loNewspaper = Utils.getNewspaperFromTitle(lo.title)
+        2.times do
+          recommendations = RecommenderSystem.suggestions({:n => nMax, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => 2, :max_user_pastlos => losLength})
+          ns.each do |n|
+            topNRecommendations = recommendations.first(n)
+            successA = topNRecommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0 # Success as same issue entity
+            successB = (successA or topNRecommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper and (loProfile[:year]-lo.year).abs < 1}.length > 0) # Success as issue of the same newspaper in the same year
+            successC = (successB or topNRecommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper and (loProfile[:year]-lo.year).abs <= 1}.length > 0) # Success as issue of the same newspaper in the same period
+            successD = (successC or topNRecommendations.select{|loProfile| Utils.getNewspaperFromTitle(loProfile[:title])==loNewspaper}.length > 0) # Success as issue of the same newspaper
             results[n.to_s][:attempts] += 1
             results[n.to_s][:successesA] += 1 if successA
             results[n.to_s][:successesB] += 1 if successB
             results[n.to_s][:successesC] += 1 if successC
+            results[n.to_s][:successesD] += 1 if successD
           end
         end
       end
+    end
+
+    ns.each do |n|
       results[n.to_s][:accuracyA] = (results[n.to_s][:successesA]/results[n.to_s][:attempts].to_f * 100).round(1)
       results[n.to_s][:accuracyB] = (results[n.to_s][:successesB]/results[n.to_s][:attempts].to_f * 100).round(1)
       results[n.to_s][:accuracyC] = (results[n.to_s][:successesC]/results[n.to_s][:attempts].to_f * 100).round(1)
+      results[n.to_s][:accuracyD] = (results[n.to_s][:successesD]/results[n.to_s][:attempts].to_f * 100).round(1)
     end
 
     #Generate excel file with results
@@ -125,11 +138,11 @@ namespace :evaluation do
         rows = []
         rows << ["Recommender System Accuracy"]
         rows << []
-        rows << ["n","attempts","accuracyA","succcessesA","accuracyB","succcessesB","accuracyC","succcessesC"]
+        rows << ["n","attempts","accuracyA","succcessesA","accuracyB","succcessesB","accuracyC","succcessesC","accuracyD","succcessesD"]
         
         rows += Array.new(ns.length).map{|e| []}
         ns.each do |n|
-          rows << [n,results[n.to_s][:attempts],results[n.to_s][:accuracyA],results[n.to_s][:successesA],results[n.to_s][:accuracyB],results[n.to_s][:successesB],results[n.to_s][:accuracyC],results[n.to_s][:successesC]]
+          rows << [n,results[n.to_s][:attempts],results[n.to_s][:accuracyA],results[n.to_s][:successesA],results[n.to_s][:accuracyB],results[n.to_s][:successesB],results[n.to_s][:accuracyC],results[n.to_s][:successesC],results[n.to_s][:accuracyD],results[n.to_s][:successesD]]
         end
 
         rows.each do |row|
