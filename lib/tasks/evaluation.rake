@@ -81,8 +81,9 @@ namespace :evaluation do
   # Usage
   # bundle exec rake evaluation:accuracy
   # Leave-one-out method: measure how often the left-out entity appeared in the top N recommendations
-  task :accuracy => :environment do
+  task :accuracy, [:random] => :environment do |t, args|
     printTitle("Calculating Accuracy using leave-one-out")
+    puts "Random" if args[:random]
 
     #Get users with more than 3 saved resources
     users = User.joins(:saved_items).group("users.id").having("count(los.id) > ?",3)
@@ -108,7 +109,11 @@ namespace :evaluation do
         userProfile[:los] = userProfile[:los].reject{|loProfile| loProfile[:id_repository]==lo.id_europeana}
         loNewspaper = Utils.getNewspaperFromTitle(lo.title)
         2.times do
-          recommendations = RecommenderSystem.suggestions({:n => nMax, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => 2, :max_user_pastlos => losLength})
+          unless args[:random]
+            recommendations = RecommenderSystem.suggestions({:n => nMax, :settings => rsSettings, :user_profile => userProfile, :user_settings => {}, :max_user_los => 2, :max_user_pastlos => losLength})
+          else
+            recommendations = Lo.limit(nMax).order("RANDOM()").map{|lo| lo.profile}
+          end
           ns.each do |n|
             topNRecommendations = recommendations.first(n)
             successA = topNRecommendations.select{|loProfile| loProfile[:id_repository]==lo.id_europeana}.length > 0 # Success as same issue entity
