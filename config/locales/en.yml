@@ -1,6 +1,16 @@
 # encoding: utf-8
 
 en:
+  i18n:
+    transliterate:
+      rule:
+        ª: "ª"
+        º: "º"
+        ´: "´"
+        ?: "?"
+        ¿: "¿"
+        ¡: "¡"
+        ́ : ""
   activerecord:
     errors:
       messages:

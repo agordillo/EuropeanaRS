@@ -48,7 +48,7 @@ gem 'thinking-sphinx', '3.1.4'
 
 group :development, :test do
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
-  gem 'debugger'
+  # gem 'debugger'
 end
 
 group :development do
