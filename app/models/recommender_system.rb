@@ -376,7 +376,7 @@ class RecommenderSystem
 
   # Inverse Document Frequency (IDF)
   def self.IDF(word)
-    Math::log(EuropeanaRS::Application::config.repository_total_entries/(1+(EuropeanaRS::Application::config.words[word] || 0)).to_f)
+    Math::log((2+EuropeanaRS::Application::config.repository_total_entries)/(1+(EuropeanaRS::Application::config.words[word] || 0)).to_f)
   end
 
   # TF-IDF

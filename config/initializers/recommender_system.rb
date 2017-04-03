@@ -79,7 +79,11 @@ Rails.application.configure do
 
   #Settings for speed up TF-IDF calculations
   config.max_text_length = (config.settings[:max_text_length].is_a?(Numeric) ? config.settings[:max_text_length] : 50)
-  config.repository_total_entries = [Lo.count,1].max
+  if ActiveRecord::Base.connection.table_exists?('los')
+    config.repository_total_entries = [Lo.count,1].max
+  else
+    config.repository_total_entries = 1
+  end
   
   #Keep words in the configuration
   words = {}

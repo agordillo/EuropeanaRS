@@ -3,5 +3,5 @@
 # Config accesible in EuropeanaRS::Application::config
 
 Rails.application.configure do
-  config.demo_user_available = (Rails.env==="development" and !User.where(:name => "Demo", :email => "demo@europeanars.com").first.nil?)
+  config.demo_user_available = (Rails.env==="development" and ActiveRecord::Base.connection.table_exists?('users') and !User.where(:name => "Demo", :email => "demo@europeanars.com").first.nil?)
 end
