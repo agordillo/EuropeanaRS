@@ -44,10 +44,10 @@ development:
     require_key: "true" #if false, no app key would be required when using the EuropeanaRS API.
   weights:
     default_rs:
-      los_score: 0.4
-      us_score: 0.4
-      quality_score: 0.1
-      popularity_score: 0.1
+      los_score: 0.5
+      us_score: 0.5
+      quality_score: 0.0
+      popularity_score: 0.0
     default_los:
       title: 0.2
       description: 0.15

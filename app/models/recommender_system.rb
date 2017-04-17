@@ -493,10 +493,10 @@ class RecommenderSystem
   # The current default weights can be accesed in the EuropeanaRS::Application::config.weights variable.
   def self.defaultRSWeights
     {
-      :los_score => 0.4,
-      :us_score => 0.4,
-      :quality_score => 0.10,
-      :popularity_score => 0.10
+      :los_score => 0.5,
+      :us_score => 0.5,
+      :quality_score => 0.0,
+      :popularity_score => 0.0
     }
   end
 
