@@ -43,7 +43,7 @@ The last release can be seen [here](https://github.com/agordillo/EuropeanaRS/rel
   * Use MyEuropeana API including the Europeana UserAuthentication service
   * OAI-PMH Europeana service (in beta)
   * A Europeana Mimic component to be used for developing purposes
-* Demos for using the EuropeanaRS API. [Live demo](http://europeanars.global.dit.upm.es/demo/index.html).
+* Demos for using the EuropeanaRS API. [Live demo](http://europeanars.dit.upm.es/demo/index.html).
 * Dump with a dataset of more than 10.000 Learning Objects retrieved from Europeana for developing purposes.
 
 
